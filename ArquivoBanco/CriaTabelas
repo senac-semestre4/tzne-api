@@ -1,0 +1,4 @@
+CREATE TABLE `pii4`.`brand` ( `id_brand` INT NOT NULL AUTO_INCREMENT , `brand_name` VARCHAR(50) NULL , PRIMARY KEY (`id_brand`)) ENGINE = InnoDB;
+
+CREATE TABLE `pii4`.`departaments` ( `departament_id` INT NOT NULL AUTO_INCREMENT , `departament_name` VARCHAR(50) NULL , `departament_status` BOOLEAN NOT NULL , PRIMARY KEY (`departament_id`)) ENGINE = InnoDB;
+

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<p id="demo"></p>
+<p id="demo1"></p>
+<p id="demo2"></p>
+<p id="demo3"></p>
+<p id="demo4"></p>
+<p id="demo5"></p>
+<p id="demo6"></p>
+
+
+<script type="text/javascript">
+	var xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        var myObj = JSON.parse(this.responseText);
+        document.getElementById("demo").innerHTML = myObj.product_name;
+        document.getElementById("demo1").innerHTML = myObj.product_model;
+        document.getElementById("demo2").innerHTML = myObj.product_specification;
+        document.getElementById("demo3").innerHTML = myObj.product_purchase_price;
+        document.getElementById("demo4").innerHTML = myObj.product_profit_margin;
+        document.getElementById("demo5").innerHTML = myObj.departaments_departament_id;
+        document.getElementById("demo6").innerHTML = myObj.product_stock_quantity;
+
+    }
+};
+xmlhttp.open("GET", "http://tzne.kwcraft.com.br/Teste/DaoTestes/DaoListaProdutosIdTeste.php", true);
+xmlhttp.send();
+
+
+
+
+</script>
+
+</body>
+</html>

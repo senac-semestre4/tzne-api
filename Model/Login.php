@@ -58,19 +58,26 @@ class Login extends Cart {
             $stmt->bind_param("ss",  password_hash($this->password, PASSWORD_DEFAULT), $this->username);
             
             if ($stmt->execute()== false) {
-                echo var_dump(mysqli_er($conn->getLink()));
+                //echo var_dump(mysqli_er($conn->getLink()));
             } else {
                 session_start();
+                
                 $_SESSION['logado'] = array();
                 $_SESSION['logado']['usuario'] = $this->username;
-                if(!isset($_SESSION['sacola'])){ //se a sacola estiver vazia, cria ela
+                
+                
+                if($_SESSION['sacola'] == null){ //se a sacola estiver vazia, cria ela
                     parent::createCart(); // método que cria a sacola
-                    //$_SESSION['carrinho'] = array();
+                    $_SESSION['logado']['carrinho'] = array();
                      //coloca a sacola dentro de carrinho, pois o usuário está logado
                     $_SESSION['logado']['carrinho']= $_SESSION['sacola'];
+                    return true;
                 } else{
                     //Se a sacola já é existente, o carrinho aponta para a sacola
+                    $_SESSION['logado']['carrinho'] = array();
                     $_SESSION['logado']['carrinho']= $_SESSION['sacola'];
+                    return true;
+                    
                 }
                 
                 

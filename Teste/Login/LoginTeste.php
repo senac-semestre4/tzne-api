@@ -116,45 +116,44 @@ echo json_encode($json, JSON_PRETTY_PRINT);
 //
 ////
 
-if ($login->createSession() == false) {
-    echo "logad";
-    $login->createSession();
-} else {
-
-
-    echo "<pre>";
-
+if ($login->createSession() == true) {
+    
+    
     echo 'Usuário criado e logado';
     echo "</pre>";
     //echo "<pre>";
     //echo var_dump($_SESSION['logado']);
     //echo var_dump($_SESSION);
     //echo "</pre>";
+echo var_dump($_SESSION['logado']);
+    
 
-    for ($i = 0; $i <= sizeof($_SESSION['logado']['carrinho']); $i++) {
+for ($i = 0; $i < sizeof($_SESSION['logado']['carrinho']); $i++) {
         echo json_encode($_SESSION['logado']['carrinho'][$i]->serialize(), JSON_PRETTY_PRINT);
     }
 }
 
-if ($login->createSession() == false) {
-    echo "logad";
-    $login->createSession();
-} else {
 
-
-    echo "<pre>";
-
+if ($login->createSession() == true) {
+    
+    
     echo 'Usuário criado e logado';
     echo "</pre>";
     //echo "<pre>";
     //echo var_dump($_SESSION['logado']);
     //echo var_dump($_SESSION);
     //echo "</pre>";
+echo var_dump($_SESSION['logado']);
+    
 
-    for ($i = 0; $i <= sizeof($_SESSION['logado']['carrinho']); $i++) {
+for ($i = 0; $i < sizeof($_SESSION['logado']['carrinho']); $i++) {
         echo json_encode($_SESSION['logado']['carrinho'][$i]->serialize(), JSON_PRETTY_PRINT);
     }
 }
+
+
+
+
 //unset($_SESSION['logado']);
 //
 //echo "<pre>";

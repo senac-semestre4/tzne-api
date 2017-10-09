@@ -129,7 +129,7 @@ class DaoProducts {
             
              return $json;
         }else{
-            echo var_dump(mysqli_error($conn->getLink()));  
+           // echo var_dump(mysqli_error($conn->getLink()));  
 
             $conn->Desconecta();
             return false;

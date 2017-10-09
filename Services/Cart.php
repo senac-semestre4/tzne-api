@@ -12,7 +12,7 @@ require_once ROOT_DIR . '/Model/Product.php';
 
 class Cart extends Product {
 
-    function createBag() {
+    private function createBag() {
 
         if (!isset($_SESSION['sacola'])) {
             echo "sacola criada";
@@ -25,6 +25,10 @@ class Cart extends Product {
     }
 
     function addProduct(Product $p) {
+        
+        
+           $this->createBag();
+  
             $tamanhoSacola = sizeof($_SESSION['sacola']);
             echo"<br>";
             echo"tam ve ".$tamanhoSacola ;
@@ -122,11 +126,10 @@ class Cart extends Product {
                 
                 }
             }
-            
-            
-            
-        }
-    }        
+
+        
+    }
+ }        
   
 
     function listBagItems() {
@@ -161,7 +164,7 @@ class Cart extends Product {
         }
     }
     
-    function findProduct(Product $p){
+    private function findProduct(Product $p){
 
             for($i =0; $i < sizeof($_SESSION['sacola']); $i++){
                     $paux = new Product();

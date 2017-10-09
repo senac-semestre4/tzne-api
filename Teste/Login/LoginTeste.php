@@ -104,7 +104,7 @@ if (array_key_exists("carrinho", $_SESSION)) {
 
 $cart->addProduct($p);
 $cart->addProduct($p2);
-
+$cart->addProduct($p2);
 
 if ($cart->listCartItems() == false) {
     echo 'False';
@@ -121,5 +121,9 @@ if ($cart->listCartItems() == false) {
           echo "<br>";
                 echo "tam do vet " . sizeof($_SESSION['sacola']);
                 echo "<br>";
+                
+    
+                $cart->listCartItems();
+                
 
 ?>

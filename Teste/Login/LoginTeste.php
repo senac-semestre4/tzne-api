@@ -1,6 +1,6 @@
 <?php
 
-header('Content-Type: application/json'); // declara o json para a extensão do chrome funcionar. 
+header('Content-Type:  text/html; application/json'); // declara o json para a extensão do chrome funcionar. 
 session_start();
 session_destroy();
 $path = $_SERVER['DOCUMENT_ROOT'];
@@ -55,114 +55,71 @@ $p2->setDepartaments_departament_id(1);
 
 
 
-$login = new Login("wmv", 1236456);
-session_start();
+
+
+
+if (isset($_SESSION)) {
+
+    session_start();
+    echo "Criando sessão";
+} else {
+    echo "Já existe sessão";
+}
+echo "<pre>";
+//            echo var_dump($_SESSION);            
+echo "</pre>";
+
+
 unset($_SESSION['sacola']);
 unset($_SESSION['logado']);
 unset($_SESSION['carrinho']);
+unset($_SESSION['usuario']);
+session_destroy();
 
-//
-$_SESSION['sacola'] = array();
+$login = new Login("wmv", 1236456);
+
+if ($login->createSession() == true) {
+    echo 'Sessão de usuário criada';
+    echo "<BR>";
+}
+
 
 
 $cart = new Cart;
-//$cart2 =  new Cart;
 
-if ($cart->createCart()) {
-    echo 'Cart criado';
+if (array_key_exists("carrinho", $_SESSION)) {
+    echo "<BR>";
+    echo 'Carrinho já existe';
+    echo "<BR>";
 } else {
-    echo 'erro1 ';
-}
-
-if ($cart->addProduct($p->getId(), $p->getQtd(), $p->getTshirtColor(), $p->getTshirtSize())) {
-    echo 'p add';
-} else {
-    echo 'erro';
-}
-$cart->addProduct($p2->getId(), $p2->getQtd(), $p2->getTshirtColor(), $p2->getTshirtSize());
-
-//array_push($_SESSION['sacola'], $p);
-//$_SESSION['sacola'][0] = $p;
-//$_SESSION['sacola'][1] = $p2;
-//array_push($_SESSION['sacola'], $p2);
-//$json = $p2->serialize();
-//
-//echo $json;
-//
-// $json = array();
-//
-
-echo "<pre>";
-echo "Imprimindo sacola";
-echo "</pre>";
-for ($i = 0; $i < sizeof($_SESSION['sacola']); $i++) {
-
-    $json [] = $_SESSION['sacola'][$i]->serialize();
-}
-echo json_encode($json, JSON_PRETTY_PRINT);
-//
-//
-//
-//
-//
-//
-//echo "<pre>";;
-//echo 'Carrinho com produto sem logar';
-//echo "</pre>";
-//echo "<pre>";
-//echo var_dump($_SESSION['logado']);
-//echo var_dump($_SESSION);
-//echo "</pre>";
-//
-////
-
-if ($login->createSession() == true) {
-    
-    
-    echo 'Usuário criado e logado';
-    echo "</pre>";
-    //echo "<pre>";
-    //echo var_dump($_SESSION['logado']);
-    //echo var_dump($_SESSION);
-    //echo "</pre>";
-echo var_dump($_SESSION['logado']);
-    
-
-for ($i = 0; $i < sizeof($_SESSION['logado']['carrinho']); $i++) {
-        echo json_encode($_SESSION['logado']['carrinho'][$i]->serialize(), JSON_PRETTY_PRINT);
+    echo "<BR>";
+    if ($cart->createBag() == false){
+    echo "<BR>";
+    echo 'Sacola já existe';
+    echo "<BR>";
+    }else{
+        $cart->createBag();
     }
 }
 
+$cart->addProduct($p);
+$cart->addProduct($p2);
 
-if ($login->createSession() == true) {
-    
-    
-    echo 'Usuário criado e logado';
-    echo "</pre>";
-    //echo "<pre>";
-    //echo var_dump($_SESSION['logado']);
-    //echo var_dump($_SESSION);
-    //echo "</pre>";
-echo var_dump($_SESSION['logado']);
-    
 
-for ($i = 0; $i < sizeof($_SESSION['logado']['carrinho']); $i++) {
-        echo json_encode($_SESSION['logado']['carrinho'][$i]->serialize(), JSON_PRETTY_PRINT);
-    }
+if ($cart->listCartItems() == false) {
+    echo 'False';
+} else {
+    echo "<br>";
+    echo 'Listagem feita';
 }
 
+    echo "<br>";
+    echo "<pre>";
+   // echo var_dump($_SESSION['logado']['carrinho']);
+    echo "</pre>";
+    
+          echo "<br>";
+                echo "tam do vet " . sizeof($_SESSION['sacola']);
+                echo "<br>";
 
-
-
-//unset($_SESSION['logado']);
-//
-//echo "<pre>";
-//
-//echo 'Usuário deslogou';
-//echo "</pre>";
-//
-//echo "<pre>";
-////    echo var_dump($_SESSION['logado']);
-//echo var_dump($_SESSION);
-////
 ?>

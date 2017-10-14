@@ -20,14 +20,24 @@ class DaoProducts {
     
     //Insere produto
     public function insertProduct(Product $product) {
+        
         //Instância o objeto conexão
         $conn = new MysqlConn();
         //Conecta
          $conn->Conecta(); //cria conexão
         
+         
+            //Antes de inserir o produto, verifico se ele já está na 
+            //tabela products, usando o método listProductByCaracteristics
+          
+         if($this->listProductByCaracteristics(
+                  $product->getCode(), 
+                  $product->getTshirtColor(), 
+                  $product->getTshirtSize()) == false){
+         
         try {
 
-           // echo $product->getStatus();
+         
             // preparando o stmt
             $stmt = mysqli_prepare($conn->getLink(), ""
                     . "INSERT INTO `products` 
@@ -36,7 +46,6 @@ class DaoProducts {
                         `product_model`, 
                         `product_code`, 
                         `product_specification`, 
-                        `product_departament`, 
                         `product_purchase_price`, 
                         `product_profit_margin`, 
                         `product_promotional_price`, 
@@ -47,8 +56,10 @@ class DaoProducts {
                         `product_img_relative_url`, 
                         `product_status`, 
                         `brands_brand_id`, 
-                        `departaments_departament_id`) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                        `departaments_departament_id`,
+                        fk_product_id_color,
+                        fk_product_size_id) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                     
 
             /*
@@ -63,13 +74,12 @@ class DaoProducts {
              */
             var_dump(mysqli_error($conn->getLink()));  
             $id= null;
-            $stmt->bind_param("ississddddddisbii",
+            $stmt->bind_param("issisddddddisiiiii",
                     $id,
                     $product->getName(), 
                     $product->getModel(), 
                     $product->getCode(), 
                     $product->getSpecification(), 
-                    $product->getDepartament(), 
                     $product->getPurchase_price(), 
                     $product->getProfit_margin(), 
                     $product->getPromotional_price(), 
@@ -80,7 +90,14 @@ class DaoProducts {
                     $product->getImg_relative_url(), 
                     $product->getStatus(), 
                     $product->getBrands_brand_id(),
-                    $product->getDepartaments_departament_id());
+                    $product->getDepartaments_departament_id(),
+                    $product->getTshirtColor(),
+                    $product->getTshirtSize()
+                    
+                    
+                    
+                    
+                    );
             
             //Executa o comando de inserção
            
@@ -96,11 +113,21 @@ class DaoProducts {
                 $stmt->close();
                 $conn->Desconecta();
         }
-    }
+  }  else {
+            ini_set('display_errors', 0);
+
+            $obj->Resposta = "Produto existente";
+
+            $json = json_encode($obj);
+
+            echo $json;
+            return false;
+     }
+   }
     
     
     //Listar por ID do produto
-     public function listByID($id){
+     public function listByCod($cod){
        //Criando a conexão e conectando
         $conn = new MysqlConn();
         $conn->Conecta();
@@ -116,18 +143,26 @@ class DaoProducts {
          *  Se o resultado da query for armazenado na variável $result
          * $json receberá o resultado
          */
-              $query = "SELECT * FROM products WHERE product_id =" . $id;
+              $query = "SELECT * FROM products WHERE product_code =" . $cod;
 
         if ($result = mysqli_query($conn->getLink(), $query)) {
 
-            $json= mysqli_fetch_assoc($result);
             
-            mysqli_free_result($result);
-            
-            $conn->Desconecta();
-             echo json_encode($json);
-            
-             return $json;
+            if(!mysqli_num_rows($result)){
+                echo "Sem resultado";
+            }else{
+               
+                while ($row = mysqli_fetch_assoc($result)) {
+
+                    //armazena linha em cada posição do array json
+                    $json[] = $row;
+                }
+
+                $conn->Desconecta();
+
+                echo json_encode($json);
+                return $json;
+            }
         }else{
            // echo var_dump(mysqli_error($conn->getLink()));  
 
@@ -137,10 +172,56 @@ class DaoProducts {
         
     }
     
+    public function listProductByCaracteristics($codigo, $idCor,$idTam){
+        
+          //Criando a conexão e conectando
+        $conn = new MysqlConn();
+        $conn->Conecta();
+        
+        /*$json;
+         * Variavel será usada para receber o resultado da query 
+         * para o formato json
+         */
+        $json;
+        
+        
+        
+        $query = $sql = "SELECT * FROM `products` WHERE `product_code` = ".$codigo." AND `fk_product_id_color` = ".$idCor." AND `fk_product_size_id` = ".$idTam;
     
+        
+        
+        if ($result = mysqli_query($conn->getLink(), $query)) {
+
+            
+            if(!mysqli_num_rows($result)){
+                
+                return false; // não há produtos
+                
+            }else{
+                    
+            $json= mysqli_fetch_assoc($result);
+            
+            mysqli_free_result($result);
+            
+            $conn->Desconecta();
+             echo json_encode($json);
+            
+             return true;
+            }
+        }else{
+            echo var_dump(mysqli_error($conn->getLink()));  
+
+            $conn->Desconecta();
+            return false;
+        }
+        
+        
+    }
+
     
-    
-    
+
+
+
     public function listAlLProducts() {
         $conn = new MysqlConn();
         $conn->Conecta();

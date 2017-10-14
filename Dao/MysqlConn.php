@@ -12,10 +12,10 @@
  */
 class MysqlConn {
 
-    private $usuario = "PI4";
+    private $usuario = "pi4";
     private $senha = "123456";
-    private $sid = "banco.kwcraft.com.br";
-    private $banco = "PI4";
+    private $sid = "localhost";
+    private $banco = "pi4";
     private $link;
 
 

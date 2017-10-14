@@ -18,7 +18,6 @@ class Product {
     private $model;
     private $code; // int
     private $specification;
-    private $departament;
     private $purchase_price; //float
     private $profit_margin; //float
     private $promotional_price; //float
@@ -103,9 +102,6 @@ class Product {
         return $this->specification;
     }
 
-    function getDepartament() {
-        return $this->departament;
-    }
 
     function getPurchase_price() {
         return $this->purchase_price;
@@ -171,9 +167,6 @@ class Product {
         $this->specification = $specification;
     }
 
-    function setDepartament($departament) {
-        $this->departament = $departament;
-    }
 
     function setPurchase_price($purchase_price) {
         $this->purchase_price = $purchase_price;

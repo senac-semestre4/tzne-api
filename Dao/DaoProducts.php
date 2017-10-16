@@ -118,8 +118,8 @@ class DaoProducts {
 
             $obj->Resposta = "Produto existente";
 
-            $json = json_encode($obj);
-
+            $json = json_encode($obj, JSON_PRETTY_PRINT);
+            
             echo $json;
             return false;
      }
@@ -171,7 +171,13 @@ class DaoProducts {
         }
         
     }
-    
+    /*
+     * Recebe os parâmetros para buscar no banco
+     * $codigo do produto
+     * $idCor id da cor do produto
+     * $idTam id do tamanho do produto
+     * 
+     */
     public function listProductByCaracteristics($codigo, $idCor,$idTam){
         
           //Criando a conexão e conectando
@@ -186,24 +192,37 @@ class DaoProducts {
         
         
         
-        $query = $sql = "SELECT * FROM `products` WHERE `product_code` = ".$codigo." AND `fk_product_id_color` = ".$idCor." AND `fk_product_size_id` = ".$idTam;
+        $query = $sql = "SELECT * "
+                . "FROM `products` "
+                . "WHERE `product_code` = ".$codigo." "
+                . "AND `fk_product_id_color` = ".$idCor." "
+                . "AND `fk_product_size_id` = ".$idTam;
     
         
-        
+        //Tenta receber o resultado da execução da query
         if ($result = mysqli_query($conn->getLink(), $query)) {
 
-            
+                //Se não há linhas
             if(!mysqli_num_rows($result)){
                 
                 return false; // não há produtos
                 
             }else{
-                    
+            /*
+             * Na Dao de inserir produto, é feito a verificação se o produto
+             * com código, cor e tamanho já existem, sendo assim não há validações neste
+             */
+            //Passa o resultado em formato de array associativo
+                
             $json= mysqli_fetch_assoc($result);
             
+            //Libera memória
             mysqli_free_result($result);
             
             $conn->Desconecta();
+            //Configura o header para a indentificação do navegador
+            header("Content-Type: application/json; charset=UTF-8");
+            //Codifica em formado json e imprime
              echo json_encode($json);
             
              return true;
@@ -291,7 +310,6 @@ public function updateProduct(Product $product) {
                     . "`product_model` = ?, "
                     . "`product_code` = ?, "
                     . "`product_specification` = ?, "
-                    . "`product_departament` = ?, "
                     . "`product_purchase_price` = ?, "
                     . "`product_profit_margin` = ?, "
                     . "`product_promotional_price` = ?, "
@@ -302,7 +320,9 @@ public function updateProduct(Product $product) {
                         `product_img_relative_url` = ?, 
                         `product_status` = ?, 
                         `brands_brand_id` = ?, 
-                        `departaments_departament_id` = ?
+                        `departaments_departament_id` = ?,
+                        `fk_product_id_color` = ?,
+                        `fk_product_size_id` = ? 
                         WHERE `products`.`product_id` = ?");
 
             var_dump(mysqli_error($conn->getLink()));  
@@ -317,13 +337,12 @@ public function updateProduct(Product $product) {
               b	corresponde a uma variável que contém dados para um blob e enviará em pacotes
              * 
              */
-            $stmt->bind_param("ssissddddddisbiii",
+            $stmt->bind_param("ssisddddddisiiiiii",
                     
                     $product->getName(), 
                     $product->getModel(), 
                     $product->getCode(), 
                     $product->getSpecification(), 
-                    $product->getDepartament(), 
                     $product->getPurchase_price(), 
                     $product->getProfit_margin(), 
                     $product->getPromotional_price(), 
@@ -335,16 +354,23 @@ public function updateProduct(Product $product) {
                     $product->getStatus(), 
                     $product->getBrands_brand_id(),
                     $product->getDepartaments_departament_id(),
+                    $product->getTshirtColor(),
+                    $product->getTshirtSize(),
                     $product->getId());
 
             $stmt->execute();
+            var_dump(mysqli_error($conn->getLink()));  
+
             //echo$stmt->affected_rows;
             $stmt->close();
             $conn->Desconecta();
-        
+            return true;
             
         } catch (Exception $ex) {
             $conn->Desconecta();
+        
+            return false;
+            
         }
     }    
     

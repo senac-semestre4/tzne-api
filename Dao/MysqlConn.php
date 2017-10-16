@@ -12,34 +12,36 @@
  */
 class MysqlConn {
 
+    //Meu banco local - Willian Vieira
     private $usuario = "pi4";
     private $senha = "123456";
     private $sid = "localhost";
     private $banco = "pi4";
     private $link;
 
+    /* Banco online 
+    private $usuario = "PI4";
+    private $senha = "123456";
+    private $sid = "banco.kwcraft.com.br";
+    private $banco = "";
+    private $link;
+    */
 
     function Conecta() {
 
         $this->link = mysqli_connect($this->sid, $this->usuario, $this->senha);
         $this->link->set_charset("utf8");
         if (!$this->link) {
-            //printf("Connect failed: %s\n", mysqli_connect_error());
             die("Problema com os dados de conexão, verifique usuário e senha");
         } elseif (!mysqli_select_db($this->link, $this->banco)) {
-
             die("Problema com o banco de dados selecinado");
         } else {
             // echo "Conectou";
             return $this->link;
         }
     }
-/*
-    function query($link, $sql) {
 
-        return mysqli_query($link, $sql);
-    }
-*/
+    
     function prepare($link, $sql) {
 
         return mysqli_prepare($link, $sql);

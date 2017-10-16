@@ -68,10 +68,10 @@ class Login extends Cart {
 
 
                 $_SESSION['logado'] = array();
-                echo var_dump($_SESSION['logado']);
+               // echo var_dump($_SESSION['logado']);
                 echo "<br>";
                 $_SESSION['logado']['usuario'] = $this->username;
-                echo var_dump($_SESSION['logado']);
+                //echo var_dump($_SESSION['logado']);
 
                 if (!isset($_SESSION['sacola'])) { //se a sacola não existe, cria ela
                     if (parent::createBag()) {

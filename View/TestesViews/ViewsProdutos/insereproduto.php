@@ -1,4 +1,5 @@
 <?php
+ini_set('display_errors', 0);
 /*
  * Este arquivo juntei o php e html para facilitar a motagem do teste. 
  * Esse poderá ser usado como interface para cadastro de produtos
@@ -52,6 +53,9 @@ $dao->insertProduct($p);
 
 
 <form action="InsereProduto.php" method="post">
+    
+    
+    
             <label>Nome</label>
             <br>
             <input type="text" name="nome" value="">

@@ -52,7 +52,7 @@ $dao->insertProduct($p);
 }else{ ?>
 
 
-<form action="InsereProduto.php" method="post">
+<form action="insereproduto.php" method="post">
     
     
     

@@ -1,11 +1,12 @@
 <?php
         
-If(!isset($_SESSION["admin"])){
-    
-}else{
-        header('Location: /View/TestesViews/ViewLogin/telalogin.php');
-        exit;
-}
-    
+        if(!isset($_SESSION)){
+            session_start();
+        }
+        
+        if(!isset($_SESSION['logado'])){
+            
+        }
+
 ?>
         

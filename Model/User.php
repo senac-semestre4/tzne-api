@@ -5,7 +5,6 @@ class User {
     private $id;
     private $userName;   
     private $userPassword;
-    
     function __construct($userName, $userPassword) {
         $this->userName = $userName;
         $this->userPassword = $userPassword;

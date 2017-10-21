@@ -1,0 +1,60 @@
+<?php
+session_cache_limiter(false);
+session_start();
+//session_destroy();
+
+
+require __DIR__.'/vendor/autoload.php';
+
+//instancie o objeto
+
+
+$app = new \Slim\Slim();
+$app->config('debug', true);
+$app->get('/hello/:name', function ($name) {
+    echo "Ola, $name";
+});
+
+//defina a rota
+$app->get('/', function () { 
+  echo "Olá"; 
+}); 
+//rode a aplicação Slim 
+
+
+$app->get('/login', function () { 
+  echo "Olá"; 
+}); 
+
+   
+ $app->get('/atualizaproduto', function() {
+     
+     
+     // $_SESSION['admin'] = "teste";
+     
+     
+     try{
+         
+          if($_SESSION['admin'] !=null ){
+              
+              
+              //$app->redirect('/View/TestesViews/ViewsProdutos/atualizaproduto.php');
+                 require_once __DIR__ . '/View/TestesViews/ViewsProdutos/atualizaproduto.php';    
+     }
+     
+     
+     } catch (Exception $ex) {
+         //echo $_SESSION['admin'];
+         
+         require_once __DIR__ . '/View/TestesViews/ViewLogin/telalogin.php';
+
+     }
+    
+});
+
+
+
+$app->run();
+
+
+?>

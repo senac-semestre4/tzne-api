@@ -1,5 +1,6 @@
 <?php
-
+$path = $_SERVER['DOCUMENT_ROOT'];
+require_once $path .'/Model/ProductOpitons.php';
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,7 +12,7 @@
  *
  * @author Willian Vieira
  */
-class Product {
+class Product extends ProductOpitons {
 
     private $id; // int
     private $name;
@@ -32,12 +33,20 @@ class Product {
     private $qtd;
     private $tshirtSize;
     private $tshirtColor;
+    private  $options = array();
 
     public function __construct() {
         
     }
+    function getOptions() {
+        return $this->options;
+    }
 
-    /*
+    function setOptions($options) {
+        $this->options = $options;
+    }
+
+        /*
       function Product($id, $name, $model, $code, $specification, $departament, $purchase_price, $profit_margin, $promotional_price, $length, $width, $heigth, $stock_quantity, $img_relative_url, $status, $brands_brand_id, $departaments_departament_id) {
       $this->id = $id;
       $this->name = $name;

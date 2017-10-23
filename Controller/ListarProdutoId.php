@@ -17,7 +17,7 @@ if(isset($_POST['inserir'])){
 $id =  $_POST['listarId'];    
 $dao = new DaoProducts();
 
-$dao->listByCod($id);
+$dao->listById($id);
 
 }
 

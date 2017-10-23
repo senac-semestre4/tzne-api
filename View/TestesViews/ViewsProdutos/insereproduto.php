@@ -11,13 +11,13 @@ if($_POST['code']){
     
     $path = $_SERVER['DOCUMENT_ROOT'];
 require_once $path . '/Constants.php';
-
 require_once ROOT_DIR.'/Dao/DaoProducts.php';
 require_once ROOT_DIR.'/Dao/MysqlConn.php';
 require_once ROOT_DIR.'/Model/Product.php';
 
-$p = new Product();
 
+$p = new Product();
+$p->setId(null);
 $p->setName($_POST['nome']); 
 $p->setModel($_POST['model']); 
 $p->setCode($_POST['code']); 
@@ -28,20 +28,30 @@ $p->setPromotional_price($_POST['promotional_price']);
 $p->setLength($_POST['length']); 
 $p->setWidth($_POST['width']); 
 $p->setHeigth($_POST['heigth']); 
-$p->setStock_quantity($_POST['product_stock_quantity']); 
 $p->setImg_relative_url($_POST['img_relative_url']); 
 $p->setStatus($_POST['status']); 
 $p->setBrands_brand_id($_POST['brands_brand_id']);
 $p->setDepartaments_departament_id($_POST['departaments_departament_id']);
-$p->setTshirtColor($_POST['fk_product_id_color']);
-$p->setTshirtSize($_POST['fk_product_size_id']);
+
+$arrayOptions =  array();
+$options = new ProductOpitons();
+$options->setQtd($_POST['product_stock_quantity']);
+$options->setSize($_POST['idsize']);
+$options->setColor($_POST['idcolor']);
+//
+//$options1 = new ProductOpitons();
+//$options1->setQtd($_POST['product_stock_quantity']);
+//$options1->setSize($_POST['idsize']);
+//$options1->setColor($_POST['idcolor']);
 
 
+$arrayOptions[] = $options;
+//$arrayOptions[] = $options;
 
 
 $dao = new DaoProducts;
 
-$dao->insertProduct($p);
+$dao->insertProduct($p, $arrayOptions);
 
 
     
@@ -121,11 +131,67 @@ $dao->insertProduct($p);
             <br><br>
             <label>Id da cor</label>
             <br>
-            <input type="text" name="fk_product_id_color" value="1">
+            
+            <?php
+            
+/*
+    $path = $_SERVER['DOCUMENT_ROOT'];
+                require_once $path . '/Constants.php';
+                require_once ROOT_DIR . '/Dao/DaoProducts.php';
+                require_once ROOT_DIR . '/Dao/MysqlConn.php';
+                require_once ROOT_DIR . '/Model/Product.php';
+
+                $conn = new MysqlConn();
+
+                $conn->Conecta();
+            $sql = "SELECT * FROM products_color;";
+            $sql2 = "SELECT * FROM products_size;";
+           
+                if ($result = mysqli_query($conn->getLink(), $sql)) {
+
+                    if ($result->num_rows > 0) {
+                        // output data of each row
+                        
+                        echo "<div>";
+                        
+                        while ($row = $result->fetch_assoc()) {
+                        echo "<br>";
+                            echo "<input type='checkbox' name=" . $row["product_color"] . " value=" . $row["product_id_color"] . ">" . $row["product_color"] ;
+                $result2 = mysqli_query($conn->getLink(), $sql2);
+
+                    
+                        // output data of each row
+                           echo '<select name ="size">';
+                            while ($row2 = $result2->fetch_assoc()) {
+                                
+                                    echo '<option value='.$row2['product_id_size'].' >'.$row2['product_size'].'</option>';
+                                    
+                                    }
+                                
+                                    echo '</select>';
+                                    echo '  <label>Quantidade em estoque</label> 
+                                            <input type="text" name="product_stock_quantity" value="">
+                                            <br>';
+                                    
+                            header('Content-Type: text/html'); // declara o json para a extensão do chrome funcionar. 
+                            
+                        }
+                        echo "</div>";
+                            header('Content-Type: text/html'); // declara o json para a extensão do chrome funcionar. 
+                    } else {
+                        echo "0 results";
+                    }
+                }else{
+                    echo "erro";
+                }
+            
+            */
+            ?>
+            <input type="text" name="idcolor" value="1">
             <br><br>
             <label>Id do tamanho </label>
             <br>
-            <input type="text" name="fk_product_size_id" value="1">
+            <input type="text" name="idsize" value="1">
             <br><br>
             
             <label>URL da imagem</label>

@@ -13,8 +13,10 @@ require_once ROOT_DIR .'/Dao/DaoProducts.php';
 
 $dao = new DaoProducts();
 
+$limit = $_GET['limit'];
+$offset = $_GET['limit'];
 
-$dao->listAlLProducts();
+$dao->listAlLProducts($limit, $offset);
 
 
 

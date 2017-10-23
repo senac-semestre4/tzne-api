@@ -13,20 +13,20 @@
 class MysqlConn {
 
     //Meu banco local - Willian Vieira
-/*
+
     private $usuario = "pi4";
     private $senha = "123456";
     private $sid = "localhost";
     private $banco = "pi4";
     private $link;
-*/
-   
+
+   /*
     private $usuario = "PI4";
     private $senha = "123456";
     private $sid = "banco.kwcraft.com.br";
     private $banco = "PI4";
     private $link;
-  
+  */
 
     function Conecta() {
 
@@ -34,10 +34,12 @@ class MysqlConn {
         $this->link->set_charset("utf8");
         if (!$this->link) {
             die("Problema com os dados de conexão, verifique usuário e senha");
+            return false;
         } elseif (!mysqli_select_db($this->link, $this->banco)) {
             die("Problema com o banco de dados selecinado");
+            return false;
         } else {
-            // echo "Conectou";
+            //echo "Conectou";
             return $this->link;
         }
     }

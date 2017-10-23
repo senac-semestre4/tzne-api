@@ -18,8 +18,10 @@ require_once ROOT_DIR."/Model/Product.php";
 class DaoProducts {
 
     
-    //Insere produto
-    public function insertProduct(Product $product) {
+    //
+    public function insertProduct(Product $product,  $options) {
+        
+    
         
         //Instância o objeto conexão
         $conn = new MysqlConn();
@@ -29,37 +31,80 @@ class DaoProducts {
          
             //Antes de inserir o produto, verifico se ele já está na 
             //tabela products, usando o método listProductByCaracteristics
-          
-         if($this->listProductByCaracteristics(
-                  $product->getCode(), 
-                  $product->getTshirtColor(), 
-                  $product->getTshirtSize()) == false){
          
+          // Armazena os indices dos produtos com características que
+         //não contém no banco
+          $indice = array();
+          //Se o id é não é nulo, segue  a verificação 
+
+          echo $product->getId();
+          
+          if ($product->getId() != null) {
+
+            for ($i = 0; $i < sizeof($options); $i++) {
+
+                   if ($this->listProductByCaracteristics($product->getId(), $options[$i]->getColor(), $options[$i]->getSize())== false) {
+                       
+                    array_push($indice, $i);
+                    echo"<indice>";
+                    echo $indice[$i];
+                    echo"<indice>";
+                    
+                }
+            }
+        
+            goto tentar;
+        
+                   } else if($product->getId() == null){
+                       
+                       goto inserir;
+                       
+                        
         try {
 
-         
+         tentar:
+             echo "tentar";
             // preparando o stmt
-            $stmt = mysqli_prepare($conn->getLink(), ""
-                    . "INSERT INTO `products` 
-                        (`product_id`, 
-                        `product_name`, 
-                        `product_model`, 
-                        `product_code`, 
-                        `product_specification`, 
-                        `product_purchase_price`, 
-                        `product_profit_margin`, 
-                        `product_promotional_price`, 
-                        `product_length`, 
-                        `product_width`, 
-                        `product_heigth`, 
-                        `product_stock_quantity`, 
-                        `product_img_relative_url`, 
-                        `product_status`, 
-                        `brands_brand_id`, 
-                        `departaments_departament_id`,
-                        fk_product_id_color,
-                        fk_product_size_id) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+         
+         
+         if($options[$indice[0]] == null){
+             echo "indice nulo";
+         }else{
+             
+             inserir:
+            $stmt = mysqli_prepare($conn->getLink(), 
+                                    "INSERT INTO `products` (
+                                    `product_id`,
+                                    `product_name`,
+                                    `product_model`,
+                                    `product_code`,
+                                    `product_specification`,
+                                    `product_purchase_price`,
+                                    `product_profit_margin`,
+                                    `product_promotional_price`,
+                                    `product_length`,
+                                    `product_width`,
+                                    `product_heigth`,
+                                    `product_img_relative_url`,
+                                    `product_status`,
+                                    `brands_brand_id`,
+                                    `departaments_departament_id`) 
+                                    VALUES (
+                                    ?,
+                                    ?,
+                                    ?,
+                                    ?,
+                                    ?,
+                                    ?,
+                                    ?,
+                                    ?,
+                                    ?,
+                                    ?,
+                                    ?,
+                                    ?,
+                                    ?,
+                                    ?,
+                                    ?)");
                     
 
             /*
@@ -72,9 +117,9 @@ class DaoProducts {
               b	corresponde a uma variável que contém dados para um blob e enviará em pacotes
              * 
              */
-            var_dump(mysqli_error($conn->getLink()));  
+            
             $id= null;
-            $stmt->bind_param("issisddddddisiiiii",
+            $stmt->bind_param("issisddddddsiii",
                     $id,
                     $product->getName(), 
                     $product->getModel(), 
@@ -86,29 +131,80 @@ class DaoProducts {
                     $product->getLength(), 
                     $product->getWidth(), 
                     $product->getHeigth(), 
-                    $product->getStock_quantity(), 
                     $product->getImg_relative_url(), 
                     $product->getStatus(), 
                     $product->getBrands_brand_id(),
-                    $product->getDepartaments_departament_id(),
-                    $product->getTshirtColor(),
-                    $product->getTshirtSize()
-                    
-                    
-                    
-                    
-                    );
+                    $product->getDepartaments_departament_id());
             
             //Executa o comando de inserção
            
-           if( !$stmt->execute()){
-                 var_dump(mysqli_error($conn->getLink()));  
-               
-           }
-           
-                $stmt->close();
+           if($stmt->execute()){
+                // var_dump(mysqli_error($conn->getLink()));  
+                 
+                 
+                 $lastId = mysqli_insert_id($conn->getLink());
+                 echo"<br>";
+                 echo"Last id  ";
+                 echo$lastId;
+                 echo"<br>";
+                 
+                 
+                 if (isset($indice[0])) {
+
+
+
+                            for ($i = 0; $i <= sizeof($options); $i++) {
+
+                                echo "<br>";
+                                echo $options[$i]->getSize();
+                                echo "<br>";
+                                echo $options[$i]->getSize();
+                                echo "<br>";
+                                $query = "INSERT INTO `products_has_products_size_color_qtd` (
+                            `products_product_id`,
+                             `products_size_product_id_size`,
+                             `products_color_product_id_color`,
+                             `product_quantity`) VALUES (" . $lastId . ",
+                             " . $options[$indice[$i]]->getSize() . ",
+                             " . $options[$indice[$i]]->getColor() . ",
+                             " . $options[$indice[$i]]->getQtd() . ")";
+
+                                if (mysqli_query($conn->getLink(), $query)) {
+                                    echo "inserido";
+                                } else {
+                                    var_dump(mysqli_error($conn->getLink()));
+                                }
+                            }
+                        } else {
+
+                            for ($i = 0; $i < sizeof($options); $i++) {
+
+                                echo "<br>";
+                                echo $options[$i]->getSize();
+                                echo "<br>";
+                                echo $options[$i]->getSize();
+                                echo "<br>";
+                                $query = "INSERT INTO `products_has_products_size_color_qtd` (
+                            `products_product_id`,
+                             `products_size_product_id_size`,
+                             `products_color_product_id_color`,
+                             `product_quantity`) VALUES (" . $lastId . ",
+                             " . $options[$i]->getSize() . ",
+                             " . $options[$i]->getColor() . ",
+                             " . $options[$i]->getQtd() . ")";
+
+                                if (mysqli_query($conn->getLink(), $query)) {
+                                    echo "inserido";
+                                } else {
+                                    var_dump(mysqli_error($conn->getLink()));
+                                }
+                            }
+                        }
+                    }
+
+                    $stmt->close();
                 $conn->Desconecta();
-           
+         }  
         } catch (Exception $ex) {
                 $stmt->close();
                 $conn->Desconecta();
@@ -127,7 +223,7 @@ class DaoProducts {
     
     
     //Listar por ID do produto
-     public function listByCod($cod){
+     public function listById($id){
        //Criando a conexão e conectando
         $conn = new MysqlConn();
         $conn->Conecta();
@@ -143,7 +239,10 @@ class DaoProducts {
          *  Se o resultado da query for armazenado na variável $result
          * $json receberá o resultado
          */
-              $query = "SELECT * FROM products WHERE product_code =" . $cod;
+              $query = "SELECT * FROM `products_has_products_size_color_qtd`
+                        INNER JOIN products
+                        on products.product_id = products_has_products_size_color_qtd.products_product_id
+                        WHERE `products_product_id` = ".$id;
 
         if ($result = mysqli_query($conn->getLink(), $query)) {
 
@@ -178,7 +277,7 @@ class DaoProducts {
      * $idTam id do tamanho do produto
      * 
      */
-    public function listProductByCaracteristics($codigo, $idCor,$idTam){
+    public function listProductByCaracteristics($id, $idCor, $idTam){
         
           //Criando a conexão e conectando
         $conn = new MysqlConn();
@@ -192,12 +291,17 @@ class DaoProducts {
         
         
         
-        $query = $sql = "SELECT * "
-                . "FROM `products` "
-                . "WHERE `product_code` = ".$codigo." "
-                . "AND `fk_product_id_color` = ".$idCor." "
-                . "AND `fk_product_size_id` = ".$idTam;
+        $query = "SELECT *  FROM products_has_products_size_color_qtd
+                INNER JOIN products
+                on products_has_products_size_color_qtd.products_product_id = products.product_id
+                WHERE `products_product_id` = ".$id."
+                AND `products_size_product_id_size` = ".$idTam." 
+                AND `products_color_product_id_color` = ".$idCor;
     
+        
+        
+           
+        
         
         //Tenta receber o resultado da execução da query
         if ($result = mysqli_query($conn->getLink(), $query)) {
@@ -208,6 +312,8 @@ class DaoProducts {
                 return false; // não há produtos
                 
             }else{
+                
+                
             /*
              * Na Dao de inserir produto, é feito a verificação se o produto
              * com código, cor e tamanho já existem, sendo assim não há validações neste
@@ -227,21 +333,24 @@ class DaoProducts {
             
              return true;
             }
-        }else{
-            echo var_dump(mysqli_error($conn->getLink()));  
-
-            $conn->Desconecta();
-            return false;
         }
-        
+//        else{
+//            echo var_dump(mysqli_error($conn->getLink()));  
+//
+//            $conn->Desconecta();
+//            return false;
+//        }
+//        
         
     }
 
     
+/*
+ * Função que lista todos os produtos.
+ * O parametro @limit é opcional, limita a quantidade de resultados
+ */
 
-
-
-    public function listAlLProducts() {
+    public function listAlLProducts($limit, $offset) {
         $conn = new MysqlConn();
         $conn->Conecta();
 
@@ -251,7 +360,18 @@ class DaoProducts {
         
         $json = array();
         
-        $result = mysqli_query($conn->getLink(), "Select * from products");
+            
+        if (!isset($limit) || $limit == null || !isset($offset) || $offset == null) {
+            $query = "SELECT *  FROM products_has_products_size_color_qtd
+                INNER JOIN products
+                on products_has_products_size_color_qtd.products_product_id = products.product_id";
+        } else {
+            $query = "SELECT *  FROM products_has_products_size_color_qtd
+                INNER JOIN products
+                on products_has_products_size_color_qtd.products_product_id = products.product_id LIMIT " . $limit . "," . $offset;
+        }
+
+        $result = mysqli_query($conn->getLink(), $query);
 
         /*While
          * Enquanto haver linhas da tabela para ser
@@ -294,7 +414,7 @@ class DaoProducts {
      * Atualiza produto no banco
      * Recebe  um produto do Front-end para ser atualizado no banco.
      */
-public function updateProduct(Product $product) {
+public function updateProduct(Product $product, ProductOpitons $options) {
 
         $conn = new MysqlConn();
 
@@ -302,31 +422,36 @@ public function updateProduct(Product $product) {
 
         try {
 
+            
+            
+                    $query = "UPDATE `products` as prod
+                    INNER join products_has_products_size_color_qtd as phas
+                    ON prod.product_id = phas.products_product_id
+                    SET 
+                    `product_name`= ?,
+                    `product_model`= ?,
+                    `product_code`= ?,
+                    `product_specification`= ?,
+                    `product_purchase_price`= ?,
+                    `product_profit_margin`= ?,
+                    `product_promotional_price`= ?,
+                    `product_length`= ?,
+                    `product_width`= ?,
+                    `product_heigth`= ?,
+                    `product_img_relative_url`= ?,
+                    `product_status`= ?,
+                    `brands_brand_id`= ?,
+                    `departaments_departament_id`= ?,
+                    phas.product_quantity = ?,
+                    phas.products_size_product_id_size = ?,
+                    phas.products_color_product_id_color = ?
+                    WHERE prod.product_id = ?;";             
+            
+            
+            
             // preparando o stmt
-            $stmt = mysqli_prepare($conn->getLink(), ""
-                    . "UPDATE `products` "
-                    . "SET "
-                    . "`product_name` = ?, "
-                    . "`product_model` = ?, "
-                    . "`product_code` = ?, "
-                    . "`product_specification` = ?, "
-                    . "`product_purchase_price` = ?, "
-                    . "`product_profit_margin` = ?, "
-                    . "`product_promotional_price` = ?, "
-                    . "`product_length` = ?, "
-                    . "`product_width` = ?, 
-                        `product_heigth` = ?, 
-                        `product_stock_quantity` = ?, 
-                        `product_img_relative_url` = ?, 
-                        `product_status` = ?, 
-                        `brands_brand_id` = ?, 
-                        `departaments_departament_id` = ?,
-                        `fk_product_id_color` = ?,
-                        `fk_product_size_id` = ? 
-                        WHERE `products`.`product_id` = ?");
-
+            $stmt = mysqli_prepare($conn->getLink(), $query);
             var_dump(mysqli_error($conn->getLink()));  
-
             /*
              * bind_param =  Deve passar para o mysql o tipo do dado que está sendo enviado
              * conforme tabela abaixo:
@@ -337,8 +462,7 @@ public function updateProduct(Product $product) {
               b	corresponde a uma variável que contém dados para um blob e enviará em pacotes
              * 
              */
-            $stmt->bind_param("ssisddddddisiiiiii",
-                    
+            $stmt->bind_param("ssisddddddsiiiiiii",
                     $product->getName(), 
                     $product->getModel(), 
                     $product->getCode(), 
@@ -349,13 +473,13 @@ public function updateProduct(Product $product) {
                     $product->getLength(), 
                     $product->getWidth(), 
                     $product->getHeigth(), 
-                    $product->getStock_quantity(), 
                     $product->getImg_relative_url(), 
                     $product->getStatus(), 
                     $product->getBrands_brand_id(),
                     $product->getDepartaments_departament_id(),
-                    $product->getTshirtColor(),
-                    $product->getTshirtSize(),
+                    $options->getQtd(),
+                    $options->getSize(),
+                    $options->getColor(), 
                     $product->getId());
 
             $stmt->execute();

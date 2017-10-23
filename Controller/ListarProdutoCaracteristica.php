@@ -13,9 +13,9 @@ require_once ROOT_DIR .'/Dao/DaoProducts.php';
 
 
 //Recebendo os dados via POST
-$codigo = $_POST['code'];
-$idcor = $_POST['fk_product_id_color'];
-$idtam = $_POST['fk_product_size_id'];
+$codigo = $_POST['id'];
+$idcor = $_POST['idcor'];
+$idtam = $_POST['idsize'];
 
 //Se todos os campos forme números executa a Dao
 if(get_numeric($codigo, $idcor, $idtam)){

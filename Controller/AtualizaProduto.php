@@ -25,20 +25,22 @@ $p->setPromotional_price($json->product_promotional_price);
 $p->setLength($json->product_length);
 $p->setWidth($json->product_width);
 $p->setHeigth($json->product_heigth);
-$p->setStock_quantity($json->product_stock_quantity);
 $p->setImg_relative_url($json->product_img_relative_url);
 $p->setStatus($json->product_status);
 $p->setBrands_brand_id($json->brands_brand_id);
 $p->setDepartaments_departament_id($json->departaments_departament_id);
-$p->setTshirtColor($json->fk_product_id_color);
-$p->setTshirtSize($json->fk_product_size_id);
+$options = new ProductOpitons();
+
+$options->setColor($json->products_color_product_id_color);
+$options->setSize($json->products_size_product_id_size);
+$options->setQtd($json->product_quantity);
 
 
 //Cria a Dao
 $dao = new DaoProducts;
 
 //Verifica se foi atualizado
-if ($dao->updateProduct($p)) {
+if ($dao->updateProduct($p, $options)) {
     echo "atualizado";
 } else {
     echo "Não atulizou";

@@ -37,8 +37,8 @@ class DaoClient {
             $id = null;
             $stmt = mysqli_prepare($conn->getLink(), "
                 INSERT INTO client (
-                client_id,
-                 client_nome,
+                 client_id,
+                 client_name,
                  client_email,
                  client_cpf,
                  client_sex,
@@ -75,8 +75,7 @@ class DaoClient {
                  ?,
                  ?,
                  ?,
-                 ?)
-                ");
+                 ?)");
 
 
             /*
@@ -91,7 +90,7 @@ class DaoClient {
              */
             $id = null;
             
-            $stmt->bind_param("issssssssbsssissssb",
+            $stmt->bind_param("issssssssisssissssi",
                     $id,
                     $client->getName(),
                     $client->getEmail(),
@@ -170,10 +169,50 @@ class DaoClient {
         
     }
     
+        
+     public function listByName($name){
+       //Criando a conexão e conectando
+        $conn = new MysqlConn();
+        $conn->Conecta();
+        
+        /*$json;
+         * Variavel será usada para receber o resultado da query 
+         * para o formato json
+         */
+        $json;
+        
+        
+        /*
+         *  Se o resultado da query for armazenado na variável $result
+         * $json receberá o resultado
+         */
+        
+          $query ="SELECT * FROM client  WHERE client_name LIKE \"" . $name. "\"";
+          
+        if($result = mysqli_query($conn->getLink(), $query)) {
+           
+                    
+          $json= mysqli_fetch_assoc($result);
+          
+
+            mysqli_free_result($result);
+            
+            
+               echo json_encode($json)  ;
+           
+          
+            $conn->Desconecta();
+
+            return true;
+        }else{
+            
+            $conn->Desconecta();
+            return false;
+        }
+        
+    }
     
-    
-    
-    
+        
     public function listAllClients() {
         $conn = new MysqlConn();
         $conn->Conecta();
@@ -201,7 +240,6 @@ class DaoClient {
         echo json_encode($json);
 
        }
-
     
     /*Remove produto do banco por ID
      * 

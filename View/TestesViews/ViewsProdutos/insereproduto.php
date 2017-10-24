@@ -38,15 +38,18 @@ $options = new ProductOpitons();
 $options->setQtd($_POST['product_stock_quantity']);
 $options->setSize($_POST['idsize']);
 $options->setColor($_POST['idcolor']);
-//
-//$options1 = new ProductOpitons();
-//$options1->setQtd($_POST['product_stock_quantity']);
-//$options1->setSize($_POST['idsize']);
-//$options1->setColor($_POST['idcolor']);
+
+$options1 = new ProductOpitons();
+
+
+$options1->setQtd(15);
+$options1->setSize(3);
+$options1->setColor(3);
 
 
 $arrayOptions[] = $options;
-//$arrayOptions[] = $options;
+
+$arrayOptions[] = $options1;
 
 
 $dao = new DaoProducts;
@@ -131,10 +134,10 @@ $dao->insertProduct($p, $arrayOptions);
             <br><br>
             <label>Id da cor</label>
             <br>
-            
+<div id="options">            
             <?php
-            
-/*
+            /*
+
     $path = $_SERVER['DOCUMENT_ROOT'];
                 require_once $path . '/Constants.php';
                 require_once ROOT_DIR . '/Dao/DaoProducts.php';
@@ -152,7 +155,7 @@ $dao->insertProduct($p, $arrayOptions);
                     if ($result->num_rows > 0) {
                         // output data of each row
                         
-                        echo "<div>";
+                        //echo "<div>";
                         
                         while ($row = $result->fetch_assoc()) {
                         echo "<br>";
@@ -176,7 +179,7 @@ $dao->insertProduct($p, $arrayOptions);
                             header('Content-Type: text/html'); // declara o json para a extensão do chrome funcionar. 
                             
                         }
-                        echo "</div>";
+                        //echo "</div>";
                             header('Content-Type: text/html'); // declara o json para a extensão do chrome funcionar. 
                     } else {
                         echo "0 results";
@@ -184,9 +187,10 @@ $dao->insertProduct($p, $arrayOptions);
                 }else{
                     echo "erro";
                 }
+          */  
             
-            */
             ?>
+</div>
             <input type="text" name="idcolor" value="1">
             <br><br>
             <label>Id do tamanho </label>

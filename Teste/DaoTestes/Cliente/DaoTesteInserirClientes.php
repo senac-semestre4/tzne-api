@@ -1,6 +1,6 @@
 <?php
 
-header('Content-Type: application/json'); // declara o json para a extensão do chrome funcionar. 
+//header('Content-Type: application/json'); // declara o json para a extensão do chrome funcionar. 
 
 $path = $_SERVER['DOCUMENT_ROOT'];
 require_once $path . '/Constants.php'; // 
@@ -29,8 +29,9 @@ $c->setAdressComplement("teste");
 $c->setAdressDistrict("teste");
 $c->setAdressCity("teste");
 $c->setAdressState("teste");
-$c->setStatus(true);
+$c->setStatus(0);
 echo $c->serialize();
+
 
 $dao = new DaoClient();
 

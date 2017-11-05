@@ -49,39 +49,36 @@ $group = $app->group('/api', function () use ($app) {
 
     // Library group
     $app->group('/produtos', function () use ($app) {
+        
+                     $app->get('/listarprodutos/departamento/:departamentid', function ($departamentid) {
+                     $dao = new DaoProducts();
+                     $dao->listProdDepartaments($departamentid);
+                  })->setName('listarprodutos/departamento/:departamentid');
 
+                  
                   $app->get('/listarprodutos', function () {
                     $dao = new DaoProducts();
-
-                      $dao->listAlLProducts(0, 0);
-
+                    $dao->listAlLProducts(0, 0);
                   })->setName('listarprodutos');
 
                   $app->get('/listarprodutos/:id', function ($id) {
-                    
-                   $p = new Product();
+                  $p = new Product();
                   $dao = new DaoProducts();
-
                   $p = $dao->listById($id);
-
                   $p->setOptions($p->serializeOptions());
-                  
                   echo json_encode($p->serializeProduct());
-                  
-                  
-                  
                   })->setName('listarprodutos/:id');
 
                   $app->get('/listarprodutos/:limit/:offset', function ($limit, $offset) {
                     $dao = new DaoProducts();
-
-                      $dao->listAlLProducts($limit, $offset);
-                      
-                  })->setName('listarprodutos/:limit/:offset');
+                    $dao->listAlLProducts($limit, $offset);
+                    })->setName('listarprodutos/:limit/:offset');
                   
                   $app->post('/inserirproduto', function () use($app){
                     $app->redirect('/Controller/InsereProduto.php', 307);
                   })->setName('insereproduto');
+                  
+
 
         });
 

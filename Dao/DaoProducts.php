@@ -1,4 +1,5 @@
 <?php
+               ini_set('display_errors', 0);
 
 /**
  * Description of DaoProducts
@@ -37,13 +38,13 @@ class DaoProducts {
           $indice = array();
           //Se o id é não é nulo, segue  a verificação 
 
-          echo $product->getId();
+        //  echo $product->getId();
           
-          if ($product->getId() != null) {
-
+          if ($product->getCode() != null) {
+              
             for ($i = 0; $i < sizeof($options); $i++) {
 
-                   if ($this->listProductByCaracteristics($product->getId(), $options[$i]->getColor(), $options[$i]->getSize())== false) {
+                   if ($this->listProductByCaracteristicsCode($product->getCode(), $options[$i]->getColor(), $options[$i]->getSize())== false) {
                        
                     array_push($indice, $i);
                     echo"<indice>";
@@ -51,9 +52,11 @@ class DaoProducts {
                     echo"<indice>";
                     
                 }
+                
             }
-        
-            goto tentar;
+            
+         goto tentar;
+           
         
                    } else if($product->getId() == null){
                        
@@ -63,12 +66,19 @@ class DaoProducts {
         try {
 
          tentar:
-             echo "tentar";
+           //  echo "tentar";
             // preparando o stmt
          
          
          if($options[$indice[0]] == null){
-             echo "indice nulo";
+           //  echo "indice nulo";
+
+            $obj->Resposta = "Produto existente";
+
+            $json = json_encode($obj, JSON_PRETTY_PRINT);
+            
+            echo $json;
+          
          }else{
              
              inserir:
@@ -153,13 +163,14 @@ class DaoProducts {
 
 
 
-                            for ($i = 0; $i <= sizeof($options); $i++) {
+                            for ($i = 0; $i < sizeof($options); $i++) {
 
                                 echo "<br>";
-                                echo $options[$i]->getSize();
+                               // echo $options[$i]->getSize();
                                 echo "<br>";
-                                echo $options[$i]->getSize();
+                                //echo $options[$i]->getSize();
                                 echo "<br>";
+                                echo var_dump($options);
                                 $query = "INSERT INTO `products_has_products_size_color_qtd` (
                             `products_product_id`,
                              `products_size_product_id_size`,
@@ -167,7 +178,7 @@ class DaoProducts {
                              `product_quantity`) VALUES (" . $lastId . ",
                              " . $options[$indice[$i]]->getSize() . ",
                              " . $options[$indice[$i]]->getColor() . ",
-                             " . $options[$indice[$i]]->getQtd() . ")";
+                             " . $options[$indice[$i]]->getProductQuantity() . ")";
 
                                 if (mysqli_query($conn->getLink(), $query)) {
                                     echo "inserido";
@@ -367,6 +378,74 @@ class DaoProducts {
     }
 
     
+    public function listProductByCaracteristicsCode($code, $idCor, $idTam){
+        
+          //Criando a conexão e conectando
+        $conn = new MysqlConn();
+        $conn->Conecta();
+        
+        /*$json;
+         * Variavel será usada para receber o resultado da query 
+         * para o formato json
+         */
+        $json;
+        
+        
+        
+        $query = "SELECT *  FROM products_has_products_size_color_qtd
+                INNER JOIN products
+                on products_has_products_size_color_qtd.products_product_id = products.product_id
+                WHERE `product_code` = ".$code."
+                AND `products_size_product_id_size` = ".$idTam." 
+                AND `products_color_product_id_color` = ".$idCor;
+    
+        
+        
+           
+        
+        
+        //Tenta receber o resultado da execução da query
+        if ($result = mysqli_query($conn->getLink(), $query)) {
+
+                //Se não há linhas
+            if(!mysqli_num_rows($result)){
+                
+                return false; // não há produtos
+                
+            }else{
+                
+                
+            /*
+             * Na Dao de inserir produto, é feito a verificação se o produto
+             * com código, cor e tamanho já existem, sendo assim não há validações neste
+             */
+            //Passa o resultado em formato de array associativo
+                
+            $json= mysqli_fetch_assoc($result);
+            
+            //Libera memória
+            mysqli_free_result($result);
+            
+            $conn->Desconecta();
+            //Configura o header para a indentificação do navegador
+            header("Content-Type: application/json; charset=UTF-8");
+            //Codifica em formado json e imprime
+             echo json_encode($json);
+            
+             return true;
+            }
+        }
+//        else{
+//            echo var_dump(mysqli_error($conn->getLink()));  
+//
+//            $conn->Desconecta();
+//            return false;
+//        }
+//        
+        
+    }
+
+    
 /*
  * Função que lista todos os produtos.
  * O parametro @limit é opcional, limita a quantidade de resultados
@@ -499,7 +578,7 @@ public function updateProduct(Product $product, ProductOpitons $options) {
                     $product->getStatus(), 
                     $product->getBrands_brand_id(),
                     $product->getDepartaments_departament_id(),
-                    $options->getQtd(),
+                    $options->getProductQuantity(),
                     $options->getSize(),
                     $options->getColor(), 
                     $product->getId());
@@ -520,8 +599,75 @@ public function updateProduct(Product $product, ProductOpitons $options) {
         }
     }    
     
-    
-    
+        public function listAlLDepartaments() {
+        $conn = new MysqlConn();
+        $conn->Conecta();
+
+        /*$json 
+         * Array que terá o resultado de > "Select * from products"
+         */
+        
+        $json = array();
+        
+            
+        
+            $query = "SELECT * FROM departaments";
+        
+
+        $result = mysqli_query($conn->getLink(), $query);
+
+        /*While
+         * Enquanto haver linhas da tabela para ser
+         * lida, essas serão armazenadas na row
+         */
+        while ($row = mysqli_fetch_assoc($result)) {
+            
+            //armazena linha em cada posição do array json
+            $json[] = $row;
+        }
+        
+        $conn->Desconecta();
+
+        echo json_encode($json);
+
+       }
+
+
+     public function listProdDepartaments($departament) {
+        $conn = new MysqlConn();
+        $conn->Conecta();
+
+        /*$json 
+         * Array que terá o resultado de > "Select * from products"
+         */
+        
+        $json = array();
+        
+            
+        
+            $query = "SELECT *  FROM products_has_products_size_color_qtd
+                INNER JOIN products
+                on products_has_products_size_color_qtd.products_product_id = products.product_id
+                    WHERE departaments_departament_id = ".$departament;
+        
+
+        $result = mysqli_query($conn->getLink(), $query);
+        //echo var_dump(mysqli_error($conn->getLink()));  
+        /*While
+         * Enquanto haver linhas da tabela para ser
+         * lida, essas serão armazenadas na row
+         */
+        while ($row = mysqli_fetch_assoc($result)) {
+            
+            //armazena linha em cada posição do array json
+            $json[] = $row;
+        }
+        
+        $conn->Desconecta();
+
+        echo json_encode($json);
+
+       }
     
     
     

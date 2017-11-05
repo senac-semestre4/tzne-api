@@ -7,7 +7,7 @@
         if(!isset($_SESSION['admin'])){
             header('Location: http://www.example.com/');
         }else{
-            echo 'teste';
+           // echo 'teste';
         }
         
 ?>

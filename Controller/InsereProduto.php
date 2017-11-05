@@ -38,10 +38,12 @@ $p->setBrands_brand_id($_POST['brands_brand_id']);
 $p->setDepartaments_departament_id($_POST['departaments_departament_id']);
 
 $arrayOptions =  array();
+
 $options = new ProductOpitons();
 $options->setProductQuantity($_POST['product_stock_quantity']);
 $options->setSize($_POST['idsize']);
 $options->setColor($_POST['idcolor']);
+
 
 $arrayOptions[] = $options;
 
@@ -49,7 +51,7 @@ $dao = new DaoProducts;
 
 $dao->insertProduct($p, $arrayOptions);
 
-header("Location: ".$url);
+//header("Location: ".$url);
 
     
     

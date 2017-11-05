@@ -13,7 +13,7 @@
  */
 class ProductOpitons {
     
-    private $qtd;
+    private $productQuantity;
     private $color;
     private $size;
     
@@ -22,20 +22,20 @@ class ProductOpitons {
     function __construct() {
       }
 
-      function getQtd() {
-          return $this->qtd;
+      function getProductQuantity() {
+          return $this->productQuantity;
       }
 
-      function getColor() {
+      function setProductQuantity($productQuantity) {
+          $this->productQuantity = $productQuantity;
+      }
+
+            function getColor() {
           return $this->color;
       }
 
       function getSize() {
           return $this->size;
-      }
-
-      function setQtd($qtd) {
-          $this->qtd = $qtd;
       }
 
       function setColor($color) {
@@ -45,6 +45,10 @@ class ProductOpitons {
       function setSize($size) {
           $this->size = $size;
       }
-
+    function serializeOptions() {
+            //echo json_encode(get_object_vars($this), JSON_PRETTY_PRINT);
+        //return json_encode(get_object_vars($this), JSON_PRETTY_PRINT);
+        return get_object_vars($this);
+    }
 
 }

@@ -1,4 +1,5 @@
 <?php
+
 $path = $_SERVER['DOCUMENT_ROOT'];
 require_once $path .'/Model/ProductOpitons.php';
 /*
@@ -221,8 +222,8 @@ class Product extends ProductOpitons {
         $this->departaments_departament_id = $departaments_departament_id;
     }
 
-    function serialize() {
-
+    function serializeProduct() {
+        //echo json_encode(get_object_vars($this), JSON_PRETTY_PRINT);
         //return json_encode(get_object_vars($this), JSON_PRETTY_PRINT);
         return get_object_vars($this);
     }

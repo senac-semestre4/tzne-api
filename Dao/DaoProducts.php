@@ -191,7 +191,7 @@ class DaoProducts {
                              `product_quantity`) VALUES (" . $lastId . ",
                              " . $options[$i]->getSize() . ",
                              " . $options[$i]->getColor() . ",
-                             " . $options[$i]->getQtd() . ")";
+                             " . $options[$i]->getProductQuantity() . ")";
 
                                 if (mysqli_query($conn->getLink(), $query)) {
                                     echo "inserido";
@@ -250,20 +250,42 @@ class DaoProducts {
             if(!mysqli_num_rows($result)){
                 echo "Sem resultado";
             }else{
-               
+               $p = new Product();
                 while ($row = mysqli_fetch_assoc($result)) {
 
                     //armazena linha em cada posição do array json
+                    
                     $json[] = $row;
+               
+                    $p->setId($row['product_id']);
+                    $p->setName($row['product_name']);
+                    $p->setModel($row['product_model']);
+                    $p->setCode($row['product_code']);
+                    $p->setSpecification($row['product_specification']);
+                    $p->setPurchase_price($row['product_purchase_price']);
+                    $p->setProfit_margin($row['product_profit_margin']);
+                    $p->setPromotional_price($row['product_promotional_price']);
+                    $p->setLength($row['product_length']);
+                    $p->setWidth($row['product_width']);
+                    $p->setHeigth($row['product_heigth']);
+                    $p->setProductQuantity($row['product_quantity']);
+                    $p->setImg_relative_url($row['product_img_relative_url']);
+                    $p->setStatus($row['product_status']);
+                    $p->setBrands_brand_id($row['brands_brand_id']);
+                    $p->setDepartaments_departament_id($row['departaments_departament_id']);
+                    $p->setSize($row['products_size_product_id_size']);
+                    $p->setColor($row['products_color_product_id_color']);
                 }
-
+               // echo var_dump(mysqli_error($conn->getLink()));  
                 $conn->Desconecta();
-
-                echo json_encode($json);
-                return $json;
+                
+                
+                //echo json_encode($json);
+                
+                    return $p;
             }
         }else{
-           // echo var_dump(mysqli_error($conn->getLink()));  
+           //echo var_dump(mysqli_error($conn->getLink()));  
 
             $conn->Desconecta();
             return false;

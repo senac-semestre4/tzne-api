@@ -96,7 +96,7 @@ class Cart extends Product {
              */
             for ($i= 0; $i < $tamanhoSacola; $i++) {
                     
-                    if($_SESSION['sacola'][$i]->getCode()== $p->getCode()){
+                    if($_SESSION['sacola'][$i]->getId()== $p->getId()){
                     /*Armazena no array "indice", cada indice da sacola que 
                      * possui  o mesmo codigo de produto 
                      */
@@ -148,7 +148,7 @@ class Cart extends Product {
             //Se não for nula, imprime todos os produtos no formato json
             for ($i = 0; $i < sizeof($_SESSION['sacola']); $i++) {
 
-                $json [] = $_SESSION['sacola'][$i]->serialize();
+                $json [] = $_SESSION['sacola'][$i]->serializeProduct();
             }
             echo json_encode($json, JSON_PRETTY_PRINT);
         }
@@ -257,7 +257,7 @@ class Cart extends Product {
          * é false.
          */
         for ($i = 0; $i < sizeof($indice); $i++) {
-            if ($_SESSION['sacola'][$indice[$i]]->getCode() == $p->getCode()) {
+            if ($_SESSION['sacola'][$indice[$i]]->getId() == $p->getId()) {
                 if ($_SESSION['sacola'][$indice[$i]]->getTshirtColor() == $p->getTshirtColor() && $_SESSION['sacola'][$indice[$i]]->getTshirtSize() == $p->getTshirtSize()) {
                     return true;
                 }

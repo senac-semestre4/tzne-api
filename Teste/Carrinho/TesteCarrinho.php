@@ -1,6 +1,14 @@
 <?php
 
-header('Content-Type:  application/json'); // declara o json para a extensão do chrome funcionar. 
+header('Content-Type:  text/html'); // declara o json para a extensão do chrome funcionar. 
+
+/*
+ * Nesse teste crio produtos e tento adicionar no 
+ * carrinho, repetindo as características 
+ * id cor e tam do produto, caso seja iguais não deve adicionar ao carrinho.
+ * 
+ */
+
 //inicio e destruo qualquer sessão ativa
 session_start();
 session_destroy();
@@ -10,7 +18,17 @@ require_once $path . '/Constants.php';
 require_once ROOT_DIR . '/Model/Login.php';
 require_once ROOT_DIR . '/Model/Product.php';
 require_once ROOT_DIR . '/Services/Cart.php';
+require_once '../../Dao/DaoProducts.php';
 
+$pdao1 = new Product();
+$pdao2 = new Product();
+
+$dao = new DaoProducts();
+$pdao1 = $dao->listById(10);
+//echo $json;
+
+echo json_encode($pdao1->serializeProduct());
+echo json_encode($pdao1->serializeOptions());
 
 //criando e atribuindo valores para um produto
 $p = new Product();
@@ -54,8 +72,8 @@ $p2->setStatus(true);
 $p2->setBrands_brand_id(1);
 $p2->setDepartaments_departament_id(1);
 $p2->setQtd(1);
-$p2->setTshirtSize("P");
-$p2->setTshirtColor("Rosa");
+$p2->setTshirtSize("M");
+$p2->setTshirtColor("Azul");
 
 $p3 = new Product();
 $p3->setId(4);
@@ -134,6 +152,7 @@ $cart->addProduct($p);
 $cart->addProduct($p2);
 $cart->addProduct($p3);
 $cart->addProduct($p3);
+$cart->addProduct($pdao1);
 
 header('Content-Type:  application/json'); // declara o json para a extensão do chrome funcionar. 
 
@@ -147,10 +166,11 @@ $cart->listBagItems();
 
 
 
-$cart->removeItemBag($p2);
+$cart->removeItemBag($p3);
 
 echo"SEGUNDA         LISTAGEMMMMMMMMM";        
 
 $cart->listBagItems();
+
 
 ?>

@@ -11,12 +11,11 @@ require_once $path . '/Constants.php';
 require_once ROOT_DIR . '/Model/Product.php';
 require_once ROOT_DIR .'/Dao/DaoProducts.php';
 
-$dao = new DaoProducts();
 
-$limit = $_GET['limit'];
-$offset = $_GET['limit'];
 
-$dao->listAlLProducts($limit, $offset);
+//$limit = $_GET['limit'];
+//$offset = $_GET['offset'];
+
 
 
 

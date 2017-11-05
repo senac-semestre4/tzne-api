@@ -1,4 +1,6 @@
 <?php
+
+
 ini_set('display_errors', 0);
 /*
  * Este arquivo juntei o php e html para facilitar a motagem do teste. 
@@ -14,6 +16,7 @@ require_once $path . '/Constants.php';
 require_once ROOT_DIR.'/Dao/DaoProducts.php';
 require_once ROOT_DIR.'/Dao/MysqlConn.php';
 require_once ROOT_DIR.'/Model/Product.php';
+require_once ROOT_DIR.'/validacao.php';
 
 
 $p = new Product();
@@ -65,7 +68,7 @@ $dao->insertProduct($p, $arrayOptions);
 }else{ ?>
 
 
-<form action="insereproduto.php" method="post">
+<form action="/api/produtos/inserirproduto" method="post">
     
     
     

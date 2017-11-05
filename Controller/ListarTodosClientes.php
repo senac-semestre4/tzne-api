@@ -1,6 +1,6 @@
 <?php
 
-if($_POST['listar']){
+//if($_POST['listar']){
 header('Content-Type: application/json'); // declara o json para a extensão do chrome funcionar. 
 
 $path = $_SERVER['DOCUMENT_ROOT'];
@@ -13,6 +13,6 @@ $dao = new DaoClient();
 
 $dao->listAllClients();
     
-}else{
+/*}else{
     echo "parametros invalidos";
-}
+}*/

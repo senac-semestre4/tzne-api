@@ -44,7 +44,7 @@ class Product extends ProductOpitons {
     }
 
     function setOptions($options) {
-        $this->options = $options;
+        $this->options[] = $options;
     }
 
         /*
@@ -226,6 +226,14 @@ class Product extends ProductOpitons {
         //echo json_encode(get_object_vars($this), JSON_PRETTY_PRINT);
         //return json_encode(get_object_vars($this), JSON_PRETTY_PRINT);
         return get_object_vars($this);
+    }
+    function serializeProductClass() {
+        //echo json_encode(get_object_vars($this), JSON_PRETTY_PRINT);
+        //return json_encode(get_object_vars($this), JSON_PRETTY_PRINT);
+        $a[] = get_object_vars($this);
+        //echo var_dump($a);
+        $a[0]['options'] = array_keys($this->options); 
+        return $a; // $this
     }
 
 }

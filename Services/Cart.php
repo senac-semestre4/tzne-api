@@ -1,6 +1,5 @@
 <?php
 header('Content-Type:  text/html; application/json'); // declara o json para a extensão do chrome funcionar. 
-
 /**
  * Description of Cart
  *
@@ -9,6 +8,7 @@ header('Content-Type:  text/html; application/json'); // declara o json para a e
 $path = $_SERVER['DOCUMENT_ROOT'];
 require_once ROOT_DIR . '/Constants.php';
 require_once ROOT_DIR . '/Model/Product.php';
+require_once ROOT_DIR . '/Helpers/ToJson.php';
 
 class Cart extends Product {
 
@@ -20,7 +20,11 @@ class Cart extends Product {
      * A sacola é o array de produtos do cliente
      */
     public function createBag() {
-
+   if (!isset($_SESSION)) {
+            session_start();
+        } else {
+            //echo"ja tem sessao";
+        }
         if (!isset($_SESSION['sacola'])) {
           //  echo "sacola criada";
             //echo "<br>";
@@ -141,21 +145,38 @@ class Cart extends Product {
  * 
  */
  public function listBagItems() {
-        //Verifica se a sacola é nula
+        
+        if (!isset($_SESSION)) {
+            session_start();
+        } else {
+            //echo"ja tem sessao";
+        }
+//Verifica se a sacola é nula
         if ($_SESSION['sacola'] == null) {
             return false;
         } else {
             //Se não for nula, imprime todos os produtos no formato json
             for ($i = 0; $i < sizeof($_SESSION['sacola']); $i++) {
-
-                $json [] = $_SESSION['sacola'][$i]->serializeProduct();
+                  $json [] = $_SESSION['sacola'][$i]->serializeProduct();
+                  $json [] = $_SESSION['sacola'][$i]->serializeOptions();
+                //$json [] = $_SESSION['sacola'][$i]->getOptions()[0];
+                //$json [] = $_SESSION['sacola'][$i]->serializeOptions();
             }
-            echo json_encode($json, JSON_PRETTY_PRINT);
+            //echo json_encode($json, JSON_PRETTY_PRINT);
+            //echo var_dump($json);
+            echo json_encode(new ToJson($json), JSON_PRETTY_PRINT);
+  
         }
     }
 
     function listCartItems() {
-       // echo "<pre>";
+       
+           if (!isset($_SESSION)) {
+            session_start();
+        } else {
+            //echo"ja tem sessao";
+        }
+// echo "<pre>";
         //echo var_dump($_SESSION);
         echo "</pre>";
         // Verificar se a sessão de usuário e carrinho existem
@@ -187,7 +208,11 @@ class Cart extends Product {
      */
     
      function findProduct(Product $p){
-
+            if (!isset($_SESSION)) {
+            session_start();
+        } else {
+            //echo"ja tem sessao";
+        }
             for($i =0; $i < sizeof($_SESSION['sacola']); $i++){
                     $paux = new Product();
                     $paux = $_SESSION['sacola'][$i];
@@ -205,7 +230,11 @@ class Cart extends Product {
      * A função removeItemBag, remove um item, passado por parâmetro, da sessão "sacola" 
      */
     public function removeItemBag(Product $p) {
-
+           if (!isset($_SESSION)) {
+            session_start();
+        } else {
+            //echo"ja tem sessao";
+        }
         try {
             /*
              * Encotra a posição chamando a função findProduct
@@ -248,7 +277,11 @@ class Cart extends Product {
      * para poder comparar se o produto já foi adicionado à sacola
      */
     public function equalsItemBag(Product $p, $indice) {
-        
+               if (!isset($_SESSION)) {
+            session_start();
+        } else {
+            //echo"ja tem sessao";
+        }
         /*
          * Percorre até o tamanho do array indice, verificando se a sacola, na 
          * posição do valor armazenado em indice[i], possui o mesmo código 

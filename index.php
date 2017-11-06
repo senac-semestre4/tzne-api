@@ -1,14 +1,18 @@
 <?php
 //header('Content-Type: application/json'); // declara o json para a extensão do chrome funcionar. 
 
-session_cache_limiter(false);
-session_start();
+//session_cache_limiter(false);
+//
+//session_start();
+//unset($_SESSION);
 //session_destroy();
 
 require __DIR__.'/vendor/autoload.php';
 require_once __DIR__ . '/Controller/ListarProdutos.php';  
 require_once ROOT_DIR.'/Dao/DaoClient.php';
 require_once ROOT_DIR.'/Model/Product.php';
+require_once ROOT_DIR.'/Dao/DaoProducts.php';
+require_once ROOT_DIR.'/Services/Cart.php';
 
 //instancie o objeto
 
@@ -47,7 +51,62 @@ $app->get('/', function () {
 
 $group = $app->group('/api', function () use ($app) {
 
-    // Library group
+    
+    
+    $app->group('/carrinho', function () use ($app) {
+            $app->get('/addprodcarrinho/:id/:cor/:tam/:qtd', function ($id,$cor,$tam,$qtd) use($app){
+               
+         if (!isset($_SESSION)) {
+                session_start();
+            } else {
+                //echo"ja tem sessao";
+            }
+         
+            $carrinho = new Cart();
+                $p = new Product();
+                $options = new ProductOpitons();
+                $dao = new DaoProducts();
+                //$p = $dao->listProductByCaracteristics($_POST['idproduct'], $_POST['idcolor'], $_POST['idsize']);
+                
+                
+                if($p = $dao->listProductByCaracteristics($id,$cor,$tam)){
+                       
+                    $p->setQtd($qtd);
+                    
+                    
+                //echo var_dump($_SESSION['sacola']);
+                $carrinho->addProduct($p);
+                echo json_encode($p->serializeProduct());
+                
+                //echo var_dump($p);
+               
+                }else{
+                    echo 'Produto não encontrado';
+                }
+             
+            })->setName('addprodcarrinho');
+
+            $app->get('/listarcarrinho', function () use($app){
+            
+                   if (!isset($_SESSION)) {
+                session_start();
+            } else {
+                //echo"ja tem sessao";
+            }
+
+            $carrinho = new Cart();
+                 //echo var_dump($_SESSION['sacola']);
+               $carrinho->listBagItems();
+               
+                
+                
+            })->setName('listarcarrinho');
+
+         
+         
+     });
+    
+    
     $app->group('/produtos', function () use ($app) {
         
                      $app->get('/listarprodutos/departamento/:departamentid', function ($departamentid) {
@@ -239,7 +298,7 @@ $app->get('/', function () use($app){
 }); 
 
 
- $app->post('/teste', function () {
+    $app->post('/teste', function () {
      
      $json = json_decode(file_get_contents("php://input"));
      

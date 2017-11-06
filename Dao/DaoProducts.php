@@ -15,6 +15,7 @@ require_once $path . '/Constants.php';
 require_once "MysqlConn.php";
 require_once ROOT_DIR."/Model/Product.php";
 
+
 //Dao responsável pelo CRUD de produto
 class DaoProducts {
 
@@ -352,9 +353,43 @@ class DaoProducts {
              * com código, cor e tamanho já existem, sendo assim não há validações neste
              */
             //Passa o resultado em formato de array associativo
-                
-            $json= mysqli_fetch_assoc($result);
+                $p = new Product();
+                $options = new ProductOpitons();
+                $arrayOptions =  array();
+
+                $json= mysqli_fetch_assoc($result);
             
+                    $p->setId($json['product_id']);
+                    $p->setName($json['product_name']);
+                    $p->setModel($json['product_model']);
+                    $p->setCode($json['product_code']);
+                    $p->setSpecification($json['product_specification']);
+                    $p->setPurchase_price($json['product_purchase_price']);
+                    $p->setProfit_margin($json['product_profit_margin']);
+                    $p->setPromotional_price($json['product_promotional_price']);
+                    $p->setLength($json['product_length']);
+                    $p->setWidth($json['product_width']);
+                    $p->setHeigth($json['product_heigth']);
+                    $p->setProductQuantity($json['product_quantity']);
+                    $p->setImg_relative_url($json['product_img_relative_url']);
+                    $p->setStatus($json['product_status']);
+                    $p->setBrands_brand_id($json['brands_brand_id']);
+                    $p->setDepartaments_departament_id($json['departaments_departament_id']);
+                    $p->setTshirtSize($json['products_size_product_id_size']);
+                    $p->setTshirtColor($json['products_color_product_id_color']);
+
+                    $options->setProductQuantity($json['product_quantity']);
+                    $p->setSize($json['products_size_product_id_size']);
+                    $p->setColor($json['products_color_product_id_color']);
+                    $options->setSize($json['products_size_product_id_size']);
+                    $options->setColor($json['products_color_product_id_color']);
+
+                    
+                    $arrayOptions[] = $options;
+                    $p->setOptions($arrayOptions);      
+             
+                    
+                    
             //Libera memória
             mysqli_free_result($result);
             
@@ -362,9 +397,13 @@ class DaoProducts {
             //Configura o header para a indentificação do navegador
             header("Content-Type: application/json; charset=UTF-8");
             //Codifica em formado json e imprime
-             echo json_encode($json);
             
-             return true;
+             //echo var_dump($p);
+            
+            
+            // echo json_encode($p->serializeProduct());
+              
+             return $p;
             }
         }
 //        else{

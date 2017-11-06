@@ -85,7 +85,43 @@ $group = $app->group('/api', function () use ($app) {
                 }
              
             })->setName('addprodcarrinho');
+//**************************************************************
+             $app->get('/removeprodcarrinho/:id/:cor/:tam/', function ($id,$cor,$tam) use($app){
+               
+         if (!isset($_SESSION)) {
+                session_start();
+            } else {
+                //echo"ja tem sessao";
+            }
+         
+            $carrinho = new Cart();
+                $p = new Product();
+                $dao = new DaoProducts();
+                //$p = $dao->listProductByCaracteristics($_POST['idproduct'], $_POST['idcolor'], $_POST['idsize']);               
+                
+                if($p = $dao->listProductByCaracteristics($id,$cor,$tam)){
+                   // echo $_SESSION['sacola'][0]->getId();
+                    //echo $p->getId();
+                    //echo var_dump($_SESSION['sacola']);
+                   $pos = $carrinho->removeItemBag($id, $cor, $tam);
+                //echo json_encode($p->serializeProduct());
+                echo $pos;
+                //echo var_dump($p);
+               
+                }else{
+                    echo 'Produto não encontrado';
+                }
+             
+            })->setName('removeprodcarrinho');
 
+
+            
+            
+            
+            
+            
+            
+            
             $app->get('/listarcarrinho', function () use($app){
             
                    if (!isset($_SESSION)) {

@@ -207,29 +207,31 @@ class Cart extends Product {
      * e o imprime em formato json
      */
     
-     function findProduct(Product $p){
+     function findProduct($id, $idcor, $idtam){
             if (!isset($_SESSION)) {
             session_start();
         } else {
             //echo"ja tem sessao";
         }
+            $pos=-1;
+            
             for($i =0; $i < sizeof($_SESSION['sacola']); $i++){
-                    $paux = new Product();
-                    $paux = $_SESSION['sacola'][$i];
 
-                    if($paux == $p){
-                        echo "está na pos ".$i. " da sacola";
-                            echo json_encode($paux->serialize(), JSON_PRETTY_PRINT);
-                            echo "fim find";
-                        return $i;
-                    }
-
+               if ($_SESSION['sacola'][$i]->getId() == $id 
+                && $_SESSION['sacola'][$i]->getTshirtColor() == $idcor
+                && $_SESSION['sacola'][$i]->getTshirtSize() == $idtam) {
+                        $pos = $i;
+                        return $pos;
             }
-    }
+        }
+    
+       return $pos;
+        
+               }
     /*
      * A função removeItemBag, remove um item, passado por parâmetro, da sessão "sacola" 
      */
-    public function removeItemBag(Product $p) {
+    public function removeItemBag($id, $idcor, $idtam) {
            if (!isset($_SESSION)) {
             session_start();
         } else {
@@ -240,7 +242,7 @@ class Cart extends Product {
              * Encotra a posição chamando a função findProduct
              * e armazena na variavel "pos".
              */
-            $pos = $this->findProduct($p);
+            $pos = $this->findProduct($id, $idcor, $idtam);
             
             /*
              * Crio um novo array, para copiar outro sem os valores nulos, 
@@ -248,25 +250,30 @@ class Cart extends Product {
              */
             $sacola =   array();
             
-            //Deletamos a posição, definindo ela como nula
-            $_SESSION['sacola'][$pos] = null;
             
             //Copiamos a sacola para o array local "$sacola", exceto as posições nulas
             for($i = 0; $i < sizeof($_SESSION['sacola']); $i++){
                     
-                    if($_SESSION['sacola'][$i] != null){
+                    if($i != $pos){
                         array_push($sacola, $_SESSION['sacola'][$i]);
                     }
                 
             }
+
+                        //Deletamos a posição, definindo ela como nula
+            $_SESSION['sacola'][$pos] = null;
+
             /*Ao final da operação, falamos que a sessão "sacola" recebe o array local 
              * "$sacola", já sem os valores nulos.
              */
             $_SESSION['sacola'] = $sacola;
             //Libero o array local da memória.
-            unset($sacola);
-            return true;
+            //unset($sacola);
+            return $pos;
         } catch (Exception $ex) {
+            
+            
+            
             return false;
         }
     }

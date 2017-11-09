@@ -1,32 +1,45 @@
 <?php
-$mailer = new PHPMailer();
+
+error_reporting(0);
+/*$mailer = new PHPMailer();
     echo '<pre>';
   echo  var_dump( get_object_vars($mailer));
     echo '</pre>';
-
+*/
     
 
 If (isset($_POST['txtdest']))
 {
     require_once('class.phpmailer.php');
+    $mailer = new PHPMailer();
     $destino = $_POST['txtdest'];
     $assunto = $_POST['txtass'];
-    $mensagem = $_POST['txtmsg'];
+    $mensagem = "DE: ".$destino.  "\nMensagem:\n\n".  $_POST['txtmsg'] ;
     $mailer->IsSMTP();
-    $mailer->SMTPDebug = 1;
-    $mailer->Port = 587; //Indica a porta de conexão para a saída de e-mails
-    $mailer->Host = 'plesk12l0003.hospedagemdesites.ws'; //smtp.dominio.com.br
+    $mailer->SMTPDebug = 0;
+    $mailer->Port = 465; //Indica a porta de conexão para a saída de e-mails
+    $mailer->Host = 'smtp.gmail.com'; //smtp.dominio.com.br
     $mailer->SMTPAuth = true; //define se haverá ou não autenticação no SMTP ssl://smtp.googlemail.com
-    $mailer->SMTPSecure = 'tls';  
-    $mailer->Username = 'teste.suporte@lw.plesk12l0003.hospedagemdesites.ws'; //Informe o e-mai o completo
-    $mailer->Password = 'Loca@102030'; //Senha da caixa postal
+    $mailer->SMTPSecure = 'ssl';  
+    $mailer->Username = 'contatotzne@gmail.com'; //Informe o e-mai o completo
+    $mailer->Password = 'contatotzne123456'; //Senha da caixa postal
     $mailer->FromName = $assunto; //Nome que será exibido para o destinatário
-    $mailer->From = 'teste.suporte@lw.plesk12l0003.hospedagemdesites.ws'; //Obrigatório ser a mesma caixa postal indicada em "username"
-    $mailer->AddAddress($destino,'NomeDestinatário'); //Destinatários
+    $mailer->From = 'contatotzne@gmail.com'; //Obrigatório ser a mesma caixa postal indicada em "username"
+    $mailer->AddAddress(/*$destino,*/'contatotzne@gmail.com'); //Destinatários
     $mailer->Subject = $assunto;
+    $mailer->Body = $destino;
     $mailer->Body = $mensagem;
     $mailer->Send();
-    print "Mensagem enviada com sucesso!";
+
+
+header('Content-Type: application/json');
+$myObj->status = "enviada";
+
+
+$myJSON = json_encode($myObj, JSON_PRETTY_PRINT);
+
+echo $myJSON;
+   
 }
 else
 { ?>
@@ -65,12 +78,12 @@ else
        </style>
    </head>
    <body>
-   <form id="form" name="form" method="POST" action="Mailer.php">
-       <h2 align="center" style="text-decoration: underline"> Formulário de Contato (Mailer - PHP)</h2>
+   <form id="form" name="form" method="POST" action="/contato">
+       <h2 align="center" style="text-decoration: underline"> Formulário de Contato</h2>
        <table width="450px" align="center" border="1" cellpadding="5" cellspacing="5">
            <tr>
                <td align="right">
-                   Email Destinatário:</td>
+                   Seu email:</td>
                <td>
                    <input id="txtdest" name="txtdest" type="text" /></td>
            </tr>

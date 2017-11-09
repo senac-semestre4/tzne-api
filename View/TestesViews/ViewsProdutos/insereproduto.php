@@ -1,6 +1,4 @@
-<?php
-
-
+<!-- <?php/*
 ini_set('display_errors', 0);
 /*
  * Este arquivo juntei o php e html para facilitar a motagem do teste. 
@@ -9,6 +7,7 @@ ini_set('display_errors', 0);
 
 //Verifica se o post vindo do name "code", no html, está vazio, 
 //se não recebe os parâmetros e tenta inserir no banco
+/*
 if($_POST['code']){
     
     $path = $_SERVER['DOCUMENT_ROOT'];
@@ -16,7 +15,6 @@ require_once $path . '/Constants.php';
 require_once ROOT_DIR.'/Dao/DaoProducts.php';
 require_once ROOT_DIR.'/Dao/MysqlConn.php';
 require_once ROOT_DIR.'/Model/Product.php';
-require_once ROOT_DIR.'/validacao.php';
 
 
 $p = new Product();
@@ -42,30 +40,37 @@ $options->setQtd($_POST['product_stock_quantity']);
 $options->setSize($_POST['idsize']);
 $options->setColor($_POST['idcolor']);
 
+
+
+/*
+Para testar com mais de uma opção descomentar abaixo
+*/
+/*
 $options1 = new ProductOpitons();
 
 
 $options1->setQtd(15);
 $options1->setSize(3);
 $options1->setColor(3);
+//$arrayOptions[] = $options1;
 
-
+*/
+/*
 $arrayOptions[] = $options;
 
-$arrayOptions[] = $options1;
 
 
 $dao = new DaoProducts;
 
 $dao->insertProduct($p, $arrayOptions);
 
-
-    
+*/
+ /*   
     
     
     
 // Caso contrário mostra o  formulário para inserir o produto    
-}else{ ?>
+}else{*/ ?> -->
 
 
 <form action="/api/produtos/inserirproduto" method="post">
@@ -194,11 +199,11 @@ $dao->insertProduct($p, $arrayOptions);
             
             ?>
 </div>
-            <input type="text" name="idcolor" value="1">
+            <input type="text" name="idcolor" value="2">
             <br><br>
             <label>Id do tamanho </label>
             <br>
-            <input type="text" name="idsize" value="1">
+            <input type="text" name="idsize" value="2">
             <br><br>
             
             <label>URL da imagem</label>
@@ -212,8 +217,8 @@ $dao->insertProduct($p, $arrayOptions);
 
         </form> 
 
-
+<!-- 
 <?php
 
-}
-?>
+/*}*/
+?> -->

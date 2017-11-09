@@ -8,8 +8,9 @@ ini_set('display_errors', 1);
 
 //Verifica se o post vindo do name "code", no html, está vazio, 
 //se não recebe os parâmetros e tenta inserir no banco
+//$url = "http://tzne.com.br/View/TestesViews/ViewsProdutos/insereproduto.php";
 
-$url = "http://tzne.com.br/View/TestesViews/ViewsProdutos/insereproduto.php";
+$url = "http://tzne.kwcraft.com.br/View/TestesViews/ViewsProdutos/insereproduto.php";
 if($_POST['code']){
     
     $path = $_SERVER['DOCUMENT_ROOT'];
@@ -51,7 +52,7 @@ $dao = new DaoProducts;
 
 $dao->insertProduct($p, $arrayOptions);
 
-//header("Location: ".$url);
+header("Location: ".$url);
 
     
     

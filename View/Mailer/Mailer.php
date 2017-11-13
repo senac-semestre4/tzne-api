@@ -83,15 +83,27 @@ else
        <table width="450px" align="center" border="1" cellpadding="5" cellspacing="5">
            <tr>
                <td align="right">
+                   Nome:</td>
+               <td>
+                   <input id="txtnome" name="txtnome" type="text" /></td>
+           </tr>
+           <tr>
+               <td align="right">
                    Seu email:</td>
                <td>
-                   <input id="txtdest" name="txtdest" type="text" /></td>
+                   <input id="txtdest" name="txtemail" type="text" /></td>
            </tr>
            <tr>
                <td align="right">
                    Assunto:</td>
                <td>
                    <input id="txtass" name="txtass" type="text" /></td>
+           </tr>
+           <tr>
+               <td align="right">
+                   Telefone:</td>
+               <td>
+                   <input id="txttel" name="txttel" type="text" /></td>
            </tr>
            <tr>
                <td align="right">

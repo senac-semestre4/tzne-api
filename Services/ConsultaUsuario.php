@@ -1,5 +1,9 @@
 <?php
-session_start();
+   if (!isset($_SESSION)) {
+            session_start();
+        } else {
+            //echo"ja tem sessao";
+        }
 $path = $_SERVER['DOCUMENT_ROOT'];
 require_once $path . '/Constants.php';
 

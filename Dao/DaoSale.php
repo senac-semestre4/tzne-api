@@ -90,7 +90,7 @@ class DaoSale {
                     . " ".$arraySaleItem[$i]->getSubtotal().");";
                     
                     if(mysqli_query($conn->getLink(), $querySaleItem)){
-                        echo "produto inserido";
+                        
                     }else{
                           echo var_dump(mysqli_error($conn->getLink())); 
                     }
@@ -111,15 +111,21 @@ class DaoSale {
                           '1', 
                           'Pedido aguardando aprovação.');";
                 if(mysqli_query($conn->getLink(), $queryOrderStatus)){
-                    
+                    $conn->Desconecta();
+                    $json = "{'vendainserida':'true'}";
+                    echo json_encode($json);
                 }
                 
             } else {
-                echo var_dump(mysqli_error($conn->getLink())); 
-                //echo "erro";
+                //echo var_dump(mysqli_error($conn->getLink())); 
+                $conn->Desconecta();
+                    $json = "{'vendainserida':'false'}";
+                    echo json_encode($json);
             }
         } catch (Exception $ex) {
-            
+                    $conn->Desconecta();
+                    $json = "{'vendainserida':'false'}";
+                    echo json_encode($json);
         }
 
 
@@ -161,6 +167,29 @@ class DaoSale {
         }
     }
     
+    
+    
+    function updateStatusSale( $idProtocol, $status) {
+        $conn = new MysqlConn();
+        $conn->Conecta();
+
+
+        //$query = "UPDATE `helpdesk_protocols` SET protocol_status = ".$status. "WHERE id_protocol = " . $idProtocol.";";
+        $query = "UPDATE `sale_has_order_status` SET `order_status_order_status_id`= ".$status." WHERE `sales_sale_id` = ".$idProtocol;
+        $query = "UPDATE `sale_has_order_status` SET `order_status_order_status_id`= ".$status." WHERE `sales_sale_id` = ".$idProtocol;
+
+        if (mysqli_query($conn->getLink(), $query)) {
+            $json = "{'pedidoatualizado':'true'}";
+            echo json_encode($json);
+        } else {
+          //  echo var_dump(mysqli_error($conn->getLink()));
+            $json = "{'pedidoatualizado':'false'}";
+            echo json_encode($json);
+        }
+    }
+    
+    
+    /*
     function updateStatusSale($orderStatusId, $salesSaleId){
         
         $conn = new MysqlConn();
@@ -181,6 +210,6 @@ class DaoSale {
         } catch (Exception $ex) {
 
         }
-    }
+    }*/
     
 }

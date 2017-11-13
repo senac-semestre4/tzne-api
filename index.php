@@ -17,6 +17,9 @@ require_once ROOT_DIR . '/Model/Sale.php';
 require_once ROOT_DIR . '/Model/SalesItens.php';
 require_once ROOT_DIR . '/Dao/DaoSale.php';
 
+require_once ROOT_DIR . '/Model/HelpDesk.php';
+require_once ROOT_DIR . '/Dao/DaoHelpdesk.php';
+
 //instancie o objeto
 
 
@@ -108,9 +111,59 @@ $group = $app->group('/api', function () use ($app) {
         //lista todos os pedidos
         $app->get('/listarpedidos', function () {
                 $dao = new DaoSale();
+                
                 $json = $dao->listSalesStatus();
-                echo $json;
+                
+                $obj = json_decode($json);
+ 
+            for($i = 0; $i < sizeof($obj); $i++){
+                        
+                    echo"
+                        <table border=\"1\">
+                        <form id ='{$obj[$i]->sale_id}' action = \"/api/venda/atualizastatuspedido\" method =\"POST\">
+                                
+                                
+                        <tr>
+                                    <th>id veda</th>
+                                    <th>id cliente</th>
+                                    <th>total</th>
+                                    <th>parcelas</th>
+                                    <th>Nome status</th>
+                                    <th>status</th>
+                        </tr>
+                                <tr>
+                                        <input type = \"hidden\" name=\"saleid\" value =\"{$obj[$i]->sale_id}\">
+                                        <td>{$obj[$i]->sale_id}</td>
+                                        <td>{$obj[$i]->client_client_id}</td>
+                                        <td>{$obj[$i]->amount}</td>
+                                        <td>{$obj[$i]->number_plots}</td>
+                                        <td>{$obj[$i]->name}</td>
+                                        <td><input type=\"number\" name=\"status\" value=\"{$obj[$i]->order_status_order_status_id}\"></td>
+                                        <td><input type=\"submit\" name=\"atualizar\" value=\"Atualizar\"></td>
+                                </tr>
+                                
+                        </form>
+                   <table>   
+                   ";
+                }
+                    //echo "</table>";
+
+               // echo "</tr>";
+                
+                
+                //echo $json;
+                
+                
+                
         })->setName('listarpedidos');
+        
+        $app->post('/atualizastatuspedido', function () {
+            $dao = new DaoSale();
+            $dao->updateStatusSale(intval($_POST['saleid']), intval($_POST['status']));
+            
+        })->setName('atualizastatuspedido');
+        
+        
         //Atualiza o status do pedido
         $app->get('/atualizastatuspedido/:orderstatusid/:salessaleid', function ($orderstatusid, $salessaleid) {
                 $dao = new DaoSale();
@@ -122,7 +175,10 @@ $group = $app->group('/api', function () use ($app) {
                     $json = "{'atauluzado':'false'}";
                     echo json_encode($json);
                 }
-              })->setName('atualizastatuspedido');
+              })->setName('atualizastatuspedidoget');
+              
+              
+              
     });
 
 
@@ -393,6 +449,8 @@ $app->get('/', function () use($app) {
 
 
 //*********FORMULÁRIO DE CONTATO********************************
+
+
 $app->post('/contato', function () {
 
     error_reporting(0);
@@ -402,16 +460,50 @@ $app->post('/contato', function () {
       echo '</pre>';
      */
 
+    
+     
+    
+    
+    
 
-    If (isset($_POST['txtdest'])) {
+    If (isset($_POST['txtemail'])) {
         require_once ROOT_DIR . '/View/Mailer/class.phpmailer.php';
 
         
         
         $mailer = new PHPMailer();
-        $destino = $_POST['txtdest'];
+        $nome = $_POST['txtnome'];
+        $contato = $_POST['txtemail'];
+        $tel = $_POST['txttel'];
         $assunto = $_POST['txtass'];
-        $mensagem = "DE: " . $destino . "\nMensagem:\n\n" . $_POST['txtmsg'];
+        
+        
+        
+        $mensagem = "DE: " . $contato . "\nTel: ".$tel."\nMensagem:\n\n" . $_POST['txtmsg'];
+        
+        $h = new HelpDesk();
+        $h->setClientName($nome);
+        $h->setEmail($contato);
+        $h->setTel($tel);
+        $h->setShortDescription($assunto);
+        $h->setProbReported($_POST['txtmsg']);
+        
+        
+        
+        $dao = new DaoHelpdesk();
+        $json;
+        if($dao->createProtocol($h)){
+                        $json = "{'protocoloinserido':'true'}";
+            //echo json_encode($json);
+        }else{
+                        $json = "{'protocoloinserido':'false'}";
+            //echo json_encode($json);
+        }
+        
+        
+        
+        
+        
         $mailer->IsSMTP();
         $mailer->SMTPDebug = 0;
         $mailer->Port = 465; //Indica a porta de conexão para a saída de e-mails
@@ -424,22 +516,109 @@ $app->post('/contato', function () {
         $mailer->From = 'contatotzne@gmail.com'; //Obrigatório ser a mesma caixa postal indicada em "username"
         $mailer->AddAddress(/* $destino, */'contatotzne@gmail.com'); //Destinatários
         $mailer->Subject = $assunto;
-        $mailer->Body = $destino;
+        $mailer->Body = $contato;
         $mailer->Body = $mensagem;
         $mailer->Send();
 
 
+        
+        
+
+        
         header('Content-Type: application/json');
         $myObj->status = "enviada";
 
-
+        $json .= "{'status':'enviada'}";
         $myJSON = json_encode($myObj, JSON_PRETTY_PRINT);
 
-        echo $myJSON;
+        echo json_encode($json);
     } else {
         error_reporting(1);
     }
 });
+
+$app->get('/listarprotocolos', function () {
+    
+    $dao = new DaoHelpdesk();
+    
+    $obj = json_decode($dao->listProcotols());
+           
+    //echo var_dump($obj);
+    
+    
+    for($i = 0; $i < sizeof($obj); $i++){
+                        
+                    echo"
+                        <table border=\"1\">
+                        <form id ='{$obj[$i]->id_protocol}' action = \"/atualizaprotocolos\" method =\"POST\">
+                                
+                                
+                        <tr>
+                                    <th>id_protocol</th>
+                                    <th>client_name</th>
+                                    <th>email</th>
+                                    <th>tel</th>
+                                    <th>short_description</th>
+                                    <th>prob_reported</th>
+
+                        </tr>
+                                <tr>
+                                <tr>
+                                        <input type = \"hidden\" name=\"id_protocol\" value =\"{$obj[$i]->id_protocol}\">
+                                        <td>{$obj[$i]->id_protocol}</td>
+                                        <td>{$obj[$i]->client_name}</td>
+                                        <td>{$obj[$i]->email}</td>
+                                        <td>{$obj[$i]->tel}</td>
+                                        <td>{$obj[$i]->short_description}</td>
+                                        <td><textarea disabled rows=\"4\" cols=\"50\" name=\"prob_reported\" value=\"\">{$obj[$i]->prob_reported}</textarea></td>
+                                   </tr>
+                                   
+                                   
+                         <tr>
+                                    <th>solotion</th>
+                                    <th>protocol_status</th>
+                                    <th>status_name</th>
+                                    <th>creation_date</th>
+                                    <th>resolved_by</th>
+                        </tr>
+
+                                   <tr>
+                                        <td><textarea  rows=\"4\" cols=\"50\" name=\"solotion\"  value=\"\">{$obj[$i]->solotion}</textarea></td>
+                                        <td><input type=\"number\" name=\"protocol_status\" value=\"{$obj[$i]->protocol_status}\"></td>
+                                        <td>{$obj[$i]->name_status}</td>
+                                        <td>{$obj[$i]->creation_date}</td>
+                                        <td><input type=\"text\" name=\"resolved_by\" value=\"{$obj[$i]->resolved_by}\"></td>                                                                                   
+                                        <td><input type=\"submit\" name=\"atualizar\" value=\"Atualizar\"></td>
+                                </tr>
+                                </tr>
+                                <br>
+                        </form>
+                   <table>   
+                   ";
+                }
+    
+    
+})->setName('listaprotocolos');
+
+
+$app->post('/atualizaprotocolos', function () {
+        $dao = new DaoHelpdesk();
+        /*echo var_dump(intval($_POST['id_protocol']));
+        echo var_dump(intval($_POST['protocol_status']));
+        echo var_dump($_POST['resolved_by']);
+        echo var_dump($_POST['solotion']);*/
+        
+        $dao->updateProtocol(
+                intval($_POST['id_protocol']), 
+                intval($_POST['protocol_status']), 
+                $_POST['resolved_by'], 
+                $_POST['solotion']);
+   
+   
+    
+})->setName('atualizaprotocolos');
+
+
 
 
 //************************Testes**************************************
@@ -468,7 +647,41 @@ $app->options('/teste', function () {
 
 
 
+$authenticateForRole = function ( $role = 'member' ) {
+    return function () use ( $role ) {
+        $user = User::fetchFromDatabaseSomehow();
+        if ( $user->belongsToRole($role) === false ) {
+            $app = \Slim\Slim::getInstance();
+            $app->flash('error', 'Login required');
+            $app->redirect('/login');
+        }
+    };
+};
+/*
+function functionName(){
+    session_start();
+    if(isset($_SESSION['admin'])){
+        $app = \Slim\Slim::getInstance();
+        
+        //$app->pass();
+        return true;
+    }else{
+            $app = \Slim\Slim::getInstance();
+            $app->flash('error', 'Login required');
+            $app->redirect('/login');
+    }
+}
+
+$app->get('/testeauth', functionName, function () {
+    
+    echo " Olá ".$_SESSION['admin'].". Seu perfil de acesso é ".$_SESSION['perfil'];
+
+     
+    
+});
+*/
 
 
+//$data = json_decode($app->request->getBody());
 $app->run();
 ?>

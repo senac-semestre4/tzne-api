@@ -35,10 +35,12 @@ class DaoUser {
             $id = null;
             $stmt = mysqli_prepare($conn->getLink(), "
                 INSERT INTO users (
-                 user_id,   
+                 user_id,
+                 users_roles_id,
                  user_name,
                  user_password) 
                 VALUES ( 
+                 ?, 
                  ?, 
                  ?,
                  ?)
@@ -56,9 +58,11 @@ class DaoUser {
              * 
              */
             $id = null;
+            $idRole=1;
               echo var_dump(mysqli_error($conn->getLink())); 
-            $stmt->bind_param("iss",
+            $stmt->bind_param("iiss",
                     $id,
+                    $idRole,
                     $user->getUserName(),
                     $user->getUserPassword()
                     );
@@ -90,17 +94,28 @@ class DaoUser {
         $conn->Conecta(); //cria conexão
         
    //$sql = "SELECT * FROM `users` WHERE `user_name` = \"".$uname."\" AND `user_password` = \"".$hash."\"";
-   $sql = "SELECT * FROM `users` WHERE `user_name` = \"".$uname."\"";
+   $sql = "SELECT * FROM "
+           . "`users` "
+           . "INNER JOIN users_roles "
+           . "ON users_roles.user_role_id = users.users_roles_id "
+           . "WHERE `user_name` = \"".$uname."\"";
    
-        
-   $result = mysqli_query($conn->getLink(), $sql);
-        if ($result) {
+    
+           
+           
+        if ($result = mysqli_query($conn->getLink(), $sql)) {
 
             if (mysqli_num_rows($result)) {
                 
                 $arraySqlresult = (mysqli_fetch_array($result));
                 
                 if (password_verify($upassword, $arraySqlresult['user_password'])) {
+                       if (!isset($_SESSION)) {
+            session_start();
+        } else {
+            //echo"ja tem sessao";
+        }
+                    $_SESSION['perfil'] = $arraySqlresult['name_role'];
                     return true;
                 } else {
                     return false;

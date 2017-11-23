@@ -120,5 +120,37 @@ class DaoHelpdesk {
         
         
     }
+    function listProcotolsId($id){
+        echo var_dump($id);
+                $conn = new MysqlConn();
+        $conn->Conecta();
+
+        $query = ""
+                . "SELECT `helpdesk_protocols`.*, `helpdesk_status`.`name_status`
+FROM `helpdesk_protocols`
+LEFT JOIN `helpdesk_status` ON `helpdesk_protocols`.`protocol_status` = `helpdesk_status`.`id_status` 
+WHERE `id_protocol` = 
+".$id;
+    
+        if($result = mysqli_query($conn->getLink(), $query)){
+            
+                 while ($row = mysqli_fetch_assoc($result)) {
+
+                    //armazena linha em cada posição do array json
+                    
+                    $json[] = $row;
+                 
+                    
+                    
+                 }
+                 echo json_encode($json);
+        }else{
+            echo var_dump(mysqli_error($conn->getLink()));
+        
+            return false;
+        }
+        
+        
+    }
 
 }

@@ -7,8 +7,8 @@
 		private $sandboxData = Array(
 			
 			'credentials' => array(
-				"email" => "Your e-mail",
-				"token" => "Your token"
+				"email" => "karina.armiato@gmail.com",
+				"token" => "216FC171611C4F56AC55CFA3A64A5F8B"
 			),
 			
 			'sessionURL' => "https://ws.sandbox.pagseguro.uol.com.br/v2/sessions",

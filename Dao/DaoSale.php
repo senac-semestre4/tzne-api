@@ -22,24 +22,26 @@ require_once ROOT_DIR . '/Model/SalesItens.php';
 class DaoSale {
 
     function insertSale(Sale $sale) {
-        
-        
+            //echo json_encode($sale);
+            //echo $sale->getClientClientId();
+        //echo var_dump($sale);
 
         $conn = new MysqlConn();
         $conn->Conecta();
         $lastId;
 
-        $querySale = "INSERT INTO `sales` (
-                    `sale_id`, 
-                    `client_client_id`, 
-                    `total_partial`, 
-                    `amount`, 
-                    `discount`, 
-                    `type_freight`, 
-                    `value_freight`, 
-                    `number_plots`) 
-                    VALUES (NULL, ".$sale->getClientClientId() .", ". $sale->getTotalPartial() . "," . $sale->getAmount() . ","  . $sale->getDiscount() . ",".  $sale->getTypeFreight() . ", " .  $sale->getValueFreight() . ", " . $sale->getNumberPlots() . ");";
 
+        
+//                            echo $sale->getClientClientId();
+//                            echo $sale->getTotalPartial(); 
+//                            echo $sale->getAmount();
+//                            echo $sale->getDiscount();
+//                            echo $sale->getTypeFreight();
+//                            echo $sale->getValueFreight();
+//                            echo $sale->getNumberPlots();
+
+        
+        
         $q="INSERT INTO "
                 . "`sales` ("
                 . "`sale_id`, "
@@ -59,22 +61,28 @@ class DaoSale {
                     ".$sale->getValueFreight().", 
                     ".$sale->getNumberPlots().")";
         
-        echo $q;
         
         
         
-        
+
         try {
             
             //Tenta inserir a venda:
-            if (mysqli_query($conn->getLink(), $q)) {
+
+		mysqli_autocommit(false);
+		mysqli_begin_transaction(MYSQLI_TRANS_START_READ_WRITE);	
+
+           if (mysqli_query($conn->getLink(), $q)) {
+            //if (true) {
                 
                 //Recupera o id da ultima venda iserida
                 $lastId = mysqli_insert_id($conn->getLink());
                 //Armazendo o array de itens
-                $arraySaleItem = new SalesItens();
+                $arraySaleItem[]= new SalesItens();
                 $arraySaleItem = $sale->getSalesItens();
+               // echo var_dump($arraySaleItem);
                 //Laço para inserir item a item na tabela itens de venda
+                //echo var_dump($arraySaleItem[0]['quantity']);
                 for ($i = 0; $i < sizeof($sale->getSalesItens()); $i++) {
                     $querySaleItem = "
                     INSERT INTO `item_for_sale` (
@@ -85,9 +93,9 @@ class DaoSale {
                     `subtotal`) 
                     VALUES (NULL, 
                     ".$lastId.", "
-                    . "".$arraySaleItem[$i]->getProductProductHasId().", "
-                    . "".$arraySaleItem[$i]->getQuantity().","
-                    . " ".$arraySaleItem[$i]->getSubtotal().");";
+                    . "".$arraySaleItem[$i]['productProductHasId'].", "
+                    . "".$arraySaleItem[$i]['quantity'].","
+                    . "".$arraySaleItem[$i]['subtotal'].");";
                     
                     if(mysqli_query($conn->getLink(), $querySaleItem)){
                         
@@ -96,6 +104,8 @@ class DaoSale {
                     }
                     
                 }
+                             date_default_timezone_set("America/Sao_Paulo");
+                             $date = date('Y-m-d H:i:s');
                 //Query que isere o status do pedido
                 $queryOrderStatus = "
                         INSERT INTO `sale_has_order_status` (
@@ -107,29 +117,32 @@ class DaoSale {
                           VALUES (NULL, 
                             ".$lastId.", 
                           '1', 
-                          'NOW()', 
+                          '".$date."', 
                           '1', 
                           'Pedido aguardando aprovação.');";
-                if(mysqli_query($conn->getLink(), $queryOrderStatus)){
-                    $conn->Desconecta();
+             if(mysqli_query($conn->getLink(), $queryOrderStatus)){
+		    mysqli_commit();	
+             $conn->Desconecta();
                     $json = "{'vendainserida':'true'}";
                     echo json_encode($json);
                 }
                 
             } else {
-                //echo var_dump(mysqli_error($conn->getLink())); 
+//               echo var_dump(mysqli_error($conn->getLink())); 
                 $conn->Desconecta();
                     $json = "{'vendainserida':'false'}";
-                    echo json_encode($json);
+                   echo json_encode($json);
             }
         } catch (Exception $ex) {
+  //                       echo var_dump(mysqli_error($conn->getLink())); 
+
                     $conn->Desconecta();
                     $json = "{'vendainserida':'false'}";
-                    echo json_encode($json);
+                   echo json_encode($json);
         }
 
 
-        
+      
     }
 
     function listSalesStatus(){

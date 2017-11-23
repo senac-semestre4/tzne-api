@@ -1,0 +1,23 @@
+{
+    "client_client_id": 1,
+    "total_partial": 230,
+    "amount": 115,
+    "discount": 0,
+    "type_freight": "correios",
+    "value_freight": 16,
+    "number_plots": 2,
+    "itens":
+            [{
+                    "product_product_has_id": 153,
+                    "product_name": "Camiseta Homem Aranha",
+                    "unit_price": 57.50,
+                    "quantity": 6,
+                    "subtotal": 115
+                }, {
+                    "product_product_has_id": 178,
+                    "product_name": "Camiseta Homem Aranha",
+                    "unit_price": 57.50,
+                    "quantity": 2,
+                    "subtotal": 115
+                }]
+}

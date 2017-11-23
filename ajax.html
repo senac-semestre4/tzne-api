@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+
+<p id="demo"></p>
+
+<script>
+
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        var myObj = JSON.parse(this.responseText);
+        document.getElementById("demo").innerHTML = myObj.name;
+
+	console.log(myObj.options[0].options[0]);
+    }
+};
+xmlhttp.open("GET", "http://tzne.kwcraft.com.br/api/listarprodutoscaracteristica/10/2/2", true);
+xmlhttp.send();
+
+</script>
+
+
+</body>
+</html>
+

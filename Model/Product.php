@@ -15,6 +15,7 @@ require_once $path .'/Model/ProductOpitons.php';
  */
 class Product extends ProductOpitons {
 
+    private $hasId; // int
     private $id; // int
     private $name;
     private $model;
@@ -39,7 +40,16 @@ class Product extends ProductOpitons {
     public function __construct() {
         
     }
-    function getOptions() {
+    
+    function getHasId() {
+        return $this->hasId;
+    }
+
+    function setHasId($hasId) {
+        $this->hasId = $hasId;
+    }
+
+        function getOptions() {
         return $this->options;
     }
 

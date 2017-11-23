@@ -5,20 +5,20 @@
 	
 	<div id="paymentMethodsOptions">
 		
-		<div class="field radio">
+		<!-- class="field radio">
 			<input id="creditCardRadio" type="radio" name="changePaymentMethod" value="creditCard" />
 			<label for="creditCardRadio">Cart&atilde;o de Cr&eacute;dito</label>
-		</div>
+		</div>-->
 		
 		<div class="field radio">
 			<input id="boletoRadio" type="radio" name="changePaymentMethod" value="boleto" />
 			<label for="boletoRadio">Boleto</label>
 		</div>
 		
-		<div class="field radio">
+		<!--<div class="field radio">
 			<input id="eftRadio" type="radio" name="changePaymentMethod" value="eft" />
 			<label for="eftRadio">D&eacute;bito</label>
-		</div>
+		</div>-->
 		
 		<div id="paymentMethodLoading">Aguarde...</div>
 		

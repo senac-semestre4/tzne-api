@@ -269,6 +269,7 @@ class DaoProducts {
                     
                     $json[] = $row;
                
+                    $p->setHasId($row['product_has_id']);
                     $p->setId($row['product_id']);
                     $p->setName($row['product_name']);
                     $p->setModel($row['product_model']);
@@ -288,7 +289,7 @@ class DaoProducts {
                     $p->setSize($row['products_size_product_id_size']);
                     $p->setColor($row['products_color_product_id_color']);
                 }
-               // echo var_dump(mysqli_error($conn->getLink()));  
+                //echo var_dump(mysqli_error($conn->getLink()));  
                 $conn->Desconecta();
                 
                 
@@ -304,6 +305,80 @@ class DaoProducts {
         }
         
     }
+    
+     public function listByasId($hasId){
+       //Criando a conexão e conectando
+        $conn = new MysqlConn();
+        $conn->Conecta();
+        
+        /*$json;
+         * Variavel será usada para receber o resultado da query 
+         * para o formato json
+         */
+        $json;
+        
+        
+        /*
+         *  Se o resultado da query for armazenado na variável $result
+         * $json receberá o resultado
+         */
+              $query = "SELECT * FROM `products_has_products_size_color_qtd`
+                        INNER JOIN products
+                        on products.product_id = products_has_products_size_color_qtd.products_product_id
+                        WHERE `product_has_id` = ".$hasId;
+
+        if ($result = mysqli_query($conn->getLink(), $query)) {
+
+            
+            if(!mysqli_num_rows($result)){
+                echo "Sem resultado";
+            }else{
+               $p = new Product();
+                while ($row = mysqli_fetch_assoc($result)) {
+
+                    //armazena linha em cada posição do array json
+                    
+                    $json[] = $row;
+               
+                    $p->setHasId($row['product_has_id']);
+                    $p->setId($row['product_id']);
+                    $p->setName($row['product_name']);
+                    $p->setModel($row['product_model']);
+                    $p->setCode($row['product_code']);
+                    $p->setSpecification($row['product_specification']);
+                    $p->setPurchase_price($row['product_purchase_price']);
+                    $p->setProfit_margin($row['product_profit_margin']);
+                    $p->setPromotional_price($row['product_promotional_price']);
+                    $p->setLength($row['product_length']);
+                    $p->setWidth($row['product_width']);
+                    $p->setHeigth($row['product_heigth']);
+                    $p->setProductQuantity($row['product_quantity']);
+                    $p->setImg_relative_url($row['product_img_relative_url']);
+                    $p->setStatus($row['product_status']);
+                    $p->setBrands_brand_id($row['brands_brand_id']);
+                    $p->setDepartaments_departament_id($row['departaments_departament_id']);
+                    $p->setSize($row['products_size_product_id_size']);
+                    $p->setColor($row['products_color_product_id_color']);
+                }
+                //echo var_dump(mysqli_error($conn->getLink()));  
+                $conn->Desconecta();
+                
+                
+                //echo json_encode($json);
+                
+                    return $p;
+            }
+        }else{
+           //echo var_dump(mysqli_error($conn->getLink()));  
+
+            $conn->Desconecta();
+            return false;
+        }
+        
+    }
+    
+    
+    
     /*
      * Recebe os parâmetros para buscar no banco
      * $codigo do produto

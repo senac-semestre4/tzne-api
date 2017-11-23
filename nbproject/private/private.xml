@@ -3,17 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/tzne-api/Model/Sale.php</file>
-            <file>file:/C:/xampp/htdocs/tzne-api/Controller/InsereProduto.php</file>
-            <file>file:/C:/xampp/htdocs/tzne-api/Dao/DaoUser.php</file>
-            <file>file:/C:/xampp/htdocs/tzne-api/index.php</file>
-            <file>file:/C:/xampp/htdocs/tzne-api/Model/SalesItens.php</file>
             <file>file:/C:/xampp/htdocs/tzne-api/Services/Cart.php</file>
-            <file>file:/C:/xampp/htdocs/tzne-api/Services/ConsultaUsuario.php</file>
-            <file>file:/C:/xampp/htdocs/tzne-api/Services/CadastraUsuario.php</file>
-            <file>file:/C:/xampp/htdocs/tzne-api/View/TestesViews/ViewLogin/telalogin.php</file>
+            <file>file:/C:/xampp/htdocs/tzne-api/Model/Product.php</file>
             <file>file:/C:/xampp/htdocs/tzne-api/Dao/DaoProducts.php</file>
-            <file>file:/C:/xampp/htdocs/tzne-api/Dao/DaoSale.php</file>
+            <file>file:/C:/xampp/htdocs/tzne-api/Teste/Carrinho/TesteCarrinho.php</file>
+            <file>file:/C:/xampp/htdocs/tzne-api/Model/ProductOpitons.php</file>
         </group>
     </open-files>
 </project-private>

@@ -15,7 +15,7 @@
 
 require_once ROOT_DIR . '/Model/SalesItens.php';
 
-class Sale {
+class Sale extends SalesItens{
 
     private $saleId;
     private $clientClientId;

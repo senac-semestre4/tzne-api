@@ -203,7 +203,7 @@ MyApplication.CheckoutPage = new function() {
 				
 				// obtendo lista de erros
 				var response = $.parseJSON(jqxhr.responseText);
-				
+				console.log(response);
 				// Exibindo lista de erros
 				showPaymentErrors(response.errors);
 				

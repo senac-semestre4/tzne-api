@@ -33,7 +33,7 @@ $app->get('/listarota/', function() use ($app) {
     $routes = $app->router()->getNamedRoutes();
 
     foreach ($routes as $route) {
-        echo "tzne.kwcraft.com.br{$route->getPattern()}\n";
+        echo "tzne.kwcraft.com.br{$route->getPattern()}\n\n";
     }
     exit;
 });
@@ -49,11 +49,11 @@ $group = $app->group('/api', function () use ($app) {
     $app->group('/venda', function () use ($app) {
 
         //Insere a venda recebendo parametros do front
-        $app->get('/inserevenda', function () {
+        $app->get('/inserevendateste', function () {
             //Configurando o horário para a inserção no banco
             date_default_timezone_set("America/Sao_Paulo");
 
-            //Simula venda
+            //Simula dados da venda
             $amount = 55;
             $clientClientId = 1;
             $discount = 0;
@@ -63,48 +63,159 @@ $group = $app->group('/api', function () use ($app) {
             $valueFreight = 15;
 
 
-            //Simula item de venda
+            //Simula item de venda genérico
             $productProductHasId = 178;
             $quantity = 2;
-            //$saleIdSale = 10;
             $subtotal = 115;
             $date = date('Y-m-d H:i:s');
             $comment = "Pedido aguardando aprovação.";
 
-
+            //Instancia o objeto venda
             $sale = new Sale();
+            //instancia o objeto de venda 1
             $saleItem = new SalesItens();
+            //instancia o objeto de venda 2
             $saleItem1 = new SalesItens();
-
+            
+            //Seta os valores da venda
             $sale->setAmount($amount);
             $sale->setClientClientId($clientClientId);
             $sale->setDiscount($discount);
             $sale->setNumberPlots($numberPlots);
-
             $sale->setTotalPartial($totalPartial);
             $sale->setTypeFreight($typeFreight);
             $sale->setValueFreight($valueFreight);
 
 
-
+            //Seta o primeiro item
             $saleItem->setProductProductHasId($productProductHasId);
             $saleItem->setQuantity($quantity);
             $saleItem->setSubtotal($subtotal);
             $saleItem->setDate($date);
             $saleItem->setComment($comment);
-
+            //Seta o segundo item
             $saleItem1->setProductProductHasId($productProductHasId);
             $saleItem1->setQuantity($quantity);
             $saleItem1->setSubtotal($subtotal);
             $saleItem1->setDate($date);
             $saleItem1->setComment("Pedido aguardando aprovação.");
 
-
+            //Seta os "itens de venda 1 e 2" na venda
             $sale->setSalesItens($saleItem);
             $sale->setSalesItens($saleItem1);
-
-            $dao = new DaoSale();
+            //Instancia a DAOVenda
+            $dao = new DaoSale(); 
+            //Executa a ação no banco para inserir a venda
             $dao->insertSale($sale);
+            
+        })->setName('inserevendateste');
+        
+        $app->post('/inserevenda', function () use ($app){
+            //Configurando o horário para a inserção no banco
+            //$app->response->headers->set('Content-Type', 'text/html');
+            date_default_timezone_set("America/Sao_Paulo");
+            //header('Content-Type: application/json'); // declara o json para a extensão do chrome funcionar. 
+      
+            
+        
+
+            //Simula item de venda genérico
+            $productProductHasId = 178;
+            $quantity = 2;
+            $subtotal = 115;
+            
+            $date = date('Y-m-d H:i:s');
+            $comment = "Pedido aguardando aprovação.";
+
+            //Instancia o objeto venda
+            $sale = new Sale();
+            //instancia o objeto de venda 1
+           
+            $saleItem = new SalesItens();
+           
+            
+            
+            
+       
+            $objson = $_POST['json'];
+            
+            
+            
+            //Objeto venda com dois produtos
+//            $objson ='{"client_client_id":1,"total_partial":230,"amount":115,"discount":0,"type_freight":"correios","value_freight":16,"number_plots":2, "itens":
+//                      [{"product_product_has_id":153,"product_name": "Camiseta Homem Aranha","unit_price":57.50,"quantity":6,"subtotal":115},{"product_product_has_id":178,"product_name": "Camiseta Homem Aranha","unit_price":57.50,"quantity":2,"subtotal":115}]}';
+
+        
+           // $a= json_encode(json_decode($objson, JSON_PRETTY_PRINT));
+            //Decodifica string json para objeto php
+            $b= json_decode($objson);
+            //$b= $objson;
+            
+            //Seta os valores da venda recebidos pelo objeto JSON
+            $sale->setAmount($b->{'amount'});
+            $sale->setClientClientId($b->{'client_client_id'});
+            $sale->setDiscount($b->{'discount'});
+            $sale->setNumberPlots($b->{'number_plots'});
+            $sale->setTotalPartial($b->{'total_partial'});
+            $sale->setTypeFreight($b->{'type_freight'});
+            $sale->setValueFreight($b->{'value_freight'});
+
+            
+             $dao = new DaoProducts();
+            //Laço de repetição que irá popular os itens de venda, na venda
+            for ($i = 0; $i <sizeof($b->itens);$i++){
+                $p = new Product();
+                $dao = new DaoProducts();
+                $p = $dao->listByasId($b->{'itens'}[$i]->product_product_has_id);
+                $p->setOptions($p->serializeOptions());
+               
+                if($p->getProductQuantity() < $b->{'itens'}[$i]->quantity){
+                    $app->response->headers->set('Content-Type', 'application/json');
+                    $erro = substr_replace(json_encode($b), '"quantidadeAlterada":true,', 1,0);
+                    $str = preg_replace( "/\"quantity\":".$b->{'itens'}[$i]->quantity."/" , "\"quantity\":".$p->getProductQuantity(), $erro);
+                    //echo json_encode($objson, JSON_PRETTY_PRINT);
+                     $app->response->headers('Access-Control-Allow-Origin', 'http://localhost:8000');
+                     $app->response->headers('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization');
+                     $app->response->headers('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+                     
+                     
+                     $app->response->setBody($str);
+                    //echo $erro;
+                    break;
+                }else{
+                // para cada laço um novo item, para ser adicionado na venda
+                $saleItem = new SalesItens();
+                //Passando os parametros do objeto obtido através do json
+                $saleItem->setProductProductHasId($b->{'itens'}[$i]->product_product_has_id);
+                $saleItem->setQuantity($b->{'itens'}[$i]->quantity);
+                $saleItem->setSubtotal($b->{'itens'}[$i]->subtotal);
+                $saleItem->setDate($date);
+                $saleItem->setComment($comment);
+                //Como SaleItem é private, temos que passar o serialize dela para Sale, caso contrário não será 
+                //exibido
+                $sale->setSalesItens($saleItem->serializeSaleItens());
+                }
+            }
+           //Mostra a venda 
+            //echo json_encode($sale->serializeSale());
+         
+            
+            /*
+             * Bloco que mostra o objeto venda
+          echo"<pre>";  
+          echo var_dump($sale);
+          echo"</pre>";  
+           */
+            
+
+            
+            //Instancia a DAOVenda
+            $dao = new DaoSale(); 
+            //Executa a ação no banco para inserir a venda
+            $dao->insertSale($sale);
+            
+            
+            //echo $objson;
         })->setName('inserevenda');
         
         
@@ -276,6 +387,7 @@ $group = $app->group('/api', function () use ($app) {
             $dao = new DaoProducts();
             $dao->listAlLProducts(0, 0);
         })->setName('listarprodutos');
+
         //Listar produtos pelo id
         $app->get('/listarprodutos/:id', function ($id) {
             $p = new Product();
@@ -284,18 +396,25 @@ $group = $app->group('/api', function () use ($app) {
             $p->setOptions($p->serializeOptions());
             echo json_encode($p->serializeProduct());
         })->setName('listarprodutos/:id');
+
         //Listar produtos com limit e offset
         $app->get('/listarprodutos/:limit/:offset', function ($limit, $offset) {
             $dao = new DaoProducts();
             $dao->listAlLProducts($limit, $offset);
         })->setName('listarprodutos/:limit/:offset');
         //Inserir produto redireciona para a controller que insere
+
         $app->post('/inserirproduto', function () use($app) {
             $app->redirect('/Controller/InsereProduto.php', 307);
         })->setName('insereproduto');
     });
-
-
+	
+        $app->get('/listarprodutoscaracteristica/:id/:cor/:tam', function ($id,$cor,$tam) {
+            $p = new Product();
+            $dao = new DaoProducts();
+            $p = $dao->listProductByCaracteristics($id,$cor,$tam);
+            echo json_encode($p->serializeProduct());
+        })->setName('/listarprodutoscaracteristica');
 
 //********************GRUPO CLIENTES**************************************
     $app->group('/clientes', function () use ($app) {
@@ -623,6 +742,41 @@ $app->post('/atualizaprotocolos', function () {
 
 //************************Testes**************************************
 
+/*
+Para testar a venda faça um get e guarde o resultado em "a":
+
+exemplo de preencimento de 'a'
+
+ var a;         var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                   // Typical action to be performed when the document is ready:
+                 a =  console.log(JSON.parse(xhttp.responseText));
+		 a =  JSON.parse(xhttp.responseText);
+
+                }
+            };
+            xhttp.open("GET", "http://tzne.kwcraft.com.br/escrevendo.json", true);
+            xhttp.send();
+
+
+Feito isso faça o post de "a", na url, conforme abaixo:
+var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                   // Typical action to be performed when the document is ready:
+                  console.log(JSON.parse(xhttp.responseText));
+                }
+            };
+            xhttp.open("POST", "http://tzne.kwcraft.com.br/api/venda/inserevenda", true);
+			xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+
+            xhttp.send("json="+JSON.stringify(a));
+
+  */
+
+
 $app->post('/teste', function () {
 
     $json = json_decode(file_get_contents("php://input"));
@@ -680,6 +834,31 @@ $app->get('/testeauth', functionName, function () {
     
 });
 */
+
+$app->post('/testerecebejson', function () use ($app) {
+
+    //$json = json_decode(file_get_contents("php://input"));
+	$json = $_POST['json'];
+        
+        //echo var_dump($_POST);
+//   echo json_encode($json);
+
+//
+//        shell_exec('rm escrevendo.json');
+//        
+//        $fp = fopen("escrevendo.json", "w+");
+//
+//
+//        // Escreve o conteúdo JSON no arquivo
+//        $escreve = fwrite($fp, "teste".var_dump($_POST));
+//
+//        // Fecha o arquivo
+//        fclose($fp);
+
+      //  $app->response->headers->set('Content-Type', 'aplication/json');
+        // $app->response->setBody($json);
+        echo json_encode($json);
+});
 
 
 //$data = json_decode($app->request->getBody());

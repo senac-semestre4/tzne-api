@@ -77,6 +77,7 @@
 			
 			for (var i in errors) {
 				var error = errors[i];
+				//trocar por error.code para obter os códitos de erro
 				html += ('<li>' + error.message + '</li>');
 			}
 			

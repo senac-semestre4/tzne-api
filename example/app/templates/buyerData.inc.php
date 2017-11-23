@@ -4,7 +4,7 @@
 	
 	<div class="field">
 		<label for="senderEmail">E-mail</label>
-		<input type="text" name="senderEmail" id="senderEmail" />
+		<input type="text" name="senderEmail" id="senderEmail" value="qualquercoisa@sandbox.pagseguro.com.br"/>
 	</div>
 	
 	<div class="field">

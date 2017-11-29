@@ -121,7 +121,7 @@ class DaoHelpdesk {
         
     }
     function listProcotolsId($id){
-        echo var_dump($id);
+//        echo var_dump($id);
                 $conn = new MysqlConn();
         $conn->Conecta();
 
@@ -143,7 +143,8 @@ WHERE `id_protocol` =
                     
                     
                  }
-                 echo json_encode($json);
+             //    return ($json);
+		return json_encode($json);	 
         }else{
             echo var_dump(mysqli_error($conn->getLink()));
         

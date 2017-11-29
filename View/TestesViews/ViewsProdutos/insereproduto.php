@@ -79,11 +79,15 @@ $dao->insertProduct($p, $arrayOptions);
     
             <label>Nome</label>
             <br>
-            <input type="text" name="nome" value="">
+            <input type="text" name="name" value="">
             <br><br>
             <label>Modelo</label>
             <br>
             <input type="text" name="model" value="">
+            <br><br>
+            <label>Descrição</label>
+            <br>
+            <input type="text" name="description" value="">
             <br><br>
             <label>Codigo</label>
             <br>
@@ -95,6 +99,10 @@ $dao->insertProduct($p, $arrayOptions);
             <br><br>
             
             <label>Preço de venda</label>
+            <br>
+            <input type="text" name="sale_price" value="50">
+            <br><br>
+            <label>Preço de compra</label>
             <br>
             <input type="text" name="purchase_price" value="50">
             <br><br>

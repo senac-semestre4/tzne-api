@@ -21,8 +21,10 @@ class Product extends ProductOpitons {
     private $model;
     private $code; // int
     private $specification;
+    private $description;
     private $purchase_price; //float
     private $profit_margin; //float
+    private $salePrice; //float
     private $promotional_price; //float
     private $length; //float
     private $width; //float
@@ -40,8 +42,23 @@ class Product extends ProductOpitons {
     public function __construct() {
         
     }
-    
-    function getHasId() {
+    function getDescription() {
+        return $this->description;
+    }
+
+    function setDescription($description) {
+        $this->description = $description;
+    }
+
+        function getSalePrice() {
+        return $this->salePrice;
+    }
+
+    function setSalePrice($salePrice) {
+        $this->salePrice = $salePrice;
+    }
+
+        function getHasId() {
         return $this->hasId;
     }
 

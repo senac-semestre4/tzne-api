@@ -29,7 +29,7 @@ class DaoClient {
         $conn = new MysqlConn();
         //Conecta
         $conn->Conecta(); //cria conexão
-
+        echo "ola ". $client->getName();
         try {
 
             // preparando o stmt
@@ -266,6 +266,52 @@ class DaoClient {
      * Atualiza produto no banco
      * Recebe  um produto do Front-end para ser atualizado no banco.
      */
+
+    public function findClient($email, $password){
+                  //Instância o objeto conexão
+        $conn = new MysqlConn();
+        //Conecta
+        $conn->Conecta(); //cria conexão
+        
+   //$sql = "SELECT * FROM `users` WHERE `user_name` = \"".$uname."\" AND `user_password` = \"".$hash."\"";
+   $sql = "SELECT * FROM "
+           . "`client` "
+           . "WHERE `client_email` = \"".$email."\"";
+   
+    
+           
+           
+        if ($result = mysqli_query($conn->getLink(), $sql)) {
+            if (mysqli_num_rows($result)) {
+                
+                $arraySqlresult = (mysqli_fetch_array($result));
+                
+                if (password_verify($password, $arraySqlresult['client_password'])) {
+                      	
+                      	//Verifica se tem sessão
+                       if (!isset($_SESSION)) {
+                            session_start();
+       				} else {
+           					 //echo"ja tem sessao";
+       					 }
+
+                    $_SESSION['cliente'] = $arraySqlresult['client_name'];
+                              return true;
+
+                } else {
+                    return false;
+                }
+                
+            } else {
+                echo "Cliente não encontrado";
+                return false;
+            }
+        } else {
+            var_dump(mysqli_error($conn->getLink()));
+        }
+    }
+
+
 public function updateClient(Client $client) {
 
         $conn = new MysqlConn();

@@ -13,7 +13,7 @@
  */
 class ProductOpitons {
     
-   private $productQuantity;
+    private $productQuantity;
     private $color;
     private $size;
     
@@ -48,7 +48,7 @@ class ProductOpitons {
     function serializeOptions() {
             //echo json_encode(get_object_vars($this), JSON_PRETTY_PRINT);
         //return json_encode(get_object_vars($this), JSON_PRETTY_PRINT);
-	    $a[] = get_object_vars($this);
+	    $a = get_object_vars($this);
     return  $a;
     }
 

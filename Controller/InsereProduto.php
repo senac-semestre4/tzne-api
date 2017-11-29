@@ -23,11 +23,13 @@ require_once ROOT_DIR.'/validacao.php';
 
 $p = new Product();
 $p->setId(null);
-$p->setName($_POST['nome']); 
+$p->setName($_POST['name']); 
 $p->setModel($_POST['model']); 
+$p->setModel($_POST['description']); 
 $p->setCode($_POST['code']); 
 $p->setSpecification($_POST['specification']); 
 $p->setPurchase_price($_POST['purchase_price']); 
+$p->setSalePrice($_POST['sale_price']); 
 $p->setProfit_margin($_POST['profit_margin']); 
 $p->setPromotional_price($_POST['promotional_price']); 
 $p->setLength($_POST['length']); 
@@ -52,8 +54,8 @@ $dao = new DaoProducts;
 
 $dao->insertProduct($p, $arrayOptions);
 
-header("Location: ".$url);
-
+//header("Location: ".$url);
+echo "Inserido";
     
     
     

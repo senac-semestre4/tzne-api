@@ -99,8 +99,12 @@ class DaoProducts {
                                     `product_img_relative_url`,
                                     `product_status`,
                                     `brands_brand_id`,
-                                    `departaments_departament_id`) 
+                                    `departaments_departament_id`, 
+                                    `product_description`, 
+                                    `product_price_sale`) 
                                     VALUES (
+                                    ?,
+                                    ?,
                                     ?,
                                     ?,
                                     ?,
@@ -130,7 +134,7 @@ class DaoProducts {
              */
             
             $id= null;
-            $stmt->bind_param("issisddddddsiii",
+            $stmt->bind_param("issisddddddsiiisd",
                     $id,
                     $product->getName(), 
                     $product->getModel(), 
@@ -145,12 +149,14 @@ class DaoProducts {
                     $product->getImg_relative_url(), 
                     $product->getStatus(), 
                     $product->getBrands_brand_id(),
-                    $product->getDepartaments_departament_id());
+                    $product->getDepartaments_departament_id(),
+                    $product->getDescription(),
+                    $product->getSalePrice());
             
             //Executa o comando de inserção
            
            if($stmt->execute()){
-                // var_dump(mysqli_error($conn->getLink()));  
+                 var_dump(mysqli_error($conn->getLink()));  
                  
                  
                  $lastId = mysqli_insert_id($conn->getLink());
@@ -212,6 +218,9 @@ class DaoProducts {
                                 }
                             }
                         }
+                    }else{
+                                                            var_dump(mysqli_error($conn->getLink()));
+
                     }
 
                     $stmt->close();
@@ -322,10 +331,11 @@ class DaoProducts {
          *  Se o resultado da query for armazenado na variável $result
          * $json receberá o resultado
          */
-              $query = "SELECT * FROM `products_has_products_size_color_qtd`
-                        INNER JOIN products
-                        on products.product_id = products_has_products_size_color_qtd.products_product_id
-                        WHERE `product_has_id` = ".$hasId;
+              $query = "SELECT * FROM "
+                      . "`products_has_products_size_color_qtd` "
+                      . "INNER JOIN products "
+                      . "on products.product_id = products_has_products_size_color_qtd.products_product_id "
+                      . "WHERE products_has_products_size_color_qtd.product_has_id = " . $hasId;
 
         if ($result = mysqli_query($conn->getLink(), $query)) {
 
@@ -660,6 +670,8 @@ public function updateProduct(Product $product, ProductOpitons $options) {
                     phas.product_quantity = ?,
                     phas.products_size_product_id_size = ?,
                     phas.products_color_product_id_color = ?
+                    product_description =?,
+                    product_price_sale =?
                     WHERE prod.product_id = ?;";             
             
             
@@ -677,7 +689,7 @@ public function updateProduct(Product $product, ProductOpitons $options) {
               b	corresponde a uma variável que contém dados para um blob e enviará em pacotes
              * 
              */
-            $stmt->bind_param("ssisddddddsiiiiiii",
+            $stmt->bind_param("ssisddddddsiiiiiiisd",
                     $product->getName(), 
                     $product->getModel(), 
                     $product->getCode(), 
@@ -695,7 +707,9 @@ public function updateProduct(Product $product, ProductOpitons $options) {
                     $options->getProductQuantity(),
                     $options->getSize(),
                     $options->getColor(), 
-                    $product->getId());
+                    $product->getId(),
+                    $product->getDescription(),
+                    $product->getSalePrice());
 
             $stmt->execute();
             var_dump(mysqli_error($conn->getLink()));  

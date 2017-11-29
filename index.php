@@ -19,11 +19,16 @@ require_once ROOT_DIR . '/Dao/DaoSale.php';
 
 require_once ROOT_DIR . '/Model/HelpDesk.php';
 require_once ROOT_DIR . '/Dao/DaoHelpdesk.php';
+require_once ROOT_DIR . '/Dao/MysqlConn.php';
 
 //instancie o objeto
 
-
-$app = new \Slim\Slim();
+$settings = [
+    'settings' => [
+        'determineRouteBeforeAppMiddleware' => true,
+    ],
+];
+$app = new \Slim\Slim($settings);
 $app->config('debug', true);
 //$app->response->headers->set('Content-Type', 'application/json');
 
@@ -132,14 +137,7 @@ $group = $app->group('/api', function () use ($app) {
             //instancia o objeto de venda 1
            
             $saleItem = new SalesItens();
-           
-            
-            
-            
-       
             $objson = $_POST['json'];
-            
-            
             
             //Objeto venda com dois produtos
 //            $objson ='{"client_client_id":1,"total_partial":230,"amount":115,"discount":0,"type_freight":"correios","value_freight":16,"number_plots":2, "itens":
@@ -275,6 +273,119 @@ $group = $app->group('/api', function () use ($app) {
         })->setName('atualizastatuspedido');
         
         
+        $app->get('/listavendas', function () {
+            $conn = new MysqlConn();
+            $conn->Conecta();
+            $query = "SELECT sale_id,client_client_id,order_status_order_status_id,
+                date,  amount, discount,
+                total_partial, number_plots, subtotal FROM `sales`
+                    INNER JOIN sale_has_order_status
+                    ON sale_has_order_status.sales_sale_id =sales.sale_id
+                    INNER JOIN item_for_sale
+                    ON item_for_sale.sale_id_sale = sales.sale_id
+                    GROUP by sales.sale_id";
+            
+            if ($result = mysqli_query($conn->getLink(), $query)) {
+
+
+                if (!mysqli_num_rows($result)) {
+                    echo "Sem resultado";
+                } else {
+                    $p = new Product();
+                    while ($row = mysqli_fetch_assoc($result)) {
+
+                        //armazena linha em cada posição do array json
+
+                        $json[] = $row;
+                    }
+                }
+            }
+                
+            
+            
+            
+            echo json_encode($json);
+        })->setName('listavendas');
+        $app->get('/listavendas/:id', function ($id) {
+            $conn = new MysqlConn();
+            $conn->Conecta();
+            $query = "SELECT sale_id,client_client_id,order_status_order_status_id,
+                date, amount, discount,
+                total_partial, number_plots, subtotal FROM `sales`
+                    INNER JOIN sale_has_order_status
+                    ON sale_has_order_status.sales_sale_id =sales.sale_id
+                    INNER JOIN item_for_sale
+                    ON item_for_sale.sale_id_sale = sales.sale_id WHERE sale_id = {$id} GROUP BY sales.sale_id";
+            
+            if ($result = mysqli_query($conn->getLink(), $query)) {
+
+
+                if (!mysqli_num_rows($result)) {
+                    echo "Sem resultado";
+                } else {
+                    $p = new Product();
+                    while ($row = mysqli_fetch_assoc($result)) {
+
+                        //armazena linha em cada posição do array json
+
+                        $json[] = $row;
+                    }
+                }
+            }
+
+            echo json_encode($json);
+        })->setName('listavendasid');
+        
+        
+        $app->get('/listaitensvendas/:id', function ($id) {
+            $conn = new MysqlConn();
+            $conn->Conecta();
+            $query = "SELECT * FROM `item_for_sale` WHERE sale_id_sale = ".$id;
+            
+            if ($result = mysqli_query($conn->getLink(), $query)) {
+
+
+                if (!mysqli_num_rows($result)) {
+                    echo "Sem resultado";
+                } else {
+                    $p = new Product();
+                    while ($row = mysqli_fetch_assoc($result)) {
+
+                        //armazena linha em cada posição do array json
+
+                        $json[] = $row;
+                    }
+                }
+            }
+
+            echo json_encode($json);
+        })->setName('listaitensvendasid');
+        
+        $app->get('/listavendacliente/:id', function ($id) {
+            $conn = new MysqlConn();
+            $conn->Conecta();
+            $query = "SELECT * FROM `sales` WHERE client_client_id = ".intval($id);
+            
+            if ($result = mysqli_query($conn->getLink(), $query)) {
+
+
+                if (!mysqli_num_rows($result)) {
+                    echo "Sem resultado";
+                } else {
+                    $p = new Product();
+                    while ($row = mysqli_fetch_assoc($result)) {
+
+                        //armazena linha em cada posição do array json
+
+                        $json[] = $row;
+                    }
+                }
+            }
+           // echo var_dump(mysqli_error($conn->getLink()));
+            echo json_encode($json);
+        })->setName('listavendacliente');
+        
+        
         //Atualiza o status do pedido
         $app->get('/atualizastatuspedido/:orderstatusid/:salessaleid', function ($orderstatusid, $salessaleid) {
                 $dao = new DaoSale();
@@ -396,6 +507,13 @@ $group = $app->group('/api', function () use ($app) {
             $p->setOptions($p->serializeOptions());
             echo json_encode($p->serializeProduct());
         })->setName('listarprodutos/:id');
+        $app->get('/listarprodutoshasid/:hasid', function ($hasid) {
+            $p = new Product();
+            $dao = new DaoProducts();
+            $p = $dao->listByasId($hasid);
+            $p->setOptions($p->serializeOptions());
+            echo json_encode($p->serializeProduct());
+        })->setName('listarprodutoshasid/:hasid');
 
         //Listar produtos com limit e offset
         $app->get('/listarprodutos/:limit/:offset', function ($limit, $offset) {
@@ -403,18 +521,152 @@ $group = $app->group('/api', function () use ($app) {
             $dao->listAlLProducts($limit, $offset);
         })->setName('listarprodutos/:limit/:offset');
         //Inserir produto redireciona para a controller que insere
-
+       
+        
+        
         $app->post('/inserirproduto', function () use($app) {
-            $app->redirect('/Controller/InsereProduto.php', 307);
+            //$app->redirect('/Controller/InsereProduto.php', 307);
+                        $json = $_POST['json'];
+//                        echo json_encode($json);
+
+                        $objson = $_POST['json'];
+
+                        $b = json_decode($objson);
+
+                      //  $sale->setAmount($b->{'amount'});
+                        
+                        
+                        
+                       // ini_set('display_errors', 1);
+                        /*
+                         * Este arquivo juntei o php e html para facilitar a motagem do teste. 
+                         * Esse poderá ser usado como interface para cadastro de produtos
+                         */
+
+                        //Verifica se o post vindo do name "code", no html, está vazio, 
+                        //se não recebe os parâmetros e tenta inserir no banco
+                        //$url = "http://tzne.com.br/View/TestesViews/ViewsProdutos/insereproduto.php";
+
+                        //$url = "http://tzne.kwcraft.com.br/View/TestesViews/ViewsProdutos/insereproduto.php";
+
+
+                        $p = new Product();
+                        $p->setId(null);
+                        $p->setName($b->{'name'}); 
+                        $p->setModel($b->{'model'}); 
+                        $p->setDescription($b->{'description'}); 
+                        $p->setCode($b->{'code'}); 
+                        $p->setSpecification($b->{'specification'}); 
+                        $p->setPurchase_price($b->{'purchase_price'}); 
+                        $p->setSalePrice($b->{'sale_price'}); 
+                        $p->setProfit_margin($b->{'profit_margin'}); 
+                        $p->setPromotional_price($b->{'promotional_price'}); 
+                        $p->setLength($b->{'length'}); 
+                        $p->setWidth($b->{'width'}); 
+                        $p->setHeigth($b->{'heigth'}); 
+                        $p->setImg_relative_url($b->{'img_relative_url'}); 
+                        $p->setStatus($b->{'status'}); 
+                        $p->setBrands_brand_id($b->{'brands_brand_id'});
+                        $p->setDepartaments_departament_id($b->{'departaments_departament_id'});
+
+//                        $arrayOptions =  array();
+//
+//                        $options = new ProductOpitons();
+//                        $options->setProductQuantity($_POST['product_stock_quantity']);
+//                        $options->setSize($_POST['idsize']);
+//                        $options->setColor($_POST['idcolor']);
+//
+//
+//                        $arrayOptions[] = $options->serializeOptions();
+//                        $p->setOptions($arrayOptions);
+//                        
+//                        $dao = new DaoProducts;
+
+                      //  $dao->insertProduct($p, $arrayOptions);
+
+                        //header("Location: ".$url);
+                       // echo "Inserido";
+
+
+
+
+                        // Caso contrário mostra o  formulário para inserir o produto    
+
+               // $json = '{"Everton manja de angular?": false}';            
+           // echo json_encode($json);
+            //echo $json;
+            
+            echo json_encode($p->serializeProduct());
+            //echo $b->{'name'};
+            
+            
         })->setName('insereproduto');
-    });
-	
+
+  
+
+        
         $app->get('/listarprodutoscaracteristica/:id/:cor/:tam', function ($id,$cor,$tam) {
             $p = new Product();
             $dao = new DaoProducts();
             $p = $dao->listProductByCaracteristics($id,$cor,$tam);
             echo json_encode($p->serializeProduct());
         })->setName('/listarprodutoscaracteristica');
+        
+        
+          });
+	
+        $app->get('/listadecores', function () {
+            $conn = new MysqlConn();
+            $conn->Conecta();
+            
+             $query = "SELECT * FROM `products_color`";
+
+             if ($result = mysqli_query($conn->getLink(), $query)) {
+
+
+            if (!mysqli_num_rows($result)) {
+                echo "Sem resultado";
+            } else {
+                $p = new Product();
+                while ($row = mysqli_fetch_assoc($result)) {
+
+                    //armazena linha em cada posição do array json
+
+                    $json[] = $row;
+                }
+            }
+        }
+
+        echo json_encode($json);
+            
+        })->setName('/listadecores');
+        
+        
+        $app->get('/listadetamanhos', function () {
+            $conn = new MysqlConn();
+            $conn->Conecta();
+            
+             $query = "SELECT * FROM `products_size`";
+
+             if ($result = mysqli_query($conn->getLink(), $query)) {
+
+
+            if (!mysqli_num_rows($result)) {
+                echo "Sem resultado";
+            } else {
+                $p = new Product();
+                while ($row = mysqli_fetch_assoc($result)) {
+
+                    //armazena linha em cada posição do array json
+
+                    $json[] = $row;
+                }
+            }
+        }
+
+        echo json_encode($json);
+            
+        })->setName('/listadetamanhos');
 
 //********************GRUPO CLIENTES**************************************
     $app->group('/clientes', function () use ($app) {
@@ -445,7 +697,7 @@ $group = $app->group('/api', function () use ($app) {
 //$peso = $json->quantidade*1;
 //$sCepDestino = $json->sCepDestino;
 
-            $peso = $_POST['quantidade'] * 1;
+            $peso = $_POST['quantidade'] * 0.200;
             $sCepDestino = $_POST['sCepDestino'];
 
 
@@ -467,8 +719,8 @@ $group = $app->group('/api', function () use ($app) {
 
             // O comprimento, altura, largura e diametro deverá ser informado em centímetros e somente números
             $parametros['nVlComprimento'] = '16';
-            $parametros['nVlAltura'] = '5';
-            $parametros['nVlLargura'] = '15';
+            $parametros['nVlAltura'] = '10';
+            $parametros['nVlLargura'] = '16';
             $parametros['nVlDiametro'] = '0';
 
             // Aqui você informa se quer que a encomenda deva ser entregue somente para uma determinada pessoa após confirmação por RG. Use "s" e "n".
@@ -594,7 +846,7 @@ $app->post('/contato', function () {
         $nome = $_POST['txtnome'];
         $contato = $_POST['txtemail'];
         $tel = $_POST['txttel'];
-        $assunto = $_POST['txtass'];
+        $assunto = $_POST['chamado'];
         
         
         
@@ -646,16 +898,21 @@ $app->post('/contato', function () {
         
         header('Content-Type: application/json');
         $myObj->status = "enviada";
-
         $json .= "{'status':'enviada'}";
         $myJSON = json_encode($myObj, JSON_PRETTY_PRINT);
 
-        echo json_encode($json);
+	echo "Protocolo enviado<br>";
+	echo 	' <a href="http://tzne.kwcraft.com.br/View/formulario-contato.html">Abrir novo chamado ?</a> ';
+
+        //echo json_encode($json);
     } else {
         error_reporting(1);
     }
 });
 
+
+//************************************************************
+/*
 $app->get('/listarprotocolos', function () {
     
     $dao = new DaoHelpdesk();
@@ -670,8 +927,6 @@ $app->get('/listarprotocolos', function () {
                     echo"
                         <table border=\"1\">
                         <form id ='{$obj[$i]->id_protocol}' action = \"/atualizaprotocolos\" method =\"POST\">
-                                
-                                
                         <tr>
                                     <th>id_protocol</th>
                                     <th>client_name</th>
@@ -679,7 +934,6 @@ $app->get('/listarprotocolos', function () {
                                     <th>tel</th>
                                     <th>short_description</th>
                                     <th>prob_reported</th>
-
                         </tr>
                                 <tr>
                                 <tr>
@@ -691,8 +945,6 @@ $app->get('/listarprotocolos', function () {
                                         <td>{$obj[$i]->short_description}</td>
                                         <td><textarea disabled rows=\"4\" cols=\"50\" name=\"prob_reported\" value=\"\">{$obj[$i]->prob_reported}</textarea></td>
                                    </tr>
-                                   
-                                   
                          <tr>
                                     <th>solotion</th>
                                     <th>protocol_status</th>
@@ -700,7 +952,6 @@ $app->get('/listarprotocolos', function () {
                                     <th>creation_date</th>
                                     <th>resolved_by</th>
                         </tr>
-
                                    <tr>
                                         <td><textarea  rows=\"4\" cols=\"50\" name=\"solotion\"  value=\"\">{$obj[$i]->solotion}</textarea></td>
                                         <td><input type=\"number\" name=\"protocol_status\" value=\"{$obj[$i]->protocol_status}\"></td>
@@ -718,6 +969,181 @@ $app->get('/listarprotocolos', function () {
     
     
 })->setName('listaprotocolos');
+*/
+
+
+$app->get('/listarprotocolos', function () {
+    
+    $dao = new DaoHelpdesk();
+    
+    $obj = json_decode($dao->listProcotols());
+           
+    //echo var_dump($obj);
+
+echo"<!DOCTYPE html>
+<html>
+    <head>
+        <title>Listar Protocolos</title>
+  <meta charset=\"utf-8\">
+  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
+  <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\">
+  <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js\"></script>
+  <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"></script>
+    
+</head>
+    <body>
+
+                        <div class=\"container\">
+  <table class=\"table\">
+
+   <thead>
+    <tr>
+      <th>Id</th>
+      <th>Cliente</th>
+      <th>Status</th>
+      <th>Abertura</th>
+      <th></th>
+    </tr>
+  </thead>
+
+"; 
+    for($i = 0; $i < sizeof($obj); $i++){
+      /*  
+        echo  "	
+		<form action=\"/lisarprotocoloid\" method =\"POST\">
+				<input type=\"hidden\" name=\"id_protocol\" value=\"{$obj[$i]->id_protocol}\">
+				<table class=\"table\">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Cliente</th>
+						<th>Status</th>
+						<th>Abertura</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							{$obj[$i]->id_protocol}
+						</td>
+						<td>
+							{$obj[$i]->client_name}
+						</td>
+						<td>
+							{$obj[$i]->name_status}
+						</td>
+						<td>
+							{$obj[$i]->creation_date}
+						</td>
+						<td>
+							<button type=\"submit\">Ver chamado</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</form>";
+        
+*/
+		echo " <form action=\"/lisarprotocoloid\" method =\"POST\">
+            <input type=\"hidden\" name=\"id_protocol\" value=\"{$obj[$i]->id_protocol}\">
+
+  <tbody>
+    <tr>
+      <td>
+        {$obj[$i]->id_protocol}
+      </td>
+      <td>
+        {$obj[$i]->client_name}
+      </td>
+      <td>
+        {$obj[$i]->name_status}
+      </td>
+      <td>
+        {$obj[$i]->creation_date}
+      </td>
+      <td>
+        <button type=\"submit\">Ver chamado</button>
+      </td>
+    </tr>
+		
+			</form>";
+
+                                                        
+                                                        
+                }
+    
+    echo"
+  </tbody>
+</table>
+</body>
+</html>";
+})->setName('listaprotocolos');
+
+
+$app->post('/lisarprotocoloid', function () {
+    
+        $dao = new DaoHelpdesk();
+        /*echo var_dump(intval($_POST['id_protocol']));
+        echo var_dump(intval($_POST['protocol_status']));
+        echo var_dump($_POST['resolved_by']);
+        echo var_dump($_POST['solotion']);*/
+        
+         $result =  $dao->listProcotolsId(intval($_POST['id_protocol']));
+	 $result = json_decode($result);
+
+	echo "
+             <table border=\"1\">
+             <form id ='{$result[0]->id_protocol}' action = \"/atualizaprotocolos\" method =\"POST\">
+             <tr>
+                         <th>id_protocol</th>
+                         <th>client_name</th>
+                         <th>email</th>
+                         <th>tel</th>
+                         <th>short_description</th>
+                         <th>prob_reported</th>
+             </tr>
+                     <tr>
+                     <tr>
+                             <input type = \"hidden\" name=\"id_protocol\" value =\"{$result[0]->id_protocol}\">
+                             <td>{$result[0]->id_protocol}</td>
+                             <td>{$result[0]->client_name}</td>
+                             <td>{$result[0]->email}</td>
+                             <td>{$result[0]->tel}</td>
+                             <td>{$result[0]->short_description}</td>
+                             <td><textarea disabled rows=\"4\" cols=\"50\" name=\"prob_reported\" value=\"\">{$result[0]->prob_reported}</textarea></td>
+                        </tr>
+              <tr>
+                         <th>solotion</th>
+                         <th>protocol_status</th>
+                         <th>status_name</th>
+                         <th>creation_date</th>
+                         <th>resolved_by</th>
+             </tr>
+                        <tr>
+                           <td><textarea  rows=\"4\" cols=\"50\" name=\"solotion\"  value=\"\">{$result[0]->solotion}</textarea></td>
+                             <td>  
+                                        <select id=\"protocol_status\" name=\"protocol_status\">
+                                           <option value=\"{$result[0]->protocol_status} selected\"> {$result[0]->name_status}</option>
+					   <option value=\"1\">Aberto</option>
+                                           <option value=\"2\">Em andamento</option>
+                                           <option value=\"3\">Resolvido</option>
+                                        </select></td>
+                             <td>{$result[0]->name_status}</td>
+                             <td>{$result[0]->creation_date}</td>
+                             <td><input type=\"text\" name=\"resolved_by\" value=\"{$result[0]->resolved_by}\"></td>                                                                                   
+                             <td><input type=\"submit\" name=\"atualizar\" value=\"Atualizar\"></td>
+                     </tr>
+                     </tr>
+                     <br>
+             </form>
+        </table> ";
+
+
+  echo  ' <a href="http://tzne.kwcraft.com.br/listarprotocolos">Voltar a lista de chamados</a> ';  
+})->setName('lisarprotocoloid');
+
 
 
 $app->post('/atualizaprotocolos', function () {
@@ -732,7 +1158,8 @@ $app->post('/atualizaprotocolos', function () {
                 intval($_POST['protocol_status']), 
                 $_POST['resolved_by'], 
                 $_POST['solotion']);
-   
+  echo  ' <a href="http://tzne.kwcraft.com.br/listarprotocolos">Voltar a lista de chamados</a> ';
+ 
    
     
 })->setName('atualizaprotocolos');
@@ -799,8 +1226,11 @@ $app->options('/teste', function () {
     echo json_encode($json);
 });
 
+//******************************
 
+//*****************************
 
+/*
 $authenticateForRole = function ( $role = 'member' ) {
     return function () use ( $role ) {
         $user = User::fetchFromDatabaseSomehow();
@@ -810,7 +1240,12 @@ $authenticateForRole = function ( $role = 'member' ) {
             $app->redirect('/login');
         }
     };
-};
+};*/
+
+
+
+
+
 /*
 function functionName(){
     session_start();
@@ -834,6 +1269,13 @@ $app->get('/testeauth', functionName, function () {
     
 });
 */
+
+
+    
+
+     
+    
+
 
 $app->post('/testerecebejson', function () use ($app) {
 
@@ -861,6 +1303,47 @@ $app->post('/testerecebejson', function () use ($app) {
 });
 
 
+/*
+Função que valida se o usuário está logado antes de exibir a página
+*/
+
+    function usuarioLogado(){
+       
+         if (!isset($_SESSION)) {
+        session_start();
+    } else {
+        //echo"ja tem sessao";
+    }
+    if (!isset($_SESSION["cliente"])) {
+        //Resgato uma instância existente de Slim
+        $app = \Slim\Slim::getInstance();
+        $app->flash('error', 'Login required');
+//        $app->response->headers->set('Content-Type', 'aplication/json');
+ 	$json = array('logado'=>false);    
+          echo json_encode($json);
+//     $app->redirect('/View/TestesViews/ViewLogin/telalogincliente.php');  
+	$app->stop();   
+ }
+    
+}
+
+
+/*
+Antes de permitir o acesso a paginaqualquer, verifico se o usuário está
+previamente logado com a função usuarioLogado();
+*/
+    $app->get('/paginaqualquer/', 'usuarioLogado', function () {
+                
+        if (!isset($_SESSION)) {
+                session_start();
+                    } else {
+                        //echo"ja tem sessao";
+                    }
+            echo "vc está logado " . $_SESSION["cliente"];
+        });
+
+
 //$data = json_decode($app->request->getBody());
-$app->run();
+  $app->run();
+
 ?>

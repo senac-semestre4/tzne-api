@@ -123,7 +123,10 @@ class DaoSale {
              if(mysqli_query($conn->getLink(), $queryOrderStatus)){
 		    mysqli_commit();	
              $conn->Desconecta();
-                    $json = "{'vendainserida':'true'}";
+             
+                
+                    //$json = "{'vendainserida':'true'}";
+                    $json = $sale->serializeSale();
                     echo json_encode($json);
                 }
                 
@@ -135,7 +138,7 @@ class DaoSale {
             }
         } catch (Exception $ex) {
   //                       echo var_dump(mysqli_error($conn->getLink())); 
-
+			mysqli_rollback();
                     $conn->Desconecta();
                     $json = "{'vendainserida':'false'}";
                    echo json_encode($json);

@@ -8,7 +8,7 @@
 //Verifica se o post vindo do name "code", no html, está vazio, 
 //se não recebe os parâmetros e tenta inserir no banco
 
-echo $_POST['client_name'];
+//echo $_POST['client_name'];
 if ($_POST['client_name']) {
 
     $path = $_SERVER['DOCUMENT_ROOT'];
@@ -38,7 +38,6 @@ if ($_POST['client_name']) {
     $c->setAdressCity($_POST['client_adress_city']);
     $c->setAdressState($_POST['client_adress_state']);
     $c->setStatus($_POST['client_status']);
-    $c->setName($_POST['client_user_name']);
     
     
     

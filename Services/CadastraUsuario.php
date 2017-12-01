@@ -19,7 +19,7 @@ $user = new User($u, $p);
 if($dao->insertUser($user) == true){
         echo "cadastrado";
 }else{
-	echo "erro";
+//	echo "erro";
 }
       
 }

@@ -391,11 +391,11 @@ $group = $app->group('/api', function () use ($app) {
                 $dao = new DaoSale();
                 
                 if($dao->updateStatusSale($orderstatusid, $salessaleid)){
-                    $json = "{'atualizado':'true'}";
-                    echo json_encode($json);
+                   $json = "{'atualizado':'true'}";
+                   // echo json_encode($json);
                 }else{
                     $json = "{'atauluzado':'false'}";
-                    echo json_encode($json);
+                    //echo json_encode($json);
                 }
               })->setName('atualizastatuspedidoget');
               
@@ -822,7 +822,25 @@ $app->get('/', function () use($app) {
 //*********FORMULÁRIO DE CONTATO********************************
 
 
-$app->post('/contato', function () {
+$app->post('/contato', function () use ($app){
+//Verifico se há sessão aberta, se não abre uma nova
+
+
+    if (!isset($_SESSION)) {
+                session_start();
+                    } else {
+                        //echo"ja tem sessao";
+                    }
+
+//Verifico se o número gerado é o mesmo que está na sessão
+if (  $_POST['seed'] == $_SESSION['seed'] ){
+
+        /* se removo ele da sesssão para não permitir um novo uso do mesmo, assim evitando a duplicidade de registros nobanco,
+            por cliques duplicados. 
+        */
+      unset( $_SESSION['seed'] );
+
+
 
     error_reporting(0);
     /* $mailer = new PHPMailer();
@@ -901,13 +919,34 @@ $app->post('/contato', function () {
         $json .= "{'status':'enviada'}";
         $myJSON = json_encode($myObj, JSON_PRETTY_PRINT);
 
-	echo "Protocolo enviado<br>";
-	echo 	' <a href="http://tzne.kwcraft.com.br/View/formulario-contato.html">Abrir novo chamado ?</a> ';
+	//$app->redirect('/resutadoprotocolo');
+
 
         //echo json_encode($json);
     } else {
         error_reporting(1);
     }
+
+
+}
+else
+{
+ echo 'Este comando ja foi processado ou nao foi enviado por um
+formulario valido';
+
+}
+
+
+
+});
+
+
+$app->get('/resutadoprotocolo', function () {
+       
+	echo "Protocolo enviado<br>";
+        echo    ' <a href="http://tzne.kwcraft.com.br/View/formulario-contato.html">Abrir novo chamado ?</a> ';
+
+
 });
 
 
@@ -972,15 +1011,63 @@ $app->get('/listarprotocolos', function () {
 */
 
 
-$app->get('/listarprotocolos', function () {
-    
-    $dao = new DaoHelpdesk();
-    
-    $obj = json_decode($dao->listProcotols());
-           
-    //echo var_dump($obj);
+    $app->get('/listarprotocolos/', 'usuarioLogado', function () {
+//         ini_set('display_errors', 1);       
+        if (!isset($_SESSION)) {
+                session_start();
+                    } else {
+                        //echo"ja tem sessao";
+                    }
+            echo "Bem vindo " . $_SESSION["admin"]."<br>";
+ $conn = new MysqlConn();
+        $conn->Conecta();
 
-echo"<!DOCTYPE html>
+        $busca = ""
+                . "SELECT * FROM `helpdesk_protocols` "
+                . "INNER JOIN helpdesk_status "
+                . "ON helpdesk_protocols.protocol_status = helpdesk_status.id_status order by helpdesk_protocols.id_protocol";
+//O vetor a baixo exemplifica as informações contidas no banco de dados.
+    $dao = new DaoHelpdesk();
+
+    $obj = json_decode($dao->listProcotols());
+
+
+//echo var_dump($obj);
+ $json = array();
+        
+        $result = mysqli_query($conn->getLink(), $busca);
+        /*While
+         * Enquanto haver linhas da tabela para ser
+         * lida, essas serão armazenadas na row
+         */
+        while ($row = mysqli_fetch_assoc($result)) {
+            
+            //armazena linha em cada posição do array json
+            $json[] = $row;
+        }
+
+
+ $vetProdutos = $json;
+$totalPagina = 5; //Variável que armazena a quantidade de produtos por página.
+ 
+//Verifica se exite alguma query string com o valor da página, se não houver, define o valor 1.
+$pagina = (filter_input(INPUT_GET, "pagina", FILTER_SANITIZE_NUMBER_INT) ? filter_input(INPUT_GET, "pagina", FILTER_SANITIZE_NUMBER_INT) : 1);
+ 
+/*
+    ceil() - Arredonda um valor para cima, por exemplo, 5.5 arredonda para 6, pois assim vai exibir cinco na primeira página e um na próxima.$_COOKIE
+    count() - Conta a quantidade de valores do vetor
+    15 / 5 = 3 Paginas
+    16 / 5 = 3,2 | arredondamos para cima e temos 4 páginas.
+*/
+$quantidadePaginas = ceil(count($vetProdutos) / $totalPagina);
+ 
+$fim = ($pagina * $totalPagina); //Multiplicamos a página atual pela quantidade de itens por página: P=4 I= 5 | 4 * 5 = 20;
+$inicio = ($fim - $totalPagina); //Subtraimos o total de páginas pela quantidade final a ser exibido: FIM = 20 Tot. Pag. = 5 | 20 - 5 = 15
+
+?>
+ 
+ <?php
+        echo "<!DOCTYPE html>
 <html>
     <head>
         <title>Listar Protocolos</title>
@@ -989,10 +1076,19 @@ echo"<!DOCTYPE html>
   <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\">
   <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js\"></script>
   <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"></script>
-    
+<style>
+
+ td {
+   text-align: center;   
+}
+
+ th {
+   text-align: center;   
+}
+
+</style>
 </head>
     <body>
-
                         <div class=\"container\">
   <table class=\"table\">
 
@@ -1004,85 +1100,65 @@ echo"<!DOCTYPE html>
       <th>Abertura</th>
       <th></th>
     </tr>
-  </thead>
+  </thead>";
+      ?>   
+            <div id="dvConteudo">
+                <br>
+                    <?php
+                    for($j = $inicio; $inicio < $fim; $inicio++){
+                            if(!empty($vetProdutos[$inicio])){//Verificamos se as demais posições possuem algum valor
+                               //echo "<span style='color: red;'-->- {$vetProdutos[$inicio]['client_name']}<br>";
 
-"; 
-    for($i = 0; $i < sizeof($obj); $i++){
-      /*  
-        echo  "	
-		<form action=\"/lisarprotocoloid\" method =\"POST\">
-				<input type=\"hidden\" name=\"id_protocol\" value=\"{$obj[$i]->id_protocol}\">
-				<table class=\"table\">
-				<thead>
-					<tr>
-						<th>Id</th>
-						<th>Cliente</th>
-						<th>Status</th>
-						<th>Abertura</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							{$obj[$i]->id_protocol}
-						</td>
-						<td>
-							{$obj[$i]->client_name}
-						</td>
-						<td>
-							{$obj[$i]->name_status}
-						</td>
-						<td>
-							{$obj[$i]->creation_date}
-						</td>
-						<td>
-							<button type=\"submit\">Ver chamado</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-
-		</form>";
-        
-*/
-		echo " <form action=\"/lisarprotocoloid\" method =\"POST\">
-            <input type=\"hidden\" name=\"id_protocol\" value=\"{$obj[$i]->id_protocol}\">
-
+                echo    "<form action=\"/listarprotocoloid\" method =\"POST\">
+            <input type=\"hidden\" name=\"id_protocol\" value=\"{$obj[$inicio]->id_protocol}\">
   <tbody>
     <tr>
       <td>
-        {$obj[$i]->id_protocol}
+        {$obj[$inicio]->id_protocol}
       </td>
       <td>
-        {$obj[$i]->client_name}
+        {$obj[$inicio]->client_name}
       </td>
       <td>
-        {$obj[$i]->name_status}
+        {$obj[$inicio]->name_status}
       </td>
       <td>
-        {$obj[$i]->creation_date}
+        {$obj[$inicio]->creation_date}
       </td>
       <td>
-        <button type=\"submit\">Ver chamado</button>
+        <button class=\"btn btn-dark\" type=\"submit\">Ver chamado</button>
       </td>
     </tr>
-		
-			</form>";
-
-                                                        
-                                                        
-                }
-    
-    echo"
+                        </form>";
+                            }
+                        }
+                    ?>
+                    <br>
+                <?php
+             
+     echo"
   </tbody>
 </table>
 </body>
-</html>";
+</html>
+<ul class=\"pagination\">
+";
+       //Montamos a quantidade de botões
+              
+    for($i = 0; $i < $quantidadePaginas; $i++){
+                   ?>
+           <li> <a href="?pagina=<?=($i + 1);?>" style="color: #111; text-decoration: none; background-color: #CCC; padding: 5px; border:1px solid #eee; font-weight: bold;"><?=($i + 1);?></a></li>
+                    <?php
+                    }
+                ?>
+           
+ </div>
+<?php
+
 })->setName('listaprotocolos');
 
 
-$app->post('/lisarprotocoloid', function () {
+$app->post('/listarprotocoloid', 'usuarioLogado', function () {
     
         $dao = new DaoHelpdesk();
         /*echo var_dump(intval($_POST['id_protocol']));
@@ -1094,17 +1170,47 @@ $app->post('/lisarprotocoloid', function () {
 	 $result = json_decode($result);
 
 	echo "
-             <table border=\"1\">
-             <form id ='{$result[0]->id_protocol}' action = \"/atualizaprotocolos\" method =\"POST\">
+	<!DOCTYPE html>
+<html>
+    <head>
+        <title>Listar Protocolos</title>
+    		  <meta charset=\"utf-8\">
+  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
+  <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\">
+  <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js\"></script>
+  <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"></script>
+
+<style>
+
+.table td {
+   text-align: center;   
+}
+</style>
+
+			
+	</head>
+    <body>
+	
+	     <div class=\"container\">
+             
+<form id ='{$result[0]->id_protocol}' action = \"/atualizaprotocolos\" method =\"POST\">
+
+		<table class=\"table table-bordered table-responsive\">
+                    <thead>
+
+
              <tr>
-                         <th>id_protocol</th>
-                         <th>client_name</th>
-                         <th>email</th>
-                         <th>tel</th>
-                         <th>short_description</th>
-                         <th>prob_reported</th>
+                         <th>Protocolo</th>
+                         <th>Cliente</th>
+                         <th>Email</th>
+                         <th>Telefone</th>
+                         <th>Assunto</th>
+                         <th>Problema</th>
              </tr>
-                     <tr>
+                    </thead>       
+
+			<tbody>
+
                      <tr>
                              <input type = \"hidden\" name=\"id_protocol\" value =\"{$result[0]->id_protocol}\">
                              <td>{$result[0]->id_protocol}</td>
@@ -1112,17 +1218,17 @@ $app->post('/lisarprotocoloid', function () {
                              <td>{$result[0]->email}</td>
                              <td>{$result[0]->tel}</td>
                              <td>{$result[0]->short_description}</td>
-                             <td><textarea disabled rows=\"4\" cols=\"50\" name=\"prob_reported\" value=\"\">{$result[0]->prob_reported}</textarea></td>
+                             <td><textarea disabled class=\"form-control\" rows=\"5\" name=\"prob_reported\" value=\"\">{$result[0]->prob_reported}</textarea></td>
                         </tr>
               <tr>
-                         <th>solotion</th>
-                         <th>protocol_status</th>
-                         <th>status_name</th>
-                         <th>creation_date</th>
-                         <th>resolved_by</th>
+                         <th>Solução</th>
+                         <th>Status</th>
+                         <th>Status atual</th>
+                         <th>Criado em</th>
+                         <th>Resolvido por</th>
              </tr>
                         <tr>
-                           <td><textarea  rows=\"4\" cols=\"50\" name=\"solotion\"  value=\"\">{$result[0]->solotion}</textarea></td>
+                           <td><textarea class=\"form-control\" rows=\"5\"  name=\"solotion\"  value=\"\">{$result[0]->solotion}</textarea></td>
                              <td>  
                                         <select id=\"protocol_status\" name=\"protocol_status\">
                                            <option value=\"{$result[0]->protocol_status} selected\"> {$result[0]->name_status}</option>
@@ -1132,17 +1238,26 @@ $app->post('/lisarprotocoloid', function () {
                                         </select></td>
                              <td>{$result[0]->name_status}</td>
                              <td>{$result[0]->creation_date}</td>
-                             <td><input type=\"text\" name=\"resolved_by\" value=\"{$result[0]->resolved_by}\"></td>                                                                                   
-                             <td><input type=\"submit\" name=\"atualizar\" value=\"Atualizar\"></td>
+                             <td><input class=\"form-control\" type=\"text\" name=\"resolved_by\" value=\"{$result[0]->resolved_by}\"></td>                                                                                   
                      </tr>
                      </tr>
+			</tbody>
                      <br>
-             </form>
-        </table> ";
+		<tbody>        
+		</table>
+           <div>
+          <input type=\"submit\" name=\"atualizar\" value=\"Atualizar\" class=\"btn btn-dark\">
+          <div>
+	      </form>
+
+	<a href=\"http://tzne.kwcraft.com.br/listarprotocolos\" class=\"btn btn-dark\">Voltar a lista de chamados</a>
+    
+	</div>
+
+";
 
 
-  echo  ' <a href="http://tzne.kwcraft.com.br/listarprotocolos">Voltar a lista de chamados</a> ';  
-})->setName('lisarprotocoloid');
+})->setName('listarprotocoloid');
 
 
 
@@ -1314,7 +1429,7 @@ Função que valida se o usuário está logado antes de exibir a página
     } else {
         //echo"ja tem sessao";
     }
-    if (!isset($_SESSION["cliente"])) {
+    if (!isset($_SESSION["admin"])) {
         //Resgato uma instância existente de Slim
         $app = \Slim\Slim::getInstance();
         $app->flash('error', 'Login required');
@@ -1333,16 +1448,146 @@ Antes de permitir o acesso a paginaqualquer, verifico se o usuário está
 previamente logado com a função usuarioLogado();
 */
     $app->get('/paginaqualquer/', 'usuarioLogado', function () {
-                
+//         ini_set('display_errors', 1);       
         if (!isset($_SESSION)) {
                 session_start();
                     } else {
                         //echo"ja tem sessao";
                     }
-            echo "vc está logado " . $_SESSION["cliente"];
-        });
+            echo "vc está logado " . $_SESSION["cliente"]."<br>";
+ $conn = new MysqlConn();
+        $conn->Conecta();
+
+        $busca = ""
+                . "SELECT * FROM `helpdesk_protocols` "
+                . "INNER JOIN helpdesk_status "
+                . "ON helpdesk_protocols.protocol_status = helpdesk_status.id_status order by helpdesk_protocols.id_protocol";
+//O vetor a baixo exemplifica as informações contidas no banco de dados.
+    $dao = new DaoHelpdesk();
+
+    $obj = json_decode($dao->listProcotols());
 
 
+//echo var_dump($obj);
+ $json = array();
+        
+        $result = mysqli_query($conn->getLink(), $busca);
+        /*While
+         * Enquanto haver linhas da tabela para ser
+         * lida, essas serão armazenadas na row
+         */
+        while ($row = mysqli_fetch_assoc($result)) {
+            
+            //armazena linha em cada posição do array json
+            $json[] = $row;
+        }
+
+
+ $vetProdutos = $json;
+$totalPagina = 5; //Variável que armazena a quantidade de produtos por página.
+ 
+//Verifica se exite alguma query string com o valor da página, se não houver, define o valor 1.
+$pagina = (filter_input(INPUT_GET, "pagina", FILTER_SANITIZE_NUMBER_INT) ? filter_input(INPUT_GET, "pagina", FILTER_SANITIZE_NUMBER_INT) : 1);
+ 
+/*
+    ceil() - Arredonda um valor para cima, por exemplo, 5.5 arredonda para 6, pois assim vai exibir cinco na primeira página e um na próxima.$_COOKIE
+    count() - Conta a quantidade de valores do vetor
+    15 / 5 = 3 Paginas
+    16 / 5 = 3,2 | arredondamos para cima e temos 4 páginas.
+*/
+$quantidadePaginas = ceil(count($vetProdutos) / $totalPagina);
+ 
+$fim = ($pagina * $totalPagina); //Multiplicamos a página atual pela quantidade de itens por página: P=4 I= 5 | 4 * 5 = 20;
+$inicio = ($fim - $totalPagina); //Subtraimos o total de páginas pela quantidade final a ser exibido: FIM = 20 Tot. Pag. = 5 | 20 - 5 = 15
+
+?>
+ 
+ <?php
+        echo "<!DOCTYPE html>
+<html>
+    <head>
+        <title>Listar Protocolos</title>
+  <meta charset=\"utf-8\">
+  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
+  <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\">
+  <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js\"></script>
+  <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"></script>
+<style>
+
+ td {
+   text-align: center;   
+}
+
+ th {
+   text-align: center;   
+}
+
+</style>
+</head>
+    <body>
+                        <div class=\"container\">
+  <table class=\"table\">
+
+   <thead>
+    <tr>
+      <th>Id</th>
+      <th>Cliente</th>
+      <th>Status</th>
+      <th>Abertura</th>
+      <th></th>
+    </tr>
+  </thead>";
+      ?>   
+            <div id="dvConteudo">
+                <br>
+                    <?php
+                    for($j = $inicio; $inicio < $fim; $inicio++){
+                            if(!empty($vetProdutos[$inicio])){//Verificamos se as demais posições possuem algum valor
+                               //echo "<span style='color: red;'-->- {$vetProdutos[$inicio]['client_name']}<br>";
+
+				echo  	"<form action=\"/listarprotocoloid\" method =\"POST\">
+            <input type=\"hidden\" name=\"id_protocol\" value=\"{$obj[$inicio]->id_protocol}\">
+  <tbody>
+    <tr>
+      <td>
+        {$obj[$inicio]->id_protocol}
+      </td>
+      <td>
+        {$obj[$inicio]->client_name}
+      </td>
+      <td>
+        {$obj[$inicio]->name_status}
+      </td>
+      <td>
+        {$obj[$inicio]->creation_date}
+      </td>
+      <td>
+        <button type=\"submit\">Ver chamado</button>
+      </td>
+    </tr>
+                        </form>";
+                            }
+                        }
+                    ?>
+                    <br>
+                <?php
+             
+	 echo"
+  </tbody>
+</table>
+</body>
+</html>";
+       //Montamos a quantidade de botões
+                    for($i = 0; $i < $quantidadePaginas; $i++){
+                    ?>
+                        <a href="?pagina=<?=($i + 1);?>" style="color: #111; text-decoration: none; background-color: #CCC; padding: 5px; border:1px solid #eee; font-weight: bold;"><?=($i + 1);?></a>
+                    <?php
+                    }
+                ?>
+            </div>
+<?php
+
+});
 //$data = json_decode($app->request->getBody());
   $app->run();
 

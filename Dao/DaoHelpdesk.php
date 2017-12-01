@@ -83,11 +83,11 @@ class DaoHelpdesk {
         
         if (mysqli_query($conn->getLink(), $q)) {
             $json = "{'protocoloatualizado':'true'}";
-            echo json_encode($json);
+            //echo json_encode($json);
         } else {
           echo var_dump(mysqli_error($conn->getLink()));
             $json = "{'protocoloatualizado':'false'}";
-            echo json_encode($json);
+            //echo json_encode($json);
         }
     }
     

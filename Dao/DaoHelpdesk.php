@@ -51,8 +51,10 @@ class DaoHelpdesk {
             return true;
         } else {
             echo mysqli_error($conn->getLink());
-            //$json = "{'protocoloinserido':'false'}";
-            //echo json_encode($json);
+            $json = "[{'protocoloinserido':'false'},"
+                    . "{'erro':".  mysqli_error($conn->getLink())."}]";
+         
+               echo json_encode($json);
             return false;
         }
     }

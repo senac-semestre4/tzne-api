@@ -55,7 +55,7 @@ $dao = new DaoProducts;
 $dao->insertProduct($p, $arrayOptions);
 
 //header("Location: ".$url);
-echo "Inserido";
+//echo "Inserido";
     
     
     

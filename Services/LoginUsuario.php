@@ -30,10 +30,10 @@ if ($_POST["username"] == null && $_POST["password"] == null) {
        					 }
                                          
                    $_SESSION["admin"] = $u;
-                echo "Sessão de usuário administrador criada " .$_SESSION["admin"] ;
-
+                //echo "Sessão de usuário administrador criada " .$_SESSION["admin"] ;
+                header('Location: /admin/insereproduto');
     } else {
-        header('Location: /View/TestesViews/ViewLogin/telalogin.php');
+       header('Location: /admin');
         exit;
     }
 }

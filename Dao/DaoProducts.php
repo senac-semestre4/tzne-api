@@ -48,9 +48,9 @@ class DaoProducts {
                    if ($this->listProductByCaracteristicsCode($product->getCode(), $options[$i]->getColor(), $options[$i]->getSize())== false) {
                        
                     array_push($indice, $i);
-                    echo"<indice>";
-                    echo $indice[$i];
-                    echo"<indice>";
+                    //echo"<indice>";
+                    //echo $indice[$i];
+                    //echo"<indice>";
                     
                 }
                 
@@ -78,7 +78,7 @@ class DaoProducts {
 
             $json = json_encode($obj, JSON_PRETTY_PRINT);
             
-            echo $json;
+          //  echo $json;
           
          }else{
              
@@ -156,14 +156,14 @@ class DaoProducts {
             //Executa o comando de inserção
            
            if($stmt->execute()){
-                 var_dump(mysqli_error($conn->getLink()));  
+                 //var_dump(mysqli_error($conn->getLink()));  
                  
                  
                  $lastId = mysqli_insert_id($conn->getLink());
-                 echo"<br>";
-                 echo"Last id  ";
-                 echo$lastId;
-                 echo"<br>";
+                 //echo"<br>";
+                // echo"Last id  ";
+                 //echo$lastId;
+                 //echo"<br>";
                  
                  
                  if (isset($indice[0])) {
@@ -172,12 +172,12 @@ class DaoProducts {
 
                             for ($i = 0; $i < sizeof($options); $i++) {
 
-                                echo "<br>";
+                    //            echo "<br>";
                                // echo $options[$i]->getSize();
-                                echo "<br>";
+                  //              echo "<br>";
                                 //echo $options[$i]->getSize();
-                                echo "<br>";
-                                echo var_dump($options);
+                //                echo "<br>";
+              //                  echo var_dump($options);
                                 $query = "INSERT INTO `products_has_products_size_color_qtd` (
                             `products_product_id`,
                              `products_size_product_id_size`,
@@ -188,20 +188,20 @@ class DaoProducts {
                              " . $options[$indice[$i]]->getProductQuantity() . ")";
 
                                 if (mysqli_query($conn->getLink(), $query)) {
-                                    echo "inserido";
+                                   // echo "inserido";
                                 } else {
-                                    var_dump(mysqli_error($conn->getLink()));
+                    //                 var_dump(mysqli_error($conn->getLink()));
                                 }
                             }
                         } else {
 
                             for ($i = 0; $i < sizeof($options); $i++) {
 
-                                echo "<br>";
-                                echo $options[$i]->getSize();
-                                echo "<br>";
-                                echo $options[$i]->getSize();
-                                echo "<br>";
+                      //          echo "<br>";
+                        //        echo $options[$i]->getSize();
+                          //      echo "<br>";
+                            //    echo $options[$i]->getSize();
+                              //  echo "<br>";
                                 $query = "INSERT INTO `products_has_products_size_color_qtd` (
                             `products_product_id`,
                              `products_size_product_id_size`,
@@ -212,14 +212,14 @@ class DaoProducts {
                              " . $options[$i]->getProductQuantity() . ")";
 
                                 if (mysqli_query($conn->getLink(), $query)) {
-                                    echo "inserido";
+                                //    echo "inserido";
                                 } else {
-                                    var_dump(mysqli_error($conn->getLink()));
+                                  //  var_dump(mysqli_error($conn->getLink()));
                                 }
                             }
                         }
                     }else{
-                                                            var_dump(mysqli_error($conn->getLink()));
+                          //                                  var_dump(mysqli_error($conn->getLink()));
 
                     }
 
@@ -237,7 +237,7 @@ class DaoProducts {
 
             $json = json_encode($obj, JSON_PRETTY_PRINT);
             
-            echo $json;
+            //echo $json;
             return false;
      }
    }

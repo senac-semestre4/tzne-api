@@ -1,19 +1,4 @@
-<?php
-//Verifico se há sessão aberta, se não abre uma nova
-    if (!isset($_SESSION)) {
-                session_start();
-                    } else {
-                        //echo"ja tem sessao";
-                    }
 
-
-$seed = rand(); // gero um número aleatório
-
-$_SESSION['seed'] = $seed; //guardo ele na sessão
-
-
-
-?>
 
 <html lang="en"><head>
         <meta charset="utf-8">
@@ -23,6 +8,10 @@ $_SESSION['seed'] = $seed; //guardo ele na sessão
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <style type="text/css">
+
+            select {
+                color: #999999;
+            }
             /*Contact sectiom*/
             .content-header{
                 font-family: 'Oleo Script', cursive;
@@ -54,7 +43,7 @@ $_SESSION['seed'] = $seed; //guardo ele na sessão
             }
 
             .form-line{
-/*                border-right: 1px solid #B29999;*/
+                /*                border-right: 1px solid #B29999;*/
             }
 
             .form-group{
@@ -114,57 +103,38 @@ $_SESSION['seed'] = $seed; //guardo ele na sessão
         <link href="https://fonts.googleapis.com/css?family=Teko:400,700" rel="stylesheet">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
+       
+
+
+
         <section id="contact">
             <div class="section-content">
-                <h1 class="section-header">Entre <span class="content-header wow fadeIn " data-wow-delay="0.2s" data-wow-duration="2s"> Em contato conosco</span></h1>
-                <h3>Registre seu elogio, reclamação ou sugestão!</h3>
+                <h1 class="section-header"><span class="content-header wow fadeIn " data-wow-delay="0.2s" data-wow-duration="2s">TZNE - Tela de Login</span></h1>
+                <h3></h3>
             </div>
-<!--            <div class="contact-section">-->
-                <div class="container">
-                    <form id="form" name="form" method="POST" action="/contato">
-   <?php
-    /*Aqui envio ele pelo formulário para saber se quando receber será a ação do mesmo formulário, para evitar
-    vários cliques de enviado e gerar duplicidade de chamados por cliques reptidos. 
-    */
-    echo "<input type=hidden name='seed' value='$seed'>";
-
-    ?>
-
-                          <div class="col-md-6 form-line">
-                            <div class="form-group">
-                                <label for="txtnome">Seu nome</label>
-                                <input type="text" class="form-control" id="txtnome" name="txtnome" placeholder=" Seu nome">
-                            </div>
-                            <div class="form-group">
-                                <label for="txtemail">Seu Email</label>
-                                <input type="email" class="form-control" id="txtemail" name="txtemail" placeholder=" Ex: lucifer@inferno.hot">
-                            </div>	
-                            <div class="form-group">
-                                <label for="txttel">Seu Telefone</label>
-                                <input type="tel" class="form-control" id="txttel" name="txttel" placeholder=" 11983672587">
-                            </div>
+            <!--            <div class="contact-section">-->
+            <div class="container">
+                <form id="form" name="form" method="POST" action="/Services/LoginUsuario.php">
+                    <div class="col-md-6 col-sm-offset-3 form-line">
+                        <div class="form-group">
+                            <label for="name">Email</label>
+                            <input type="text" class="form-control" id="txtnome" name="username" placeholder=" Email">
                         </div>
-                        <div class="col-md-6">
-
-                            <div class="form-group">
-                                <label for="chamado">Assunto</label>
-                                <input type="tel" class="form-control" id="chamado" name="chamado" placeholder=" Assunto">
-                            </div>
-                            <div class="form-group">
-                                <label for="txtmsg"> Sua mensagem</label>
-                                <textarea class="form-control" rows="3" id="txtmsg" name="txtmsg" placeholder=" Mesagem"></textarea>
-                            </div>
-
-                            <div>
-
-                                <button type="submit" class="btn btn-default submit"><i class="fa fa-paper-plane" aria-hidden="true"></i>  Enviar</button>
-                            </div>
-
+                        <div class="form-group">
+                            <label for="password">Senha</label>
+                            <input type="password" class="form-control" id="txtnome" name="password" placeholder=" Senha">
                         </div>
-                    </form>
-                </div>
+
+                        <div>
+
+                            <button type="submit" class="btn btn-default submit"><i  aria-hidden="true"></i>  Entrar</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
             <!--</div>-->
-    </section>
+        </section>
         <script type="text/javascript">
 
         </script>

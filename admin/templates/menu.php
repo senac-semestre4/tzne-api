@@ -27,15 +27,13 @@ echo'<nav class="navbar navbar-inverse">
                                 <li><a href="#">Listar - Editar</a></li>
                             </ul>
                         </li>
-<!--                    <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
+                  <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Vendas <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Page 1-1</a></li>
-                                <li><a href="#">Page 1-2</a></li>
-                                <li><a href="#">Page 1-3</a></li>
+                                <li><a href="http://tzne.kwcraft.com.br/admin/api/venda/listarpedidos?pagina=1">Listar</a></li>
                             </ul>
                         </li>
--->
+
                         <li class="dropdown"> 
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Protocolos <span class="caret"></span></a>
                             <ul class="dropdown-menu">
@@ -48,7 +46,7 @@ echo'<nav class="navbar navbar-inverse">
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <!--                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>-->
-                        <li><a href="desloga.php"><span class="glyphicon glyphicon-log-in"></span> Sair</a></li>
+                        <li><a href="/admin/desloga.php"><span class="glyphicon glyphicon-log-in"></span> Sair</a></li>
                     </ul>
                 </div>
             </div>

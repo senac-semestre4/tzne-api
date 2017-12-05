@@ -37,7 +37,7 @@ $app->get('/listarota/', function() use ($app) {
     $routes = $app->router()->getNamedRoutes();
 
     foreach ($routes as $route) {
-        echo "tzne.kwcraft.com.br{$route->getPattern()}\n\n";
+        echo "tzne.kwcraft.com.br/admin{$route->getPattern()}\n\n";
     }
     exit;
 });
@@ -51,11 +51,13 @@ $group = $app->group('/api', function () use ($app) {
 
     //*********************GRUPO VENDA***************************************
     $app->group('/venda', function () use ($app) {
-
+ 
         //Insere a venda recebendo parametros do front
         //lista todos os pedidos
-        $app->get('/listarpedidos', function () {
-            $dao = new DaoSale();
+        $app->get('/listarpedidos', 'usuarioLogado', function () {
+            
+           // ini_set( 'display_errors', '1' );   
+       /*     $dao = new DaoSale();
 
             $json = $dao->listSalesStatus();
 
@@ -91,14 +93,578 @@ $group = $app->group('/api', function () use ($app) {
                    <table>   
                    ";
             }
+            
+     */       
+
+
+            
+            
+            
+            
+             if (!isset($_SESSION)) {
+        session_start();
+    } else {
+        //echo"ja tem sessao";
+    }
+
+    $conn = new MysqlConn();
+    $conn->Conecta();
+
+    $busca = ""
+            . "SELECT sale_id, client_name, client_client_id,order_status_order_status_id, order_status.name,
+                date,  amount, discount,
+                total_partial, number_plots, subtotal,date FROM `sales`
+                    INNER JOIN sale_has_order_status
+                    ON sale_has_order_status.sales_sale_id =sales.sale_id
+                    INNER JOIN item_for_sale
+                    ON item_for_sale.sale_id_sale = sales.sale_id
+                     INNER JOIN client
+                    ON sales.client_client_id = client.client_id
+                    INNER JOIN  order_status
+                    ON order_status.order_status_id = sale_has_order_status.order_status_order_status_id
+                    GROUP by sales.sale_id";
+//O vetor a baixo exemplifica as informações contidas no banco de dados.
+    $dao = new DaoSale();
+
+    $obj = json_decode($dao->listSales());
+
+
+//echo var_dump($obj);
+    $json = array();
+
+    $result = mysqli_query($conn->getLink(), $busca);
+    /* While
+     * Enquanto haver linhas da tabela para ser
+     * lida, essas serão armazenadas na row
+     */
+    while ($row = mysqli_fetch_assoc($result)) {
+
+        //armazena linha em cada posição do array json
+        $json[] = $row;
+    }
+
+
+    $vetProdutos = $json;
+    $totalPagina = 5; //Variável que armazena a quantidade de produtos por página.
+//Verifica se exite alguma query string com o valor da página, se não houver, define o valor 1.
+    $pagina = (filter_input(INPUT_GET, "pagina", FILTER_SANITIZE_NUMBER_INT) ? filter_input(INPUT_GET, "pagina", FILTER_SANITIZE_NUMBER_INT) : 1);
+
+    /*
+      ceil() - Arredonda um valor para cima, por exemplo, 5.5 arredonda para 6, pois assim vai exibir cinco na primeira página e um na próxima.$_COOKIE
+      count() - Conta a quantidade de valores do vetor
+      15 / 5 = 3 Paginas
+      16 / 5 = 3,2 | arredondamos para cima e temos 4 páginas.
+     */
+    $quantidadePaginas = ceil(count($vetProdutos) / $totalPagina);
+
+    $fim = ($pagina * $totalPagina); //Multiplicamos a página atual pela quantidade de itens por página: P=4 I= 5 | 4 * 5 = 20;
+    $inicio = ($fim - $totalPagina); //Subtraimos o total de páginas pela quantidade final a ser exibido: FIM = 20 Tot. Pag. = 5 | 20 - 5 = 15
+    ?>
+
+
+
+
+
+    <html lang="en"><head>
+            <meta charset="utf-8">
+            <meta name="robots" content="noindex, nofollow">
+
+            <title>TZNE</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+            <style type="text/css">
+
+                td {
+                    text-align: center; 
+                    color: #eeeeee;
+
+                }
+
+                th {
+                    text-align: center;  
+                    color: #eeeeee;
+
+                }
+
+
+                select {
+                    color: #999999;
+                }
+                /*Contact sectiom*/
+                .content-header{
+                    font-family: 'Oleo Script', cursive;
+                    color:#fcc500;
+                    font-size: 45px;
+                }
+
+                .section-content{
+                    text-align: center; 
+
+                }
+                #contact{
+
+                    font-family: 'Teko', sans-serif;
+                    padding-top: 60px;
+                    width: 100%;
+                    width: 100vw;
+                    height: 100%;
+                    /*                background: #3a6186;  fallback for old browsers 
+                                    background: -webkit-linear-gradient(to left, #3a6186 , #89253e);  Chrome 10-25, Safari 5.1-6 
+                                    background: linear-gradient(to left, #3a6186 , #89253e);  W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ 
+                    */ color : #fff;    
+                }
+                .contact-section{
+                    padding-top: 40px;
+                }
+                .contact-section .col-md-6{
+                    width: 50%;
+                }
+
+                .form-line{
+                    /*                border-right: 1px solid #B29999;*/
+                }
+
+                .form-group{
+                    margin-top: 10px;
+                }
+                label{
+                    font-size: 1.3em;
+                    line-height: 1em;
+                    font-weight: normal;
+                }
+                .form-control{
+                    font-size: 1.3em;
+                    color: #080808;
+                }
+                textarea.form-control {
+                    height: 108px;
+                    /* margin-top: px;*/
+                }
+
+                .submit{
+                    font-size: 1.1em;
+                    float: right;
+                    width: 150px;
+                    background-color: transparent;
+                    color: #fff;
+
+                }
+
+                body{
+                    background: #3a6186; /* fallback for old browsers */
+                    background: -webkit-linear-gradient(to left, #3a6186 , #89253e); /* Chrome 10-25, Safari 5.1-6 */
+                    background: linear-gradient(to left, #3a6186 , #89253e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+                }
+
+            </style>
+            <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+            <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+            <script type="text/javascript">
+                window.alert = function () {
+                };
+                var defaultCSS = document.getElementById('bootstrap-css');
+                function changeCSS(css) {
+                    if (css)
+                        $('head > link').filter(':first').replaceWith('<link rel="stylesheet" href="' + css + '" type="text/css" />');
+                    else
+                        $('head > link').filter(':first').replaceWith(defaultCSS);
+                }
+                $(document).ready(function () {
+                    var iframe_height = parseInt($('html').height());
+                    window.parent.postMessage(iframe_height, 'https://bootsnipp.com');
+                });
+            </script>
+        </head>
+        <body style="">
+            <link href="https://fonts.googleapis.com/css?family=Oleo+Script:400,700" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css?family=Teko:400,700" rel="stylesheet">
+            <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+
+
+
+            <?php
+            include './templates/menu.php';
+
+            echo "
+                        <div class=\"container\">
+  <table class=\"table\">
+
+   <thead>
+    <tr>
+      <th>Id</th>
+      <th>Cliente</th>
+      <th>Status</th>
+      <th>Abertura</th>
+      <th>Total</th>
+      <th></th>
+    </tr>
+  </thead>";
+            ?>   
+            <div id="dvConteudo">
+                <br>
+                <?php
+                for ($j = $inicio; $inicio < $fim; $inicio++) {
+                    if (!empty($vetProdutos[$inicio])) {//Verificamos se as demais posições possuem algum valor
+                        //echo "<span style='color: red;'-->- {$vetProdutos[$inicio]['client_name']}<br>";
+                        echo "<form id ='{$obj[$i]->saleid}' action = \"/admin/api/venda/atualizastatuspedido\" method =\"POST\">
+            <input type=\"hidden\" name=\"saleid\" value=\"{$obj[$inicio]->sale_id}\">
+
+  <tbody>
+    <tr>
+      <td>
+        {$obj[$inicio]->sale_id}
+      </td>
+      <td>
+        {$obj[$inicio]->client_name}
+      </td>
+      <td>
+      <div class=\"form-group\">
+         <select class=\"form-control\"  name=\"status\">
+           <option value=\"{$obj[$inicio]->order_status_order_status_id} selected\"> {$obj[$inicio]->name}</option>
+            <option value=\"1\">Pedido em Aprovação</option>
+            <option value=\"2\">Produto a ser enviado</option>
+            <option value=\"3\">Pedido entregue</option>
+        </select>
+        </div>
+                           
+      </td>
+      <td>
+        {$obj[$inicio]->date}
+      </td>
+      <td>
+        {$obj[$inicio]->amount}
+      </td>
+
+      
+      <td>
+        <button class=\"btn btn-info\" type=\"submit\">Atualizar Pedido</button>
+          <a href=\"http://tzne.kwcraft.com.br/admin/api/venda/listaitensvenda?id_venda={$obj[$inicio]->sale_id}\" class=\"btn btn-info\">Detalhes</a>
+      </td>
+    </tr>
+                        </form>";
+                    }
+                }
+                ?>
+                <br>
+                <?php
+                echo"
+  </tbody>
+</table>
+</body>
+</html>
+<nav aria-label=\"Page\">
+<ul class=\"pagination\">
+";
+                //Montamos a quantidade de botões
+
+                for ($i = 0; $i < $quantidadePaginas; $i++) {
+                    ?>
+                    <li class="page-item"> <a class="page-link" href="?pagina=<?= ($i + 1); ?>" style="color: #111; text-decoration: none; background-color: #CCC; padding: 5px; border:1px solid #eee; font-weight: bold;"><?= ($i + 1); ?></a></li>
+                    <?php
+                }
+                ?>
+            </ul>
+        </nav>
+    </div>
+    <?php
+            
+            
+            
+            
+            
+            
+            
             //echo "</table>";
             // echo "</tr>";
             //echo $json;
         })->setName('listarpedidos');
 
-        $app->post('/atualizastatuspedido', function () {
+        
+        
+         $app->map('/listaitensvenda/', 'usuarioLogado', function () {
+            $sale_id;
+            if(!isset($_POST['sale_id'])){
+                $sale_id = $_GET['id_venda'];
+            }else{
+                 $sale_id= $_POST['sale_id'];
+            }
+                        
+             if (!isset($_SESSION)) {
+        session_start();
+    } else {
+        //echo"ja tem sessao";
+    }
+
+    $conn = new MysqlConn();
+    $conn->Conecta();
+
+    $busca = "SELECT * FROM `item_for_sale` WHERE sale_id_sale = " . $sale_id;
+//O vetor a baixo exemplifica as informações contidas no banco de dados.
+    $dao = new DaoSale();
+
+    $obj = json_decode($dao->listItensSaleById($sale_id));
+
+
+//echo var_dump($obj);
+    $json = array();
+
+    $result = mysqli_query($conn->getLink(), $busca);
+    /* While
+     * Enquanto haver linhas da tabela para ser
+     * lida, essas serão armazenadas na row
+     */
+    while ($row = mysqli_fetch_assoc($result)) {
+
+        //armazena linha em cada posição do array json
+        $json[] = $row;
+    }
+
+
+    $vetProdutos = $json;
+    $totalPagina = 5; //Variável que armazena a quantidade de produtos por página.
+//Verifica se exite alguma query string com o valor da página, se não houver, define o valor 1.
+    $pagina = (filter_input(INPUT_GET, "pagina", FILTER_SANITIZE_NUMBER_INT) ? filter_input(INPUT_GET, "pagina", FILTER_SANITIZE_NUMBER_INT) : 1);
+
+    /*
+      ceil() - Arredonda um valor para cima, por exemplo, 5.5 arredonda para 6, pois assim vai exibir cinco na primeira página e um na próxima.$_COOKIE
+      count() - Conta a quantidade de valores do vetor
+      15 / 5 = 3 Paginas
+      16 / 5 = 3,2 | arredondamos para cima e temos 4 páginas.
+     */
+    $quantidadePaginas = ceil(count($vetProdutos) / $totalPagina);
+
+    $fim = ($pagina * $totalPagina); //Multiplicamos a página atual pela quantidade de itens por página: P=4 I= 5 | 4 * 5 = 20;
+    $inicio = ($fim - $totalPagina); //Subtraimos o total de páginas pela quantidade final a ser exibido: FIM = 20 Tot. Pag. = 5 | 20 - 5 = 15
+    ?>
+
+
+
+
+
+    <html lang="en"><head>
+            <meta charset="utf-8">
+            <meta name="robots" content="noindex, nofollow">
+
+            <title>TZNE</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+            <style type="text/css">
+
+                td {
+                    text-align: center; 
+                    color: #eeeeee;
+
+                }
+
+                th {
+                    text-align: center;  
+                    color: #eeeeee;
+
+                }
+
+
+                select {
+                    color: #999999;
+                }
+                /*Contact sectiom*/
+                .content-header{
+                    font-family: 'Oleo Script', cursive;
+                    color:#fcc500;
+                    font-size: 45px;
+                }
+
+                .section-content{
+                    text-align: center; 
+
+                }
+                #contact{
+
+                    font-family: 'Teko', sans-serif;
+                    padding-top: 60px;
+                    width: 100%;
+                    width: 100vw;
+                    height: 100%;
+                    /*                background: #3a6186;  fallback for old browsers 
+                                    background: -webkit-linear-gradient(to left, #3a6186 , #89253e);  Chrome 10-25, Safari 5.1-6 
+                                    background: linear-gradient(to left, #3a6186 , #89253e);  W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ 
+                    */ color : #fff;    
+                }
+                .contact-section{
+                    padding-top: 40px;
+                }
+                .contact-section .col-md-6{
+                    width: 50%;
+                }
+
+                .form-line{
+                    /*                border-right: 1px solid #B29999;*/
+                }
+
+                .form-group{
+                    margin-top: 10px;
+                }
+                label{
+                    font-size: 1.3em;
+                    line-height: 1em;
+                    font-weight: normal;
+                }
+                .form-control{
+                    font-size: 1.3em;
+                    color: #080808;
+                }
+                textarea.form-control {
+                    height: 108px;
+                    /* margin-top: px;*/
+                }
+
+                .submit{
+                    font-size: 1.1em;
+                    float: right;
+                    width: 150px;
+                    background-color: transparent;
+                    color: #fff;
+
+                }
+
+                body{
+                    background: #3a6186; /* fallback for old browsers */
+                    background: -webkit-linear-gradient(to left, #3a6186 , #89253e); /* Chrome 10-25, Safari 5.1-6 */
+                    background: linear-gradient(to left, #3a6186 , #89253e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+                }
+
+            </style>
+            <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+            <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+            <script type="text/javascript">
+                window.alert = function () {
+                };
+                var defaultCSS = document.getElementById('bootstrap-css');
+                function changeCSS(css) {
+                    if (css)
+                        $('head > link').filter(':first').replaceWith('<link rel="stylesheet" href="' + css + '" type="text/css" />');
+                    else
+                        $('head > link').filter(':first').replaceWith(defaultCSS);
+                }
+                $(document).ready(function () {
+                    var iframe_height = parseInt($('html').height());
+                    window.parent.postMessage(iframe_height, 'https://bootsnipp.com');
+                });
+            </script>
+        </head>
+        <body style="">
+            <link href="https://fonts.googleapis.com/css?family=Oleo+Script:400,700" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css?family=Teko:400,700" rel="stylesheet">
+            <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+
+
+
+            <?php
+            include './templates/menu.php';
+
+            echo "
+                        <div class=\"container\">
+  <table class=\"table\">
+
+   <thead>
+    <tr>
+      <th>Id Venda</th>
+      <th>Id produto</th>
+      <th>Quantidade</th>
+      <th>Subtotal</th>
+       <th></th>
+    </tr>
+  </thead>";
+            ?>   
+            <div id="dvConteudo">
+                <br>
+                <?php
+                for ($j = $inicio; $inicio < $fim; $inicio++) {
+                    if (!empty($vetProdutos[$inicio])) {
+                    // //Verificamos se as demais posições possuem algum valor
+                        //echo "<span style='color: red;'-->- {$vetProdutos[$inicio]['client_name']}<br>";
+                        //$total = $obj[$inicio]->quantity* $obj[$inicio]->subtotal;
+                        echo "<form action=\"/admin/api/produtos/listarprodutoshasid\" method =\"GET\">
+            <input type=\"hidden\" name=\"hasid\" value=\"{$obj[$inicio]->product_product_has_id}\">
+             <input type=\"hidden\" name=\"sale_id\" value=\"{$sale_id}\">
+  <tbody>
+    <tr>
+      <td>
+        {$obj[$inicio]->sale_id_sale}
+      </td>
+      <td> 
+        {$obj[$inicio]->product_product_has_id}
+      </td>
+      <td>
+        {$obj[$inicio]->quantity}
+      </td>
+      <td>
+        {$obj[$inicio]->subtotal}
+      </td>
+      <td>
+        <button class=\"btn btn-info\" type=\"submit\">Detalhes</button>
+      </td>
+
+    </tr>
+
+                        </form>";
+
+
+                    }
+                }
+                ?>
+                                             <br>
+                <?php
+                echo"
+  </tbody>
+</table>
+   <a href=\"http://tzne.kwcraft.com.br/admin/api/venda/listarpedidos?pagina=1\" class=\"btn btn-info\">Voltar</a>
+</body>
+</html>
+<nav aria-label=\"Page\">
+<ul class=\"pagination\">
+";
+                //Montamos a quantidade de botões
+
+                for ($i = 0; $i < $quantidadePaginas; $i++) {
+                    ?>
+<!--                     <li class="page-item"> <a class="page-link" href="?pagina=<?= ($i + 1); ?>&sale_id=<?=$_POST['sale_id']?>" style="color: #111; text-decoration: none; background-color: #CCC; padding: 5px; border:1px solid #eee; font-weight: bold;"><?= ($i + 1); ?></a></li> -->
+                    <?php
+                }
+                ?>
+            </ul>
+        </nav>
+    </div>
+    <?php
+            
+            
+            
+            
+            
+        })->via('GET', 'POST')->setName('listaitensvenda');
+        
+        
+        
+        
+        
+        
+        
+        
+        $app->post('/atualizastatuspedido', 'usuarioLogado', function () use ($app) {
+            $msgSucesso ="Pedido atualizado";
+            $mgsVoltar ="Voltar";
+            $href = "http://tzne.kwcraft.com.br/admin/api/venda/listarpedidos";
+
             $dao = new DaoSale();
             $dao->updateStatusSale(intval($_POST['saleid']), intval($_POST['status']));
+             $errorData = array('error' => 'Permission Denied');
+            $app->redirect('/admin/templates/sucesso.php?msgSucesso='.$msgSucesso.'&mgsVoltar='.$mgsVoltar
+                .'&href='.$href, 301);
         })->setName('atualizastatuspedido');
 
 
@@ -130,42 +696,244 @@ $group = $app->group('/api', function () use ($app) {
                 }
             }
 
+//           echo json_encode($json);
 
 
 
-            echo json_encode($json);
+
+
+
         })->setName('listavendas');
-        $app->get('/listavendas/:id', function ($id) {
-            $conn = new MysqlConn();
-            $conn->Conecta();
-            $query = "SELECT sale_id,client_client_id,order_status_order_status_id,
-                date, amount, discount,
-                total_partial, number_plots, subtotal FROM `sales`
-                    INNER JOIN sale_has_order_status
-                    ON sale_has_order_status.sales_sale_id =sales.sale_id
-                    INNER JOIN item_for_sale
-                    ON item_for_sale.sale_id_sale = sales.sale_id WHERE sale_id = {$id} GROUP BY sales.sale_id";
+        
+        
+       
+        
+        
+        $app->post('/listaitensvendas/:id', 'usuarioLogado', function () {
 
-            if ($result = mysqli_query($conn->getLink(), $query)) {
+    $dao = new DaoHelpdesk();
+    /* echo var_dump(intval($_POST['id_protocol']));
+      echo var_dump(intval($_POST['protocol_status']));
+      echo var_dump($_POST['resolved_by']);
+      echo var_dump($_POST['solotion']); */
+
+    $result = $dao->listProcotolsId(intval($_POST['sale_id']));
+    $result = json_decode($result);
+    ?>
 
 
-                if (!mysqli_num_rows($result)) {
-                    echo "Sem resultado";
-                } else {
-                    $p = new Product();
-                    while ($row = mysqli_fetch_assoc($result)) {
+    <html lang="en"><head>
+            <meta charset="utf-8">
+            <meta name="robots" content="noindex, nofollow">
 
-                        //armazena linha em cada posição do array json
+            <title>TZNE</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+            <style type="text/css">
 
-                        $json[] = $row;
-                    }
+
+                a{
+                    color:#63b7ff;
                 }
-            }
+                td {
+                    text-align: center;   
+                    color: #eeeeee;
 
-            echo json_encode($json);
-        })->setName('listavendasid');
+                }
+
+                th {
+                    text-align: center;   
+                    color: #eeeeee;
+
+                }
 
 
+                select {
+                    color: #999999;
+                }
+                /*Contact sectiom*/
+                .content-header{
+                    font-family: 'Oleo Script', cursive;
+                    color:#fcc500;
+                    font-size: 45px;
+                }
+
+                .section-content{
+                    text-align: center; 
+
+                }
+                #contact{
+
+                    font-family: 'Teko', sans-serif;
+                    padding-top: 60px;
+                    width: 100%;
+                    width: 100vw;
+                    height: 100%;
+                    /*                background: #3a6186;  fallback for old browsers 
+                                    background: -webkit-linear-gradient(to left, #3a6186 , #89253e);  Chrome 10-25, Safari 5.1-6 
+                                    background: linear-gradient(to left, #3a6186 , #89253e);  W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ 
+                    */ color : #fff;    
+                }
+                .contact-section{
+                    padding-top: 40px;
+                }
+                .contact-section .col-md-6{
+                    width: 50%;
+                }
+
+                .form-line{
+                    /*                border-right: 1px solid #B29999;*/
+                }
+
+                .form-group{
+                    margin-top: 10px;
+                }
+                label{
+                    font-size: 1.3em;
+                    line-height: 1em;
+                    font-weight: normal;
+                }
+                .form-control{
+                    font-size: 1.3em;
+                    color: #080808;
+                }
+                textarea.form-control {
+                    height: 108px;
+                    /* margin-top: px;*/
+                }
+
+                .submit{
+                    font-size: 1.1em;
+                    float: right;
+                    width: 150px;
+                    background-color: transparent;
+                    color: #fff;
+
+                }
+
+                body{
+                    background: #3a6186; /* fallback for old browsers */
+                    background: -webkit-linear-gradient(to left, #3a6186 , #89253e); /* Chrome 10-25, Safari 5.1-6 */
+                    background: linear-gradient(to left, #3a6186 , #89253e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+                }
+
+            </style>
+            <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+            <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+            <script type="text/javascript">
+                window.alert = function () {
+                };
+                var defaultCSS = document.getElementById('bootstrap-css');
+                function changeCSS(css) {
+                    if (css)
+                        $('head > link').filter(':first').replaceWith('<link rel="stylesheet" href="' + css + '" type="text/css" />');
+                    else
+                        $('head > link').filter(':first').replaceWith(defaultCSS);
+                }
+                $(document).ready(function () {
+                    var iframe_height = parseInt($('html').height());
+                    window.parent.postMessage(iframe_height, 'https://bootsnipp.com');
+                });
+            </script>
+        </head>
+        <body style="">
+            <link href="https://fonts.googleapis.com/css?family=Oleo+Script:400,700" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css?family=Teko:400,700" rel="stylesheet">
+            <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+            <?php
+            include './templates/menu.php';
+            ?>
+
+            <section id="contact">
+                <div class="section-content">
+    <!--                <h1 class="section-header"><span class="content-header wow fadeIn " data-wow-delay="0.2s" data-wow-duration="2s"> Cadastro de Produto</span></h1>-->
+                
+                </div>
+                <!--            <div class="contact-section">-->
+                <div class="container">
+                    <form id ="<?php echo $result[0]->id_protocol ?>" action = "/admin/atualizaprotocolos" method ="POST">
+
+                        <div class="col-md-6 col-sm-offset-3 form-line">
+                            <input  type = "hidden" name="id_protocol" value ="<?php echo $result[0]->id_protocol ?>">
+
+                            <div class="form-group">
+                                <label for="name">Protocolo</label>
+                                <input disabled type="text" class="form-control" id="txtnome"  value ="<?php echo $result[0]->id_protocol ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Cliente</label>
+                                <input disabled type="text" class="form-control" id="txtnome" name="cliente"  value ="<?php echo $result[0]->client_name ?>">
+                            </div>
+                            <div class="form-group">
+                                <label disabled for="name">Email</label>
+                                <input type="text" class="form-control" id="txtnome" name="email" value ="<?php echo $result[0]->email ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Telefone</label>
+                                <input disabled type="text" class="form-control" id="txtnome"  value ="<?php echo $result[0]->tel ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Assunto</label>
+                                <input disabled type="text" class="form-control" id="txtnome" name="assunto" value ="<?php echo $result[0]->short_description ?>">
+                            </div>
+
+                            <div class="form-group">
+                                <label  for="description"> Problema</label>
+                                <textarea disabled class="form-control" rows="3" id="txtmsg" ><?php echo $result[0]->prob_reported ?></textarea>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="name">Data de criação</label>
+                                <input type="text" class="form-control" id="txtnome"  value ="<?php echo $result[0]->creation_date ?>">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="protocol_status">Alterar Status</label>
+                                <select class="form-control" id="protocol_status" name="protocol_status">
+                                    <option value="<?php echo $result[0]->protocol_status ?> selected"> <?php echo $result[0]->name_status ?></option>
+                                    <option value="1">Aberto</option>
+                                    <option value="2">Em andamento</option>
+                                    <option value="3">Resolvido</option>
+                                </select></td>
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Resolvido por</label>
+                                <input type="text" class="form-control" id="txtnome" name="resolved_by" value ="<?php echo $result[0]->resolved_by ?>">
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="solotion"> Solução</label>
+                                <textarea class="form-control" rows="3" id="txtmsg" name="solotion"><?php echo $result[0]->solotion ?></textarea>
+                            </div>
+
+                            <div>
+
+                                <button style="margin-bottom: 20px" type="submit" class="btn btn-default submit"><i class="fa fa-paper-plane" aria-hidden="true"></i>  Enviar</button>
+                                <a href="http://tzne.kwcraft.com.br/admin/listarprotocolos?pagina=1" style="margin-bottom: 20px" class="btn btn-default danger"><i class="fa fa-reply" aria-hidden="true"></i>  Voltar</a>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+                <!--</div>-->
+            </section>
+            <script type="text/javascript">
+
+            </script>
+
+            <?php
+        })->setName('listaitensvendas/:id');
+        
+        
+        
+
+/*
         $app->get('/listaitensvendas/:id', function ($id) {
             $conn = new MysqlConn();
             $conn->Conecta();
@@ -190,6 +958,10 @@ $group = $app->group('/api', function () use ($app) {
             echo json_encode($json);
         })->setName('listaitensvendasid');
 
+        */
+        
+        
+        
         $app->get('/listavendacliente/:id', function ($id) {
             $conn = new MysqlConn();
             $conn->Conecta();
@@ -259,12 +1031,287 @@ $group = $app->group('/api', function () use ($app) {
             $p->setOptions($p->serializeOptions());
             echo json_encode($p->serializeProduct());
         })->setName('listarprodutos/:id');
-        $app->get('/listarprodutoshasid/:hasid', function ($hasid) {
-            $p = new Product();
+
+        $app->get('/listarprodutoshasid/', 'usuarioLogado', function ($hasid) {
+
+                 if (!isset($_SESSION)) {
+                    session_start();
+                } else {
+                //echo"ja tem sessao";
+                }
+
+            $has_id = $_GET['hasid'];
+      
+        $p = new Product();
             $dao = new DaoProducts();
-            $p = $dao->listByasId($hasid);
+            $p = $dao->listByasId($has_id);
             $p->setOptions($p->serializeOptions());
-            echo json_encode($p->serializeProduct());
+           //echo json_encode($p->serializeProduct());
+
+           
+//echo var_dump($obj);
+
+         $obj = $p->serializeProduct();
+    $json = array();
+
+   $conn = new MysqlConn();
+    $conn->Conecta();
+
+
+ $busca = "SELECT * FROM "
+                      . "`products_has_products_size_color_qtd` "
+                      . "INNER JOIN products "
+                      . "on products.product_id = products_has_products_size_color_qtd.products_product_id "
+                      . "WHERE products_has_products_size_color_qtd.product_has_id = " . $has_id;
+
+    $result = mysqli_query($conn->getLink(), $busca);
+    /* While
+     * Enquanto haver linhas da tabela para ser
+     * lida, essas serão armazenadas na row
+     */
+    while ($row = mysqli_fetch_assoc($result)) {
+
+        //armazena linha em cada posição do array json
+        $json[] = $row;
+    }
+
+
+    $vetProdutos = $json;
+    $totalPagina = 5; //Variável que armazena a quantidade de produtos por página.
+//Verifica se exite alguma query string com o valor da página, se não houver, define o valor 1.
+    $pagina = (filter_input(INPUT_GET, "pagina", FILTER_SANITIZE_NUMBER_INT) ? filter_input(INPUT_GET, "pagina", FILTER_SANITIZE_NUMBER_INT) : 1);
+
+    /*
+      ceil() - Arredonda um valor para cima, por exemplo, 5.5 arredonda para 6, pois assim vai exibir cinco na primeira página e um na próxima.$_COOKIE
+      count() - Conta a quantidade de valores do vetor
+      15 / 5 = 3 Paginas
+      16 / 5 = 3,2 | arredondamos para cima e temos 4 páginas.
+     */
+    $quantidadePaginas = ceil(count($vetProdutos) / $totalPagina);
+
+    $fim = ($pagina * $totalPagina); //Multiplicamos a página atual pela quantidade de itens por página: P=4 I= 5 | 4 * 5 = 20;
+    $inicio = ($fim - $totalPagina); //Subtraimos o total de páginas pela quantidade final a ser exibido: FIM = 20 Tot. Pag. = 5 | 20 - 5 = 15
+    ?>
+
+
+
+
+
+    <html lang="en"><head>
+            <meta charset="utf-8">
+            <meta name="robots" content="noindex, nofollow">
+
+            <title>TZNE</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+            <style type="text/css">
+
+                td {
+                    text-align: center; 
+                    color: #eeeeee;
+
+                }
+
+                th {
+                    text-align: center;  
+                    color: #eeeeee;
+
+                }
+
+
+                select {
+                    color: #999999;
+                }
+                /*Contact sectiom*/
+                .content-header{
+                    font-family: 'Oleo Script', cursive;
+                    color:#fcc500;
+                    font-size: 45px;
+                }
+
+                .section-content{
+                    text-align: center; 
+
+                }
+                #contact{
+
+                    font-family: 'Teko', sans-serif;
+                    padding-top: 60px;
+                    width: 100%;
+                    width: 100vw;
+                    height: 100%;
+                    /*                background: #3a6186;  fallback for old browsers 
+                                    background: -webkit-linear-gradient(to left, #3a6186 , #89253e);  Chrome 10-25, Safari 5.1-6 
+                                    background: linear-gradient(to left, #3a6186 , #89253e);  W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ 
+                    */ color : #fff;    
+                }
+                .contact-section{
+                    padding-top: 40px;
+                }
+                .contact-section .col-md-6{
+                    width: 50%;
+                }
+
+                .form-line{
+                    /*                border-right: 1px solid #B29999;*/
+                }
+
+                .form-group{
+                    margin-top: 10px;
+                }
+                label{
+                    font-size: 1.3em;
+                    line-height: 1em;
+                    font-weight: normal;
+                }
+                .form-control{
+                    font-size: 1.3em;
+                    color: #080808;
+                }
+                textarea.form-control {
+                    height: 108px;
+                    /* margin-top: px;*/
+                }
+
+                .submit{
+                    font-size: 1.1em;
+                    float: right;
+                    width: 150px;
+                    background-color: transparent;
+                    color: #fff;
+
+                }
+
+                body{
+                    background: #3a6186; /* fallback for old browsers */
+                    background: -webkit-linear-gradient(to left, #3a6186 , #89253e); /* Chrome 10-25, Safari 5.1-6 */
+                    background: linear-gradient(to left, #3a6186 , #89253e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+                }
+
+            </style>
+            <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+            <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+            <script type="text/javascript">
+                window.alert = function () {
+                };
+                var defaultCSS = document.getElementById('bootstrap-css');
+                function changeCSS(css) {
+                    if (css)
+                        $('head > link').filter(':first').replaceWith('<link rel="stylesheet" href="' + css + '" type="text/css" />');
+                    else
+                        $('head > link').filter(':first').replaceWith(defaultCSS);
+                }
+                $(document).ready(function () {
+                    var iframe_height = parseInt($('html').height());
+                    window.parent.postMessage(iframe_height, 'https://bootsnipp.com');
+                });
+            </script>
+        </head>
+        <body style="">
+            <link href="https://fonts.googleapis.com/css?family=Oleo+Script:400,700" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css?family=Teko:400,700" rel="stylesheet">
+            <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+
+
+
+            <?php
+            include './templates/menu.php';
+
+            echo "
+                        <div class=\"container\">
+  <table class=\"table\">
+
+   <thead>
+    <tr>
+      <th>Id Produto</th>
+      <th>Nome</th>
+      <th>Modelo</th>
+      <th>Imagem</th>
+       <th></th>
+    </tr>
+  </thead>";
+            ?>   
+            <div id="dvConteudo">
+                <br>
+                <?php
+                /*echo "<pre>";
+                echo var_dump($obj);
+                echo "</pre>";*/
+                for ($j = $inicio; $inicio < $fim; $inicio++) {
+
+                    if (!empty($vetProdutos[$inicio])) {
+                    // //Verificamos se as demais posições possuem algum valor
+                        //echo "<span style='color: red;'-->- {$vetProdutos[$inicio]['client_name']}<br>";
+                        //$total = $obj[$inicio]->quantity* $obj[$inicio]->subtotal;
+                        echo "<form action=\"/admin/api/venda/listaitensvenda\" method =\"POST\">
+            <input type=\"hidden\" name=\"sale_id\" value=\"{$obj[$inicio]->sale_id}\">
+  <tbody>
+    <tr>
+      <td>
+        {$obj['id']}
+      </td>
+      <td> 
+        {$obj['name']}
+      </td>
+      <td>
+        {$obj['model']}
+      </td>
+      <td>
+      <a href=\"{$obj['img_relative_url']}\" ><img src=\"{$obj['img_relative_url']}\"  height=\"42\" width=\"42\"></a>
+        
+      </td>
+
+    </tr>
+
+
+</form>
+                        ";
+                    }
+                }
+
+                ?>
+
+                <br>
+                <?php
+                echo"
+
+  </tbody>
+
+<tr>
+     <td>
+        <a href=\"http://tzne.kwcraft.com.br/admin/api/venda/listaitensvenda?id_venda={$_GET['sale_id']}\" class=\"btn btn-info\" type=\"submit\">Voltar</button>
+      </td>
+    </tr>
+</table>
+
+</body>
+</html>
+<nav aria-label=\"Page\">
+<ul class=\"pagination\">
+";
+                //Montamos a quantidade de botões
+
+                for ($i = 0; $i < $quantidadePaginas; $i++) {
+                    ?>
+<!--                     <li class="page-item"> <a class="page-link" href="?pagina=<?= ($i + 1); ?>&sale_id=<?=$_POST['sale_id']?>" style="color: #111; text-decoration: none; background-color: #CCC; padding: 5px; border:1px solid #eee; font-weight: bold;"><?= ($i + 1); ?></a></li> -->
+                    <?php
+                }
+                ?>
+            </ul>
+        </nav>
+    </div>
+    <?php
+
+
+
+            //*************
+
+
+
+
         })->setName('listarprodutoshasid/:hasid');
 
         //Listar produtos com limit e offset
@@ -278,7 +1325,7 @@ $group = $app->group('/api', function () use ($app) {
 
         $app->post('/inserirproduto', function () use($app) {
 
-            ini_set( 'display_errors', '1' );
+            ini_set( 'display_errors', '0' );
             //$app->redirect('/Controller/InsereProduto.php', 307);
             $json = $_POST['json'];
 //                        echo json_encode($json);
@@ -443,7 +1490,7 @@ $group = $app->group('/api', function () use ($app) {
             <meta charset="utf-8">
             <meta name="robots" content="noindex, nofollow">
 
-            <title>Contact Form - One page  - Bootsnipp.com</title>
+            <title>TZNE</title>
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
             <style type="text/css">
@@ -727,7 +1774,7 @@ $app->get('/listarprotocolos/', 'usuarioLogado', function () {
             <meta charset="utf-8">
             <meta name="robots" content="noindex, nofollow">
 
-            <title>Contact Form - One page  - Bootsnipp.com</title>
+            <title>TZNE</title>
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
             <style type="text/css">
@@ -932,7 +1979,7 @@ $app->post('/listarprotocoloid', 'usuarioLogado', function () {
             <meta charset="utf-8">
             <meta name="robots" content="noindex, nofollow">
 
-            <title>Contact Form - One page  - Bootsnipp.com</title>
+            <title>TZNE</title>
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
             <style type="text/css">
@@ -1060,9 +2107,11 @@ $app->post('/listarprotocoloid', 'usuarioLogado', function () {
                 </div>
                 <!--            <div class="contact-section">-->
                 <div class="container">
-                    <form id ="<?php echo $result[0]->id_protocol ?>" action = "/atualizaprotocolos" method ="POST">
+                    <form id ="<?php echo $result[0]->id_protocol ?>" action = "/admin/atualizaprotocolos" method ="POST">
                         <div class="col-md-6 col-sm-offset-3 form-line">
                             <input  type = "hidden" name="id_protocol" value ="<?php echo $result[0]->id_protocol ?>">
+                             <input  type = "hidden" name="assunto" value ="<?php echo $result[0]->short_description ?>">
+
 
                             <div class="form-group">
                                 <label for="name">Protocolo</label>
@@ -1119,6 +2168,7 @@ $app->post('/listarprotocoloid', 'usuarioLogado', function () {
                             <div>
 
                                 <button style="margin-bottom: 20px" type="submit" class="btn btn-default submit"><i class="fa fa-paper-plane" aria-hidden="true"></i>  Enviar</button>
+                                <a href="http://tzne.kwcraft.com.br/admin/listarprotocolos?pagina=1" style="margin-bottom: 20px" class="btn btn-default danger"><i class="fa fa-reply" aria-hidden="true"></i>  Voltar</a>
                             </div>
 
                         </div>
@@ -1135,18 +2185,220 @@ $app->post('/listarprotocoloid', 'usuarioLogado', function () {
         })->setName('listarprotocoloid');
 
 
-
+        
         $app->post('/atualizaprotocolos', function () {
-            $dao = new DaoHelpdesk();
-            /* echo var_dump(intval($_POST['id_protocol']));
-              echo var_dump(intval($_POST['protocol_status']));
-              echo var_dump($_POST['resolved_by']);
-              echo var_dump($_POST['solotion']); */
+            ini_set( 'display_errors', '1');
 
-            $dao->updateProtocol(
-                    intval($_POST['id_protocol']), intval($_POST['protocol_status']), $_POST['resolved_by'], $_POST['solotion']);
-            echo ' <a href="http://tzne.kwcraft.com.br/listarprotocolos">Voltar a lista de chamados</a> ';
+    $dao = new DaoHelpdesk();
+    /* echo var_dump(intval($_POST['id_protocol']));
+      echo var_dump(intval($_POST['protocol_status']));
+      echo var_dump($_POST['resolved_by']);
+      echo var_dump($_POST['solotion']); */
+
+    $dao->updateProtocol(
+            intval($_POST['id_protocol']), intval($_POST['protocol_status']), $_POST['resolved_by'], $_POST['solotion']);
+
+    	include ROOT_DIR . '/View/Mailer/class.phpmailer.php';
+
+
+
+            $mailer = new PHPMailer();
+            $nome = $_POST['cliente'];
+            $contato = $_POST['email'];
+            $assunto = $_POST['assunto'];
+
+           // echo var_dump($_POST);
+
+            $mensagem = "Protocolo: ".$_POST['id_protocol']."
+                         Assunto: ".$assunto."
+                         Solução: ".$_POST['solotion']."
+                            ";
+   
+            $mailer->IsSMTP();
+            $mailer->SMTPDebug = 0;
+            $mailer->CharSet = 'utf-8';
+            $mailer->Port = 465; //Indica a porta de conexão para a saída de e-mails
+            $mailer->Host = 'smtp.gmail.com'; //smtp.dominio.com.br
+            $mailer->SMTPAuth = true; //define se haverá ou não autenticação no SMTP ssl://smtp.googlemail.com
+            $mailer->SMTPSecure = 'ssl';
+            $mailer->Username = 'contatotzne@gmail.com'; //Informe o e-mai o completo
+            $mailer->Password = 'contatotzne123456'; //Senha da caixa postal
+            $mailer->FromName = $assunto; //Nome que será exibido para o destinatário
+            $mailer->From = 'contatotzne@gmail.com'; //Obrigatório ser a mesma caixa postal indicada em "username"
+            $mailer->AddAddress(/* $destino, */$contato); //Destinatários
+            $mailer->Subject = $assunto;
+            $mailer->Body = $contato;
+            $mailer->Body = $mensagem;
+            
+/*            echo "<pre>";
+            echo var_dump($mailer);
+            echo "</pre>";*/
+            if($mailer->Send()){
+                //echo true;
+            }else{  
+               // echo false;
+            }
+
+
+    
+    
+    
+    
+    ?>
+
+
+    <html lang="en"><head>
+            <meta charset="utf-8">
+            <meta name="robots" content="noindex, nofollow">
+
+            <title>TZNE</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+            <style type="text/css">
+
+
+                a{
+                    color:#63b7ff;
+                }
+                td {
+                    text-align: center;   
+                    color: #eeeeee;
+
+                }
+
+                th {
+                    text-align: center;   
+                    color: #eeeeee;
+
+                }
+
+
+                select {
+                    color: #999999;
+                }
+                /*Contact sectiom*/
+                .content-header{
+                    font-family: 'Oleo Script', cursive;
+                    color:#fcc500;
+                    font-size: 45px;
+                }
+
+                .section-content{
+                    text-align: center; 
+
+                }
+                #contact{
+
+                    font-family: 'Teko', sans-serif;
+                    padding-top: 60px;
+                    width: 100%;
+                    width: 100vw;
+                    height: 100%;
+                    /*                background: #3a6186;  fallback for old browsers 
+                                    background: -webkit-linear-gradient(to left, #3a6186 , #89253e);  Chrome 10-25, Safari 5.1-6 
+                                    background: linear-gradient(to left, #3a6186 , #89253e);  W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ 
+                    */ color : #fff;    
+                }
+                .contact-section{
+                    padding-top: 40px;
+                }
+                .contact-section .col-md-6{
+                    width: 50%;
+                }
+
+                .form-line{
+                    /*                border-right: 1px solid #B29999;*/
+                }
+
+                .form-group{
+                    margin-top: 10px;
+                }
+                label{
+                    font-size: 1.3em;
+                    line-height: 1em;
+                    font-weight: normal;
+                }
+                .form-control{
+                    font-size: 1.3em;
+                    color: #080808;
+                }
+                textarea.form-control {
+                    height: 108px;
+                    /* margin-top: px;*/
+                }
+
+                .submit{
+                    font-size: 1.1em;
+                    float: right;
+                    width: 150px;
+                    background-color: transparent;
+                    color: #fff;
+
+                }
+
+                body{
+                    background: #3a6186; /* fallback for old browsers */
+                    background: -webkit-linear-gradient(to left, #3a6186 , #89253e); /* Chrome 10-25, Safari 5.1-6 */
+                    background: linear-gradient(to left, #3a6186 , #89253e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+                }
+
+            </style>
+            <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+            <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+            <script type="text/javascript">
+        window.alert = function () {
+        };
+        var defaultCSS = document.getElementById('bootstrap-css');
+        function changeCSS(css) {
+            if (css)
+                $('head > link').filter(':first').replaceWith('<link rel="stylesheet" href="' + css + '" type="text/css" />');
+            else
+                $('head > link').filter(':first').replaceWith(defaultCSS);
+        }
+        $(document).ready(function () {
+            var iframe_height = parseInt($('html').height());
+            window.parent.postMessage(iframe_height, 'https://bootsnipp.com');
+        });
+            </script>
+        </head>
+        <body style="">
+            <link href="https://fonts.googleapis.com/css?family=Oleo+Script:400,700" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css?family=Teko:400,700" rel="stylesheet">
+            <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+            <?php
+            include './templates/menu.php';
+            ?>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="alert alert-success col-xs-6 col-md-offset-3" role="alert">Chamado atualizado com sucesso!</div>
+
+                        <div class="col-xs-12">
+                            <a  class="btn btn-info" href="http://tzne.kwcraft.com.br/admin/listarprotocolos">Voltar a lista de chamados</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php
         })->setName('atualizaprotocolos');
+        
+        
+        
+        
+
+//        $app->post('/atualizaprotocolos', function () {
+//            $dao = new DaoHelpdesk();
+//            /* echo var_dump(intval($_POST['id_protocol']));
+//              echo var_dump(intval($_POST['protocol_status']));
+//              echo var_dump($_POST['resolved_by']);
+//              echo var_dump($_POST['solotion']); */
+//
+//            $dao->updateProtocol(
+//                    intval($_POST['id_protocol']), intval($_POST['protocol_status']), $_POST['resolved_by'], $_POST['solotion']);
+//            echo ' <a href="http://tzne.kwcraft.com.br/listarprotocolos">Voltar a lista de chamados</a> ';
+//        })->setName('atualizaprotocolos');
 
 //************************Testes**************************************
 

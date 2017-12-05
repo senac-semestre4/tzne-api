@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="robots" content="noindex, nofollow">
 
-        <title>Contact Form - One page  - Bootsnipp.com</title>
+        <title>TZNE</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <style type="text/css">

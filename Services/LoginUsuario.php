@@ -31,7 +31,7 @@ if ($_POST["username"] == null && $_POST["password"] == null) {
                                          
                    $_SESSION["admin"] = $u;
                 //echo "Sessão de usuário administrador criada " .$_SESSION["admin"] ;
-                header('Location: /admin/insereproduto');
+                header('Location: /admin/api/venda/listarpedidos');
     } else {
        header('Location: /admin');
         exit;

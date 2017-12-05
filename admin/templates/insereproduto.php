@@ -255,6 +255,7 @@ $_SESSION['seed'] = $seed; //guardo ele na sessão
         <div>
 
             <button type="submit" class="btn btn-default submit"><i class="fa fa-paper-plane" aria-hidden="true"></i>  Enviar</button>
+              <a href="http://tzne.kwcraft.com.br/admin/listarprotocolos?pagina=1" style="margin-bottom: 20px" class="btn btn-default danger"><i class="fa fa-reply" aria-hidden="true"></i>  Voltar</a>
         </div>
 
     </div>

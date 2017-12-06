@@ -111,7 +111,7 @@ $group = $app->group('/api', function () use ($app) {
             $dao->insertSale($sale);
         })->setName('inserevendateste');
 
-        $app->post('/inserevenda', function () use ($app) {
+        $app->post('/inserevenda', 'clienteLogado', function () use ($app) {
             //session_destroy();
             
             
@@ -1711,6 +1711,20 @@ $app->post('/atualizaprotocolos', function () {
           Função que valida se o usuário está logado antes de exibir a página
          */
 
+        
+//              
+//        $clienteLogado = function ($post) {
+//    
+//            $app = \Slim\Slim::getInstance();
+//            
+//            echo var_dump($post);
+////$app->flash('error', 'Login required');
+//            
+//            $app->stop();
+//        
+//};
+        
+        
         function usuarioLogado() {
 
             if (!isset($_SESSION)) {
@@ -1731,14 +1745,29 @@ $app->post('/atualizaprotocolos', function () {
         }
         
         
-            function clienteLogado($post) {
+            function clienteLogado() {
+                 $app = \Slim\Slim::getInstance();
                 
-                    if (!isset($_SESSION)) {
-                        session_start();
-                    } else {
-                        //echo"ja tem sessao";
-                    }
-                    if (!isset($_SESSION["cliente"])) {
+                $objson = $app->request()->post('json');
+                
+                
+           // $objson = $_POST['json'];
+            $b = json_decode($objson);
+            
+            
+            session_id($b->{'PHPSESSID'});
+                
+                if (!isset($_SESSION)) {
+                session_start();
+                } else {
+                    //echo"ja tem sessao";
+                }
+            
+            
+                $clienteId = intval($_SESSION['cliente_id']);
+                
+                
+                    if (!isset($_SESSION["cliente_id"])) {
                         //Resgato uma instância existente de Slim
                         $app = \Slim\Slim::getInstance();
                         $app->flash('error', 'Login required');

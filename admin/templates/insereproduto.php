@@ -143,71 +143,71 @@ $_SESSION['seed'] = $seed; //guardo ele na sessão
     <div class="col-md-6 form-line">
         <div class="form-group">
             <label for="name">Nome do produto</label>
-            <input type="text" class="form-control" id="txtnome" name="name" placeholder=" Nome do produto">
+            <input type="text" class="form-control" id="txtnome" name="name" placeholder=" Nome do produto" required="required">
         </div>
         <div class="form-group">
             <label for="model">Modelo</label>
-            <input type="text" class="form-control" id="txtnome" name="model" placeholder=" Modelo">
+            <input type="text" class="form-control" id="txtnome" name="model" placeholder=" Modelo" required="required">
         </div>
 
         <div class="form-group">
             <label for="description"> Descrição</label>
-            <textarea class="form-control" rows="3" id="txtmsg" name="description" placeholder=" Descrição"></textarea>
+            <textarea class="form-control" rows="3" id="txtmsg" name="description" placeholder=" Descrição" required="required"></textarea>
         </div>
 
         <div class="form-group">
             <label for="specification">Especificação</label>
-            <textarea class="form-control" rows="3" id="txtmsg" name="specification" placeholder=" Especificação"></textarea>
+            <textarea class="form-control" rows="3" id="txtmsg" name="specification" placeholder=" Especificação" required="required"></textarea>
 
         </div>
 
         <div class="form-group">
             <label for="code">Código</label>
-            <input type="text" class="form-control" id="txtnome" name="code" placeholder=" Código">
+            <input type="text" class="form-control" id="txtnome" name="code" placeholder=" Código" required="required">
         </div>
 
         <div class="form-group">
             <label for="sale_price">Preço de venda</label>
-            <input type="text" class="form-control" id="txtnome" name="sale_price" placeholder=" Preço de venda">
+            <input type="text" class="form-control" id="txtnome" name="sale_price" placeholder=" Preço de venda" required="required">
         </div>
 
         <div class="form-group">
             <label for="purchase_price">Preço de compra</label>
-            <input type="text" class="form-control" id="txtnome" name="purchase_price" placeholder=" Preço de venda">
+            <input type="text" class="form-control" id="txtnome" name="purchase_price" placeholder=" Preço de venda" required="required">
         </div>
 
 
         <div class="form-group">
             <label for="profit_margin">Margem de lucro</label>
-            <input type="text" class="form-control" id="txtnome" name="profit_margin" placeholder=" Margem de lucro">
+            <input type="text" class="form-control" id="txtnome" name="profit_margin" placeholder=" Margem de lucro" required="required">
         </div>
 
 
         <div class="form-group">
             <label for="promotional_price">Preço promocional</label>
-            <input type="text" class="form-control" id="txtemail" name="promotional_price" placeholder=" Preço promocional">
+            <input type="text" class="form-control" id="txtemail" name="promotional_price" placeholder=" Preço promocional" required="required">
         </div>	
         <div class="form-group">
             <label for="length">Comprimento</label>
-            <input type="text" class="form-control" id="txttel" name="length" placeholder=" Comprimento">
+            <input type="text" class="form-control" id="txttel" name="length" placeholder=" Comprimento" required="required">
         </div>
     </div>
     <div class="col-md-6">
 
         <div class="form-group">
             <label for="width">Largura</label>
-            <input type="text" class="form-control" id="chamado" name="width" placeholder=" Largura">
+            <input type="text" class="form-control" id="chamado" name="width" placeholder=" Largura" required="required">
         </div>
 
         <div class="form-group">
             <label for="heigth">Altura</label>
-            <input type="text" class="form-control" id="chamado" name="heigth" placeholder=" Altura">
+            <input type="text" class="form-control" id="chamado" name="heigth" placeholder=" Altura" required="required">
         </div>
 
 
         <div class="form-group">
             <label for="width">Status</label>
-            <select class="form-control" name="status">
+            <select class="form-control" name="status" required="required">
                 <option value="1">Ativo</option>
                 <option value="0">Desativado</option>
             </select>
@@ -215,27 +215,27 @@ $_SESSION['seed'] = $seed; //guardo ele na sessão
 
         <div class="form-group">
             <label for="product_stock_quantity">Quantidade em estoque </label>
-            <input type="text" class="form-control" id="chamado" name="product_stock_quantity" placeholder=" Quantidade em estoque ">
+            <input type="text" class="form-control" id="chamado" name="product_stock_quantity" placeholder=" Quantidade em estoque " required="required">
         </div>
         <div class="form-group">
             <label for="brands_brand_id">Marca</label>
-            <input type="text" class="form-control" id="chamado" name="brands_brand_id" placeholder=" Marca">
+            <input type="text" class="form-control" id="chamado" name="brands_brand_id" placeholder=" Marca" required="required">
         </div>
         <div class="form-group">
             <label for="departaments_departament_id">Departamento</label>
-            <input type="text" class="form-control" id="chamado" name="departaments_departament_id" placeholder=" Departamento">
+            <input type="text" class="form-control" id="chamado" name="departaments_departament_id" placeholder=" Departamento" required="required">
         </div>
 
         <div class="form-group">
             <label for="idcolor">Cor</label>
-            <input type="text" class="form-control" id="chamado" name="idcolor" placeholder=" Largura">
+            <input type="text" class="form-control" id="chamado" name="idcolor" placeholder=" Largura" required="required">
         </div>
 
 
 
         <div class="form-group">
             <label for="idsize">Tamanho</label>
-            <input type="text" class="form-control" id="chamado" name="idsize" placeholder=" Largura">
+            <input type="text" class="form-control" id="chamado" name="idsize" placeholder=" Largura" required="required">
         </div>
 
 <!--         <div class="form-group">
@@ -245,7 +245,7 @@ $_SESSION['seed'] = $seed; //guardo ele na sessão
 
         <div class="form-group">
             <label for="foto">Imagem</label>
-            <input  type="file" class="form-control-file" idaria-describedby="fileHelp" name="foto">
+            <input  type="file" class="form-control-file" idaria-describedby="fileHelp" name="foto" required="required">
         </div>
 
 

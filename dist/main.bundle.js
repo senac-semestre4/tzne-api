@@ -144,10 +144,10 @@ AppModule = __decorate([
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_15__pages_client_client_module__["ClientModule"],
-            __WEBPACK_IMPORTED_MODULE_4_ngx_bootstrap__["b" /* ButtonsModule */].forRoot(),
-            __WEBPACK_IMPORTED_MODULE_4_ngx_bootstrap__["a" /* BsDropdownModule */].forRoot(),
-            __WEBPACK_IMPORTED_MODULE_4_ngx_bootstrap__["f" /* TooltipModule */].forRoot(),
-            __WEBPACK_IMPORTED_MODULE_4_ngx_bootstrap__["d" /* ModalModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_4_ngx_bootstrap__["c" /* ButtonsModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_4_ngx_bootstrap__["b" /* BsDropdownModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_4_ngx_bootstrap__["g" /* TooltipModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_4_ngx_bootstrap__["e" /* ModalModule */].forRoot(),
             __WEBPACK_IMPORTED_MODULE_5__app_routing__["a" /* AppRoutingModule */],
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["BrowserModule"],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormsModule"],
@@ -271,7 +271,7 @@ var routes = [
       pathMatch: 'full',
     }, */
     {
-        path: 'login',
+        path: 'login/:id',
         component: __WEBPACK_IMPORTED_MODULE_10__pages_client_login_login_component__["a" /* LoginComponent */],
         pathMatch: 'full',
     },
@@ -431,7 +431,7 @@ FullLayoutComponent = __decorate([
 /***/ "../../../../../src/app/layout/header/header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"linha topo\">\r\n  <header>\r\n    <div class=\"col-1 hidden-ld hidden-d hidden-t\">\r\n      <!-- toggle -->\r\n      <div id=\"menu_toggle\" class=\"hidden-d hidden-t hidden-ld\" (click)=\"menuToggle()\">\r\n        <button></button>\r\n      </div>\r\n    </div>\r\n    <div class=\"col-3 box-logo\">\r\n      <h1 class=\"logo\"><a [routerLink]=\"['']\" placement=\"right\">TZNE</a></h1>\r\n      <!-- href=\"index.html\" -->\r\n    </div>\r\n    <div class=\"col-5 box-pesquisa hidden-m\" tooltip=\"Busque seu produto preferido.\" placement=\"auto\">\r\n      <div class=\"input-pesquisa\">\r\n        <input type=\"text\" name=\"pesquisa\" value=\"\" placeholder=\"Pesquisar...\">\r\n        <i class=\"fa fa-search\" aria-hidden=\"true\"></i>\r\n      </div>\r\n    </div>\r\n    <!-- Logout -->\r\n    <div [hidden]=\"sair\" class=\"col-4 conta-carrinho\">\r\n      <i class=\"fa fa-user-circle-o fa-2x hidden-ld hidden-d\" aria-hidden=\"true\"></i>\r\n      <div class=\"btn-group\" dropdown>\r\n        <h2><a dropdownToggle class=\"hidden-t hidden-m\" style=\"cursor: pointer\" tooltip=\"Acesse seu perfil.\">Bem Vindo Everton <span class=\"caret\"></span>\r\n          </a></h2>\r\n        <ul *dropdownMenu class=\"dropdown-menu\" role=\"menu\">\r\n          <li role=\"menuitem\"><a class=\"dropdown-item\" style=\"cursor: pointer\" (click)=\"minhaConta()\">Minha conta</a></li>\r\n          <li role=\"menuitem\"><a class=\"dropdown-item\" style=\"cursor: pointer\" (click)=\"meusPedidos()\">Meus pedidos</a></li>\r\n          <li role=\"menuitem\"><a class=\"dropdown-item\" style=\"cursor: pointer\" (click)=\"meuCadastro()\">Meu cadastro</a></li>\r\n          <!-- <li role=\"menuitem\"><a class=\"dropdown-item\">Meu acesso</a></li>\r\n            <li role=\"menuitem\"><a class=\"dropdown-item\">Meu endereco</a></li> -->\r\n          <li class=\"divider dropdown-divider\"></li>\r\n          <li role=\"menuitem\"><a class=\"dropdown-item\" style=\"cursor: pointer\" (click)=\"logout()\">Sair</a>\r\n          </li>\r\n        </ul>\r\n      </div>\r\n      <!-- verificar essa função para mostrar a area de login, e esconder a area de login -->\r\n      <!--  <ng-template *ngIf=\"(sair$) else entrar\"> #entrar-->\r\n      <!-- <h2 [hidden]=\"!sair\" class=\"hidden-t hidden-m\"><a style=\"cursor: pointer\" (click)=\"login()\" tooltip=\"Entre com sua conta.\">Entre</a> ou <a style=\"cursor: pointer\" (click)=\"cadastrar( 0 )\" tooltip=\"Crie uma conta.\">cadastre-se</a></h2> -->\r\n      <!-- </ng-template> -->\r\n      <a class=\"nav-link\" href=\"\" routerLinkActive=\"active\" [routerLink]=\"['cart']\"><i class=\"fa fa-shopping-bag fa-2x\" aria-hidden=\"true\" tooltip=\"Veja sua sacola.\" ></i> <span class=\"badge badge-danger\"> {{quantidadeEmCarrinho}} </span> </a>\r\n    </div>\r\n    <!-- login -->\r\n    <div [hidden]=\"!sair\" class=\"col-4 conta-carrinho\">\r\n      <i class=\"fa fa-user-circle-o fa-2x hidden-ld hidden-d\" aria-hidden=\"true\"></i>\r\n      <h2 class=\"hidden-t hidden-m\"><a style=\"cursor: pointer\" (click)=\"login()\" tooltip=\"Entre com sua conta.\">Entre</a> ou <a style=\"cursor: pointer\"\r\n          (click)=\"cadastrar( 0 )\" tooltip=\"Crie uma conta.\">cadastre-se</a></h2>\r\n      <a class=\"nav-link\" href=\"\" routerLinkActive=\"active\" [routerLink]=\"['cart']\"><i class=\"fa fa-shopping-bag fa-2x\" aria-hidden=\"true\" tooltip=\"Veja sua sacola.\" ></i> <span class=\"badge badge-danger\"> {{quantidadeEmCarrinho}} </span> </a>\r\n    </div>\r\n  </header>\r\n</div>\r\n<div class=\"linha\">\r\n  <nav class=\"col-12 menu-principal hidden-m\">\r\n    <ul>\r\n      <li><a style=\"cursor:pointer\" (click)=\"filter(1)\" routerLinkActive=\"active\" [routerLink]=\"['home/type']\"  tooltip=\"Camisetas em ofertas.\">Ofertas</a></li>\r\n      <li><a style=\"cursor:pointer\" (click)=\"filter(2)\" routerLinkActive=\"active\" [routerLink]=\"['home/type']\"  tooltip=\"Camisetas masculinas.\">Masculino</a></li>\r\n      <li><a style=\"cursor:pointer\" (click)=\"filter(3)\" routerLinkActive=\"active\" [routerLink]=\"['home/type']\"  tooltip=\"Camisetas femininas.\">Feminino</a></li>\r\n      <li><a style=\"cursor:pointer\" (click)=\"filter(4)\" routerLinkActive=\"active\" [routerLink]=\"['home/type']\"  tooltip=\"Camisetas Infantis.\">Infantil</a></li>\r\n      <!-- <li><a>Acessórios</a></li> -->\r\n    </ul>\r\n  </nav>\r\n  <nav class=\"col-12 menu-mobile hidden-ld hidden-d hidden-t\" [ngClass]=\"{'menu_ativo': toggleMenu }\">\r\n    <ul>\r\n      <header>\r\n        <div class=\"input-pesquisa\">\r\n          <input type=\"text\" name=\"pesquisa\" value=\"\" placeholder=\"Pesquisar...\">\r\n          <i class=\"fa fa-search\" aria-hidden=\"true\"></i>\r\n        </div>\r\n      </header>\r\n      <li><a (click)=\"filter(1)\" [routerLink]=\"['']\" >Ofertas</a></li>\r\n      <li><a (click)=\"filter(2)\" [routerLink]=\"['']\" >Masculino</a></li>\r\n      <li><a (click)=\"filter(3)\" [routerLink]=\"['']\" >Feminino</a></li>\r\n      <li><a (click)=\"filter(4)\" [routerLink]=\"['']\" >Infantil</a></li>\r\n      <!-- <li><a (click)=\"filter(1)\" [routerLink]=\"['']\" >Acessórios</a></li> -->\r\n    </ul>\r\n    <a href=\"#!\" class=\"menu-close\" (click)=\"menuClose()\">\r\n            <i class=\"fa fa-reply\" aria-hidden=\"true\"></i>\r\n        </a>\r\n  </nav>\r\n</div>\r\n<div class=\"separador\"></div>\r\n"
+module.exports = "<div class=\"linha topo\">\r\n  <header>\r\n    <div class=\"col-1 hidden-ld hidden-d hidden-t\">\r\n      <!-- toggle -->\r\n      <div id=\"menu_toggle\" class=\"hidden-d hidden-t hidden-ld\" (click)=\"menuToggle()\">\r\n        <button></button>\r\n      </div>\r\n    </div>\r\n    <div class=\"col-3 box-logo\">\r\n      <h1 class=\"logo\"><a [routerLink]=\"['']\" placement=\"right\">TZNE</a></h1>\r\n      <!-- href=\"index.html\" -->\r\n    </div>\r\n    <div class=\"col-5 box-pesquisa hidden-m\" tooltip=\"Busque seu produto preferido.\" placement=\"auto\">\r\n      <div class=\"input-pesquisa\">\r\n        <input type=\"text\" name=\"pesquisa\" value=\"\" placeholder=\"Pesquisar...\">\r\n        <i class=\"fa fa-search\" aria-hidden=\"true\"></i>\r\n      </div>\r\n    </div>\r\n    <!-- Logout -->\r\n    <div *ngIf=\"(sair == true || cliente != []) else emptyCart \" class=\"col-4 conta-carrinho\">\r\n      <i class=\"fa fa-user-circle-o fa-2x hidden-ld hidden-d\" aria-hidden=\"true\"></i>\r\n      <div class=\"btn-group\" dropdown>\r\n        <h2><a dropdownToggle class=\"hidden-t hidden-m\" style=\"cursor: pointer\" tooltip=\"Acesse seu perfil.\">Bem Vindo {{cliente.nome}} <span class=\"caret\"></span>\r\n          </a></h2>\r\n        <ul *dropdownMenu class=\"dropdown-menu\" role=\"menu\">\r\n          <li role=\"menuitem\"><a class=\"dropdown-item\" style=\"cursor: pointer\" (click)=\"minhaConta()\">Minha conta</a></li>\r\n          <li role=\"menuitem\"><a class=\"dropdown-item\" style=\"cursor: pointer\" (click)=\"meusPedidos()\">Meus pedidos</a></li>\r\n          <li role=\"menuitem\"><a class=\"dropdown-item\" style=\"cursor: pointer\" (click)=\"meuCadastro()\">Meu cadastro</a></li>\r\n          <!-- <li role=\"menuitem\"><a class=\"dropdown-item\">Meu acesso</a></li>\r\n            <li role=\"menuitem\"><a class=\"dropdown-item\">Meu endereco</a></li> -->\r\n          <li class=\"divider dropdown-divider\"></li>\r\n          <li role=\"menuitem\"><a class=\"dropdown-item\" style=\"cursor: pointer\" (click)=\"logout()\">Sair</a>\r\n          </li>\r\n        </ul>\r\n      </div>\r\n      <!-- verificar essa função para mostrar a area de login, e esconder a area de login -->\r\n      <!--  <ng-template *ngIf=\"(sair$) else entrar\"> #entrar-->\r\n      <!-- <h2 [hidden]=\"!sair\" class=\"hidden-t hidden-m\"><a style=\"cursor: pointer\" (click)=\"login()\" tooltip=\"Entre com sua conta.\">Entre</a> ou <a style=\"cursor: pointer\" (click)=\"cadastrar( 0 )\" tooltip=\"Crie uma conta.\">cadastre-se</a></h2> -->\r\n      <!-- </ng-template> -->\r\n      <a class=\"nav-link\" href=\"\" routerLinkActive=\"active\" [routerLink]=\"['cart']\"><i class=\"fa fa-shopping-bag fa-2x\" aria-hidden=\"true\" tooltip=\"Veja sua sacola.\" ></i> <span class=\"badge badge-danger\"> {{quantidadeEmCarrinho}} </span> </a>\r\n    </div>\r\n    <!-- login -->\r\n    <ng-template #emptyCart>\r\n    <div class=\"col-4 conta-carrinho\">\r\n      <i class=\"fa fa-user-circle-o fa-2x hidden-ld hidden-d\" aria-hidden=\"true\"></i>\r\n      <h2 class=\"hidden-t hidden-m\"><a style=\"cursor: pointer\" (click)=\"login()\" tooltip=\"Entre com sua conta.\">Entre</a> ou <a style=\"cursor: pointer\"\r\n          (click)=\"cadastrar( 0 )\" tooltip=\"Crie uma conta.\">cadastre-se</a></h2>\r\n      <a class=\"nav-link\" href=\"\" routerLinkActive=\"active\" [routerLink]=\"['cart']\"><i class=\"fa fa-shopping-bag fa-2x\" aria-hidden=\"true\" tooltip=\"Veja sua sacola.\" ></i> <span class=\"badge badge-danger\"> {{quantidadeEmCarrinho}} </span> </a>\r\n    </div>\r\n    </ng-template>\r\n  </header>\r\n</div>\r\n<div class=\"linha\">\r\n  <nav class=\"col-12 menu-principal hidden-m\">\r\n    <ul>\r\n      <li><a style=\"cursor:pointer\" (click)=\"filter(1)\" routerLinkActive=\"active\" [routerLink]=\"['home/type']\"  tooltip=\"Camisetas em ofertas.\">Ofertas</a></li>\r\n      <li><a style=\"cursor:pointer\" (click)=\"filter(2)\" routerLinkActive=\"active\" [routerLink]=\"['home/type']\"  tooltip=\"Camisetas masculinas.\">Masculino</a></li>\r\n      <li><a style=\"cursor:pointer\" (click)=\"filter(3)\" routerLinkActive=\"active\" [routerLink]=\"['home/type']\"  tooltip=\"Camisetas femininas.\">Feminino</a></li>\r\n      <li><a style=\"cursor:pointer\" (click)=\"filter(4)\" routerLinkActive=\"active\" [routerLink]=\"['home/type']\"  tooltip=\"Camisetas Infantis.\">Infantil</a></li>\r\n      <!-- <li><a>Acessórios</a></li> -->\r\n    </ul>\r\n  </nav>\r\n  <nav class=\"col-12 menu-mobile hidden-ld hidden-d hidden-t\" [ngClass]=\"{'menu_ativo': toggleMenu }\">\r\n    <ul>\r\n      <header>\r\n        <div class=\"input-pesquisa\">\r\n          <input type=\"text\" name=\"pesquisa\" value=\"\" placeholder=\"Pesquisar...\">\r\n          <i class=\"fa fa-search\" aria-hidden=\"true\"></i>\r\n        </div>\r\n      </header>\r\n      <li><a (click)=\"filter(1)\" [routerLink]=\"['']\" >Ofertas</a></li>\r\n      <li><a (click)=\"filter(2)\" [routerLink]=\"['']\" >Masculino</a></li>\r\n      <li><a (click)=\"filter(3)\" [routerLink]=\"['']\" >Feminino</a></li>\r\n      <li><a (click)=\"filter(4)\" [routerLink]=\"['']\" >Infantil</a></li>\r\n      <!-- <li><a (click)=\"filter(1)\" [routerLink]=\"['']\" >Acessórios</a></li> -->\r\n    </ul>\r\n    <a href=\"#!\" class=\"menu-close\" (click)=\"menuClose()\">\r\n            <i class=\"fa fa-reply\" aria-hidden=\"true\"></i>\r\n        </a>\r\n  </nav>\r\n</div>\r\n<div class=\"separador\"></div>\r\n"
 
 /***/ }),
 
@@ -461,6 +461,8 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_product_service__ = __webpack_require__("../../../../../src/app/services/product.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angular_2_local_storage__ = __webpack_require__("../../../../angular-2-local-storage/dist/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angular_2_local_storage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_angular_2_local_storage__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -473,18 +475,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var HeaderComponent = (function () {
-    function HeaderComponent(routeParams, produtos, router) {
+    function HeaderComponent(routeParams, produtos, router, localStorageService) {
         this.routeParams = routeParams;
         this.produtos = produtos;
         this.router = router;
+        this.localStorageService = localStorageService;
         this.toggleMenu = false;
         this.sair = false;
+        this.acesso = true;
     }
     HeaderComponent.prototype.ngOnInit = function () {
-        this.sair = false;
         this.quantidadeEmCarrinho = this.produtos.getProdutoCarrinho().length;
         console.log(this.quantidadeEmCarrinho, "Quantidade");
+        this.cliente = this.localStorageService.get('cliente');
+        if (this.cliente != [] || this.cliente != null) {
+            console.log('aqui');
+            this.sair = false;
+        }
+        console.log(this.cliente);
     };
     //função de alteração para o numero de quantidade no carrinho
     HeaderComponent.prototype.ngAfterViewChecked = function () {
@@ -536,10 +546,15 @@ var HeaderComponent = (function () {
     };
     HeaderComponent.prototype.logout = function () {
         this.sair = true;
-        console.log("aqui");
+        this.cliente = this.localStorageService.set('cliente', []);
+        if (this.cliente != [] || this.cliente != null) {
+            console.log('aqui');
+            this.sair = true;
+        }
+        this.ngOnInit();
     };
     HeaderComponent.prototype.login = function () {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/login/0']);
     };
     return HeaderComponent;
 }());
@@ -553,10 +568,10 @@ HeaderComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/layout/header/header.component.html"),
         styles: [__webpack_require__("../../../../../src/app/layout/header/header.component.scss")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_router__["ActivatedRoute"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_router__["ActivatedRoute"]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_product_service__["a" /* ProductService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_product_service__["a" /* ProductService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_router__["Router"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_router__["Router"]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_router__["ActivatedRoute"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_router__["ActivatedRoute"]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_product_service__["a" /* ProductService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_product_service__["a" /* ProductService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_router__["Router"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_router__["Router"]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3_angular_2_local_storage__["LocalStorageService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_angular_2_local_storage__["LocalStorageService"]) === "function" && _d || Object])
 ], HeaderComponent);
 
-var _a, _b, _c;
+var _a, _b, _c, _d;
 //# sourceMappingURL=header.component.js.map
 
 /***/ }),
@@ -606,8 +621,8 @@ LayoutModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_8__simpleLayout_simple_layout_component__["a" /* SimpleLayoutComponent */]
         ],
         imports: [
-            __WEBPACK_IMPORTED_MODULE_4_ngx_bootstrap__["f" /* TooltipModule */].forRoot(),
-            __WEBPACK_IMPORTED_MODULE_4_ngx_bootstrap__["a" /* BsDropdownModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_4_ngx_bootstrap__["g" /* TooltipModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_4_ngx_bootstrap__["b" /* BsDropdownModule */].forRoot(),
             __WEBPACK_IMPORTED_MODULE_3__angular_forms__["FormsModule"],
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"],
             __WEBPACK_IMPORTED_MODULE_2__angular_router__["RouterModule"]
@@ -1072,7 +1087,7 @@ var SearchCepComponent = (function () {
         this.http.post('http://tzne.kwcraft.com.br/api/frete/calculafrete', data)
             .subscribe(function (result) {
             _this.resultCEP = result.json();
-            _this.produtos.setValorFrete(_this.resultCEP['cServico']['Valor'], true);
+            _this.produtos.setValorFrete(parseInt(_this.resultCEP['cServico']['Valor']), true);
         }, function (error) {
             console.log(error.json());
         });
@@ -1096,7 +1111,7 @@ var _a, _b, _c, _d;
 /***/ "../../../../../src/app/pages/client/attendance/attendance.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p-growl [(value)]=\"msgs\"></p-growl>\r\n<div class=\"titulo\">\r\n  <i class=\"ion-ios-search-strong\"></i>\r\n  <p>Assuntos mais procurados</p>\r\n</div>\r\n<div class=\"panel-group\" id=\"accordion\">\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h4 class=\"panel-title\">\r\n        <a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#politica_arrependimento\">\r\n          Política de Arrependimento\r\n        </a>\r\n      </h4>\r\n    </div>\r\n    <div id=\"politica_arrependimento\" class=\"panel-collapse collapse\">\r\n      <div class=\"panel-body\">\r\n        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute,\r\n        non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt\r\n        aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,\r\n        craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings\r\n        occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus\r\n        labore sustainable VHS.\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h4 class=\"panel-title\">\r\n        <a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#politica_pagamento\">\r\n          Política de pagamento\r\n        </a>\r\n      </h4>\r\n    </div>\r\n    <div id=\"politica_pagamento\" class=\"panel-collapse collapse\">\r\n      <div class=\"panel-body\">\r\n        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute,\r\n        non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt\r\n        aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,\r\n        craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings\r\n        occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus\r\n        labore sustainable VHS.\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h4 class=\"panel-title\">\r\n        <a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#politica_privacidade\">\r\n          Política de privacidade\r\n        </a>\r\n      </h4>\r\n    </div>\r\n    <div id=\"politica_privacidade\" class=\"panel-collapse collapse\">\r\n      <div class=\"panel-body\">\r\n        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute,\r\n        non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt\r\n        aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,\r\n        craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings\r\n        occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus\r\n        labore sustainable VHS.\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h4 class=\"panel-title\">\r\n        <a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#politica_entrega\">\r\n          Política de entrega\r\n        </a>\r\n      </h4>\r\n    </div>\r\n    <div id=\"politica_entrega\" class=\"panel-collapse collapse\">\r\n      <div class=\"panel-body\">\r\n        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute,\r\n        non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt\r\n        aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,\r\n        craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings\r\n        occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus\r\n        labore sustainable VHS.\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h4 class=\"panel-title\">\r\n        <a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#termos_politica_troca\">\r\n          Termos e Política de troca\r\n        </a>\r\n      </h4>\r\n    </div>\r\n    <div id=\"termos_politica_troca\" class=\"panel-collapse collapse\">\r\n      <div class=\"panel-body\">\r\n        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute,\r\n        non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt\r\n        aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,\r\n        craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings\r\n        occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus\r\n        labore sustainable VHS.\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<!-- Canais de atendimento -->\r\n<div class=\"titulo\">\r\n  <i class=\"ion-chatboxes\"></i>\r\n  <p>Canais de Atendimento</p>\r\n</div>\r\n\r\n<div class=\"canais-atendimento\">\r\n  <div class=\"container-atendimento\">\r\n    <a href=\"#!\">\r\n      <i class=\"ion-android-call\"></i>\r\n      <p>(11) 5555 - 5555</p>\r\n    </a>\r\n  </div>\r\n  <div class=\"container-atendimento\">\r\n    <a href=\"#!\">\r\n      <i class=\"ion-android-mail\"></i>\r\n      <p>sac@tzne.com.br</p>\r\n    </a>\r\n  </div>\r\n  <div class=\"container-atendimento\">\r\n    <a href=\"#!\">\r\n      <i class=\"ion-android-mail\"></i>\r\n      <p>atendimento@tzne.com.br</p>\r\n    </a>\r\n  </div>\r\n  <div class=\"container-atendimento\">\r\n    <a href=\"#!\">\r\n      <i class=\"ion-social-facebook\"></i>\r\n      <p>tzneoficial@facebook.com</p>\r\n    </a>\r\n  </div>\r\n</div>\r\n\r\n<!-- Abertura de chamado -->\r\n<div class=\"titulo\">\r\n  <i class=\"ion-settings\"></i>\r\n  <p >Abrir chamado</p>\r\n</div>\r\n<div class=\"col-xs-12\">\r\n  <div class=\"form-group\">\r\n    <label for=\"\">Nome Completo*</label>\r\n    <input type=\"text\" class=\"form-control\" placeholder=\"João Fonseca\" name=\"nome\" [(ngModel)]=\"chamado.nome\" >\r\n  </div>\r\n  <div class=\"form-group\">\r\n    <label for=\"\">E-mail *</label>\r\n    <input type=\"email\" class=\"form-control\" placeholder=\"exemplo@email.com\" name=\"email\" [(ngModel)]=\"chamado.email\" >\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"\">Telefone *</label>\r\n    <input type=\"text\" \r\n    class=\"form-control\"\r\n     placeholder=\"11 5521-2222\" \r\n     name=\"telefone\" \r\n     [(ngModel)]=\"chamado.telefone\"\r\n      appMak=\"99 9999-9999\">\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"\">Assunto *</label>\r\n    <select class=\"form-control\" name=\"assunto\" [(ngModel)]=\"chamado.assunto\">\r\n      <option value=\"\">Selecione</option>\r\n      <option value=\"elogio\">Elogio</option>\r\n      <option value=\"reclamacao\">Reclamação</option>\r\n      <option value=\"sugestao\">Sugestão</option>\r\n    </select>\r\n  </div>\r\n  <div class=\"form-group\">\r\n    <label for=\"\">Mensagem *</label>\r\n    <textarea name=\"mensagem\" class=\"form-control\" rows=\"3\" [(ngModel)]=\"chamado.mensagem\"></textarea>\r\n  </div>\r\n  <div class=\"container-salvar\">\r\n    <a type=\"button\" class=\"btn-salvar\" (click)=\"enviar()\">Enviar</a>\r\n  </div>\r\n</div>"
+module.exports = "<p-growl [(value)]=\"msgs\"></p-growl>\r\n<div class=\"titulo\">\r\n  <i class=\"ion-ios-search-strong\"></i>\r\n  <p>Assuntos mais procurados</p>\r\n</div>\r\n<div class=\"panel-group\" id=\"accordion\">\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h4 class=\"panel-title\">\r\n        <a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#politica_arrependimento\">\r\n          Política de Arrependimento\r\n        </a>\r\n      </h4>\r\n    </div>\r\n    <div id=\"politica_arrependimento\" class=\"panel-collapse collapse\">\r\n      <div class=\"panel-body\">\r\n        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute,\r\n        non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt\r\n        aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,\r\n        craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings\r\n        occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus\r\n        labore sustainable VHS.\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h4 class=\"panel-title\">\r\n        <a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#politica_pagamento\">\r\n          Política de pagamento\r\n        </a>\r\n      </h4>\r\n    </div>\r\n    <div id=\"politica_pagamento\" class=\"panel-collapse collapse\">\r\n      <div class=\"panel-body\">\r\n        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute,\r\n        non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt\r\n        aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,\r\n        craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings\r\n        occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus\r\n        labore sustainable VHS.\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h4 class=\"panel-title\">\r\n        <a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#politica_privacidade\">\r\n          Política de privacidade\r\n        </a>\r\n      </h4>\r\n    </div>\r\n    <div id=\"politica_privacidade\" class=\"panel-collapse collapse\">\r\n      <div class=\"panel-body\">\r\n        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute,\r\n        non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt\r\n        aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,\r\n        craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings\r\n        occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus\r\n        labore sustainable VHS.\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h4 class=\"panel-title\">\r\n        <a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#politica_entrega\">\r\n          Política de entrega\r\n        </a>\r\n      </h4>\r\n    </div>\r\n    <div id=\"politica_entrega\" class=\"panel-collapse collapse\">\r\n      <div class=\"panel-body\">\r\n        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute,\r\n        non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt\r\n        aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,\r\n        craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings\r\n        occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus\r\n        labore sustainable VHS.\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h4 class=\"panel-title\">\r\n        <a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#termos_politica_troca\">\r\n          Termos e Política de troca\r\n        </a>\r\n      </h4>\r\n    </div>\r\n    <div id=\"termos_politica_troca\" class=\"panel-collapse collapse\">\r\n      <div class=\"panel-body\">\r\n        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute,\r\n        non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt\r\n        aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,\r\n        craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings\r\n        occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus\r\n        labore sustainable VHS.\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<!-- Canais de atendimento -->\r\n<div class=\"titulo\">\r\n  <i class=\"ion-chatboxes\"></i>\r\n  <p>Canais de Atendimento</p>\r\n</div>\r\n\r\n<div class=\"canais-atendimento\">\r\n  <div class=\"container-atendimento\">\r\n    <a href=\"#!\">\r\n      <i class=\"ion-android-call\"></i>\r\n      <p>(11) 5555 - 5555</p>\r\n    </a>\r\n  </div>\r\n  <div class=\"container-atendimento\">\r\n    <a href=\"#!\">\r\n      <i class=\"ion-android-mail\"></i>\r\n      <p>sac@tzne.com.br</p>\r\n    </a>\r\n  </div>\r\n  <div class=\"container-atendimento\">\r\n    <a href=\"#!\">\r\n      <i class=\"ion-android-mail\"></i>\r\n      <p>atendimento@tzne.com.br</p>\r\n    </a>\r\n  </div>\r\n  <div class=\"container-atendimento\">\r\n    <a href=\"#!\">\r\n      <i class=\"ion-social-facebook\"></i>\r\n      <p>tzneoficial@facebook.com</p>\r\n    </a>\r\n  </div>\r\n</div>\r\n\r\n<!-- Abertura de chamado -->\r\n<div class=\"titulo\">\r\n  <i class=\"ion-settings\"></i>\r\n  <p >Abrir chamado</p>\r\n</div>\r\n<div class=\"col-xs-12\">\r\n  <div class=\"form-group\">\r\n    <label for=\"\">Nome Completo*</label>\r\n    <input type=\"text\" class=\"form-control\" placeholder=\"João Fonseca\" name=\"nome\" [(ngModel)]=\"chamado.nome\" >\r\n  </div>\r\n  <div class=\"form-group\">\r\n    <label for=\"\">E-mail *</label>\r\n    <input type=\"email\" class=\"form-control\" placeholder=\"exemplo@email.com\" name=\"email\" [(ngModel)]=\"chamado.email\" >\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"\">Telefone *</label>\r\n    <input type=\"text\" \r\n    class=\"form-control\"\r\n     placeholder=\"(11) 5521-2222\" \r\n     name=\"telefone\" \r\n     [(ngModel)]=\"chamado.telefone\"\r\n     kzMask=\"(99) 9999-9999\">\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"\">Assunto *</label>\r\n    <select class=\"form-control\" name=\"assunto\" [(ngModel)]=\"chamado.assunto\">\r\n      <option value=\"\">Selecione</option>\r\n      <option value=\"elogio\">Elogio</option>\r\n      <option value=\"reclamacao\">Reclamação</option>\r\n      <option value=\"sugestao\">Sugestão</option>\r\n    </select>\r\n  </div>\r\n  <div class=\"form-group\">\r\n    <label for=\"\">Mensagem *</label>\r\n    <textarea name=\"mensagem\" class=\"form-control\" rows=\"3\" [(ngModel)]=\"chamado.mensagem\"></textarea>\r\n  </div>\r\n  <div class=\"container-salvar\">\r\n    <a type=\"button\" class=\"btn-salvar\" (click)=\"enviar()\">Enviar</a>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -1348,6 +1363,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
 var ClientModule = (function () {
     function ClientModule() {
     }
@@ -1367,12 +1383,15 @@ ClientModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_12__my_cadastre_initial_my_cadastre_initial_component__["a" /* MyCadastreInitialComponent */],
         ],
         imports: [
-            __WEBPACK_IMPORTED_MODULE_3_ngx_bootstrap__["b" /* ButtonsModule */].forRoot(),
-            __WEBPACK_IMPORTED_MODULE_3_ngx_bootstrap__["f" /* TooltipModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_3_ngx_bootstrap__["a" /* AlertModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_3_ngx_bootstrap__["c" /* ButtonsModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_3_ngx_bootstrap__["g" /* TooltipModule */].forRoot(),
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormsModule"],
+            __WEBPACK_IMPORTED_MODULE_14__shared_shared_module__["a" /* SharedModule */],
+            __WEBPACK_IMPORTED_MODULE_3_ngx_bootstrap__["f" /* TabsModule */].forRoot(),
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"],
-            __WEBPACK_IMPORTED_MODULE_3_ngx_bootstrap__["e" /* TabsModule */].forRoot(),
-            __WEBPACK_IMPORTED_MODULE_3_ngx_bootstrap__["c" /* CarouselModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_3_ngx_bootstrap__["f" /* TabsModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_3_ngx_bootstrap__["d" /* CarouselModule */].forRoot(),
             __WEBPACK_IMPORTED_MODULE_14__shared_shared_module__["a" /* SharedModule */],
             __WEBPACK_IMPORTED_MODULE_15_primeng_primeng__["GrowlModule"],
             __WEBPACK_IMPORTED_MODULE_18__angular_router__["RouterModule"]
@@ -1479,7 +1498,7 @@ ClientRoutingModule = __decorate([
 /***/ "../../../../../src/app/pages/client/login/login.component.html":
 /***/ (function(module, exports) {
 
-module.exports = " <div class=\"row login-container\" data-hook=\"\">\r\n    <div id=\"content\" class=\"col-sm-12\" data-hook=\"\">\r\n      <div class=\"col-md-5 col-centered\">\r\n        <div class=\"panel panel-default\">\r\n          <div class=\"panel-heading\">\r\n            <h3 class=\"panel-title\">Entrar em TZNE-E-commerce</h3>\r\n          </div>\r\n          <div id=\"existing-customer\" class=\"panel-body\" data-hook=\"login\">\r\n            <p class=\"login-info-text\">- ENTRE USANDO E-MAIL -</p>\r\n            <form class=\"login-login-form\">\r\n              <fieldset class=\"login-input-container\">\r\n                <div class=\"login-input-item\">\r\n                  <input type=\"email\" class=\"login-user-input-email login-user-input\" name=\"email\" placeholder=\"Digite o seu endereço de email\" >\r\n                  <!-- <div *ngIf=\"signInForm.get('email').errors && signInForm.get('email').touched\">\r\n                    <span class=\"login-error-icon text-danger\">!</span>\r\n                    <p class=\"login-error-message text-danger\">{{signInForm.get('email').errors.msg || 'Digite um e-mail válido'}}</p>\r\n                  </div> -->\r\n                </div>\r\n                <div class=\"login-input-item\">\r\n                  <input type=\"password\" class=\"login-user-input-password login-user-input\" name=\"password\" placeholder=\"Digite a senha\" >\r\n                  <!-- <div *ngIf=\"signInForm.get('password').errors && signInForm.get('password').touched\">\r\n                    <span class=\"login-error-icon text-danger\">!</span>\r\n                    <p class=\"login-error-message text-danger\">{{signInForm.get('password').errors.msg || 'A senha deve ter pelo menos 6 caracteres'}}</p>\r\n                  </div> -->\r\n                </div>\r\n              </fieldset>\r\n              <fieldset class=\"login-login-button-container\">\r\n                <button type=\"submit\" class=\"btn btn-danger login-login-button\">Entrar</button>\r\n              </fieldset>\r\n            </form>\r\n            <div class=\"login-link-container\">\r\n              <small>\r\n                <a class=\"login-link text-danger\" routerLink=\"/\">Recuperar senha</a>\r\n                <div class=\"login-right-links\">\r\n                  <span class=\"text-default\">Novo em TZNE-E-commerce?</span>\r\n                  <a class=\"login-create-account-link login-link text-danger\">Cadastrar-se</a>\r\n                </div>\r\n              </small>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n"
+module.exports = "<div class=\"row login-container\" data-hook=\"\">\r\n  <p-growl [(value)]=\"msgs\"></p-growl>\r\n\r\n  <div id=\"content\" class=\"col-sm-12\" data-hook=\"\">\r\n    <div class=\"col-md-5 col-centered\">\r\n      <div class=\"panel panel-default\">\r\n        <div class=\"panel-heading\">\r\n          <h3 class=\"panel-title\">Entrar em TZNE-E-commerce</h3>\r\n        </div>\r\n        <div id=\"existing-customer\" class=\"panel-body\" data-hook=\"login\">\r\n          <p class=\"login-info-text\">- ENTRE USANDO E-MAIL -</p>\r\n          <alert type=\"danger\" [hidden]=\"error\">\r\n            <strong>OPS!</strong> E-mail ou senha incorretos.\r\n          </alert>\r\n          <form class=\"login-login-form\">\r\n            <fieldset class=\"login-input-container\">\r\n              <div class=\"login-input-item\">\r\n                <input type=\"email\" class=\"login-user-input-email login-user-input\" name=\"email\" placeholder=\"Digite o seu endereço de email\"\r\n                  [(ngModel)]=\"cliente.username\">\r\n              </div>\r\n              <div class=\"login-input-item\">\r\n                <input type=\"password\" class=\"login-user-input-password login-user-input\" name=\"password\" placeholder=\"Digite a senha\" [(ngModel)]=\"cliente.password\">\r\n              </div>\r\n            </fieldset>\r\n            <fieldset class=\"login-login-button-container\">\r\n              <button type=\"submit\" class=\"btn btn-danger login-login-button\" (click)=\"entrar()\">Entrar</button>\r\n              <!-- <button type=\"submit\" class=\"btn btn-danger login-login-button\" (click)=\"entrar()\">Entrar</button> -->\r\n            </fieldset>\r\n          </form>\r\n          <div class=\"login-link-container\">\r\n            <small>\r\n                <!-- <a class=\"login-link text-danger\" routerLink=\"/\">Recuperar senha</a> -->\r\n                <div class=\"login-right-links\">\r\n                  <span class=\"text-default\">Novo em TZNE-E-commerce?</span>\r\n                  <a style=\"cursor:pointer;\"class=\"login-create-account-link login-link text-danger\" (click)=\"cadastrar( 0 )\">Cadastrar-se</a>\r\n                </div>\r\n              </small>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -1507,6 +1526,12 @@ module.exports = module.exports.toString();
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_product_service__ = __webpack_require__("../../../../../src/app/services/product.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_messages_service__ = __webpack_require__("../../../../../src/app/services/messages.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angular_2_local_storage__ = __webpack_require__("../../../../angular-2-local-storage/dist/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angular_2_local_storage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_angular_2_local_storage__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1517,10 +1542,121 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
+
+
+
 var LoginComponent = (function () {
-    function LoginComponent() {
+    function LoginComponent(produtos, routeParams, router, msg, localStorageService, http) {
+        this.produtos = produtos;
+        this.routeParams = routeParams;
+        this.router = router;
+        this.msg = msg;
+        this.localStorageService = localStorageService;
+        this.http = http;
+        this.msgs = [];
+        /*  private cliente1 = {
+           'userName': '',
+           'userKey': ''
+         } */
+        this.cliente = {
+            'nome': '',
+            'username': '',
+            'password': ''
+        };
+        this.error = true;
     }
     LoginComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.api = this.routeParams.params.subscribe(function (params) {
+            _this.id = params['id'];
+        });
+        if (this.id == 1) {
+            this.alertarStatus('success', 'Sucesso!', 'Sucesso.');
+        }
+        this.produtos.listarClientes()
+            .then(function (result) {
+            console.log(result);
+            _this.getCliente = result;
+            console.log(_this.getCliente);
+        })
+            .catch(function (error) {
+            console.log(error);
+        });
+        var sessao = this.localStorageService.get('cliente');
+    };
+    LoginComponent.prototype.initMsgs = function () {
+        var status = this.msg.getStatus();
+        if (status != null)
+            this.alertarStatus(status['tipo'], status['titulo'], status['msg']);
+        this.msg.limparStatus();
+    };
+    LoginComponent.prototype.alertarStatus = function (tipo, titulo, msg) {
+        this.msgs = [];
+        this.msgs.push({ severity: tipo, summary: titulo, detail: msg });
+    };
+    LoginComponent.prototype.limparStatus = function () {
+        this.msgs = [];
+    };
+    LoginComponent.prototype.cadastrar = function (id) {
+        this.router.navigate(['/cadastre/' + id]);
+    };
+    LoginComponent.prototype.entrar = function () {
+        var _this = this;
+        this.error = true;
+        console.log('Fazer login');
+        console.log(this.cliente);
+        this.getCliente.filter(function (i) {
+            if (i['client_email'] == _this.cliente.username && i['client_password'] == _this.cliente.password) {
+                _this.cliente['nome'] = i['client_name'];
+                _this.Logar();
+                console.log('entrou');
+                _this.localStorageService.set('cliente', _this.cliente);
+                _this.router.navigate(['']);
+            }
+            else {
+                _this.error = false;
+            }
+        });
+    };
+    /* login() {
+      let data = new URLSearchParams();
+      data.append('username', this.cliente.userName);
+      data.append('password', this.cliente.userKey);
+      this.http.post('http://tzne.kwcraft.com.br/Services/LoginCliente.php', data)
+        .subscribe(result => {
+          this.logado = result.json();
+        }, error => {
+          console.log(error.json());
+        });
+    } */
+    /*  Logar() {
+      var headers = new Headers();
+      headers.append('Content-Type', 'application/x-www-form-urlencoded');
+      let urlSearchParams = new URLSearchParams();
+      urlSearchParams.append('username', this.cliente.userName);
+      urlSearchParams.append('password', this.cliente.userKey);
+      let body = urlSearchParams.toString()
+      this.http.post('http://tzne.kwcraft.com.br/Services/LoginCliente.php', body, { headers: headers })
+        .subscribe(result => {
+          console.log(result.json());
+          this.logado = result.json();
+        }, error => {
+          console.log(error.json());
+        });
+  } */
+    LoginComponent.prototype.Logar = function () {
+        var headers = new __WEBPACK_IMPORTED_MODULE_5__angular_http__["a" /* Headers */]();
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        var urlSearchParams = new URLSearchParams();
+        var body = urlSearchParams.toString();
+        this.http.post('http://tzne.kwcraft.com.br/Services/LoginCliente.php', this.cliente, { headers: headers })
+            .subscribe(function (result) {
+            console.log(result.json());
+        }, function (error) {
+            console.log(error.json());
+        });
     };
     return LoginComponent;
 }());
@@ -1530,9 +1666,10 @@ LoginComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/pages/client/login/login.component.html"),
         styles: [__webpack_require__("../../../../../src/app/pages/client/login/login.component.scss")]
     }),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_product_service__["a" /* ProductService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_product_service__["a" /* ProductService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["ActivatedRoute"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["ActivatedRoute"]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["Router"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["Router"]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__services_messages_service__["a" /* MensagensService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_messages_service__["a" /* MensagensService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4_angular_2_local_storage__["LocalStorageService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4_angular_2_local_storage__["LocalStorageService"]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_5__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__angular_http__["b" /* Http */]) === "function" && _f || Object])
 ], LoginComponent);
 
+var _a, _b, _c, _d, _e, _f;
 //# sourceMappingURL=login.component.js.map
 
 /***/ }),
@@ -1734,7 +1871,7 @@ MyAdressesComponent = __decorate([
 /***/ "../../../../../src/app/pages/client/my-cadastre-initial/my-cadastre-initial.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"col-xs-12\">\r\n  <p-growl [(value)]=\"msgs\"></p-growl>\r\n\r\n  <div class=\"form-group menor\">\r\n    <label for=\"nome\">Nome Completo*</label>\r\n    <input [(ngModel)]=\"cliente.client_name\" type=\"text\" id=\"nome\" name=\"nome\" class=\"form-control\" placeholder=\"Digite seu nome\">\r\n  </div>\r\n  <!-- <div class=\"form-group menor\">\r\n        <label for=\"apelido\">Apelido *</label>\r\n        <input [(ngModel)]=\"cliente.\" type=\"text\" id=\"apelido\" name=\"apelido\" class=\"form-control\" placeholder=\"Apelido\">\r\n    </div> -->\r\n  <div class=\"form-group menor\">\r\n    <label for=\"email\">E-mail *</label>\r\n    <input [(ngModel)]=\"cliente.client_email\" type=\"email\" id=\"email\" name=\"email\" class=\"form-control\" placeholder=\"exemplo@exemplo.com\">\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"senha\">Senha *</label>\r\n    <input [(ngModel)]=\"cliente.client_password\" type=\"password\" id=\"senha\" name=\"senha\" class=\"form-control\" placeholder=\"*******\">\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"cpf\">CPF *</label>\r\n    <input [(ngModel)]=\"cliente.client_cpf\" type=\"text\" id=\"cpf\" name=\"cpf\" class=\"form-control\" placeholder=\"xxx.xxx.xxx-x\">\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"sexo\">Sexo *</label>\r\n    <select [(ngModel)]=\"cliente.client_sex\" id=\"sexo\" name=\"sexo\" class=\"form-control\">\r\n            <option value=\"1\">Feminino</option>\r\n            <option value=\"2\">Masculino</option>\r\n        </select>\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"dataNasc\">Data Nascimento *</label>\r\n    <input [(ngModel)]=\"cliente.client_birthday\" type=\"text\" id=\"dataNasc\" name=\"dataNasc\" class=\"form-control\" placeholder=\"dd/MM/aaaa\">\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"telefone\">Telefone *</label>\r\n    <input [(ngModel)]=\"cliente.client_tel\" type=\"text\" id=\"telefone\" name=\"telefone\" class=\"form-control\" placeholder=\"(xx)xxxx-xxxx\">\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"celular\">Celular (opcional)</label>\r\n    <input [(ngModel)]=\"cliente.client_cel\" type=\"text\" id=\"telefone\" name=\"telefone\" class=\"form-control\" placeholder=\"(xx)xxxxx-xxxx\">\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"CEP\">CEP *</label>\r\n    <input [(ngModel)]=\"cliente.client_adress_cep\" type=\"text\" id=\"CEP\" name=\"CEP\" class=\"form-control\" placeholder=\"xxxxx-xxx\">\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"endereco\">Endereço *</label>\r\n    <select [(ngModel)]=\"cliente.client_adress_type\" class=\"form-control\" id=\"endereco\" name=\"endereco\">\r\n          <option disabled=\"true\">Selecione</option>\r\n          <option value=\"1\">Apartamento</option>\r\n          <option value=\"3\">Casa</option>\r\n          <option value=\"3\">Comercial</option>\r\n          <option value=\"4\">Outros</option>\r\n        </select>\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"logradouro\">Logradouro *</label>\r\n    <input [(ngModel)]=\"cliente.client_adress_logradouro\" type=\"text\" id=\"logradouro\" name=\"logradouro\" class=\"form-control\"\r\n      placeholder=\"Logradouro\">\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"numero\">Número *</label>\r\n    <input [(ngModel)]=\"cliente.client_adress_number\" type=\"number\" class=\"form-control\" id=\"numero\" name=\"numero\" placeholder=\"xxxx\">\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"complemento\">Complemento (opicional)</label>\r\n    <input [(ngModel)]=\"cliente.client_adress_complements\" type=\"text\" class=\"form-control\" id=\"complemento\" name=\"complemento\"\r\n      placeholder=\"Complemento\">\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"bairro\">Bairro (opicional)</label>\r\n    <input [(ngModel)]=\"cliente.client_adress_district\" type=\"text\" class=\"form-control\" id=\"bairro\" name=\"bairro\" placeholder=\"Bairro\">\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"cidade\">Cidade *</label>\r\n    <input [(ngModel)]=\"cliente.client_adress_city\" type=\"text\" class=\"form-control\" id=\"Cidade\" name=\"Cidade\" placeholder=\"cidade\">\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"estado\">Estado *</label>\r\n    <select [(ngModel)]=\"cliente.client_adress_state\" class=\"form-control\" id=\"estado\" name=\"estado\">\r\n          <option disabled>Selecione</option>\r\n          <option value=\"AC\">Acre</option>\r\n          <option value=\"AL\">Alagoas</option>\r\n          <option value=\"AM\">Amazonas</option>\r\n          <option value=\"AP\">Amapá</option>\r\n          <option value=\"BA\">Bahia</option>\r\n          <option value=\"CE\">Ceará</option>\r\n          <option value=\"DF\">Distrito Federal</option>\r\n          <option value=\"ES\">Espirito Santo</option>\r\n          <option value=\"GO\">Goiás</option>\r\n          <option value=\"MA\">Maranhão</option>\r\n          <option value=\"MG\">Minas Gerais</option>\r\n          <option value=\"MS\">Mato Grosso do Sul</option>\r\n          <option value=\"MT\">Mato Grosso</option>\r\n          <option value=\"PA\">Pará</option>\r\n          <option value=\"PB\">Paraiba</option>\r\n          <option value=\"PE\">Pernambuco</option>\r\n          <option value=\"PI\">Piaui</option>\r\n          <option value=\"PR\">Paraná</option>\r\n          <option value=\"RJ\">Rio de Janeiro</option>\r\n          <option value=\"RN\">Rio Grande do Norte</option>\r\n          <option value=\"RS\">Rio Grande do Sul</option>\r\n          <option value=\"RO\">Rondonia</option>\r\n          <option value=\"RR\">Roraima</option>\r\n          <option value=\"SC\">Santa Catarina</option>\r\n          <option value=\"SE\">Sergipe</option>\r\n          <option value=\"SP\">São Paulo</option>\r\n          <option value=\"TO\">Tocantins</option>\r\n        </select>\r\n  </div>\r\n\r\n  <!-- <div class=\"form-group email-promocional\">\r\n        <label for=\"promocional\">E-mails promocionais</label>\r\n        <input [(ngModel)]=\"cliente.client_direct_mail\" id=\"promocional\" name=\"promocional\" type=\"checkbox\">\r\n    </div> -->\r\n  <div class=\"container-salvar\">\r\n    <a type=\"button\" (click)=\"salvar()\" class=\"btn-salvar\">Salvar</a>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"col-xs-12\">\r\n  <p-growl [(value)]=\"msgs\"></p-growl>\r\n\r\n  <div class=\"form-group menor\">\r\n    <label for=\"nome\">Nome Completo*</label>\r\n    <input\r\n    [(ngModel)]=\"cliente.client_name\"\r\n    type=\"text\"\r\n    id=\"nome\"\r\n    name=\"nome\"\r\n    class=\"form-control\"\r\n    placeholder=\"Digite seu nome\" maxlength=\"100\">\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"email\">E-mail *</label>\r\n    <input\r\n    [(ngModel)]=\"cliente.client_email\"\r\n    type=\"email\"\r\n    id=\"email\"\r\n    name=\"email\"\r\n    class=\"form-control\"\r\n    placeholder=\"exemplo@exemplo.com\"\r\n    maxlength=\"100\">\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"senha\">Senha *</label>\r\n    <input\r\n    [(ngModel)]=\"cliente.client_password\"\r\n    type=\"password\"\r\n    id=\"senha\"\r\n    name=\"senha\"\r\n    class=\"form-control\"\r\n    placeholder=\"*******\"\r\n    maxlength=\"20\">\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"cpf\">CPF *</label>\r\n    <input\r\n    [(ngModel)]=\"cliente.client_cpf\"\r\n    type=\"text\"\r\n    id=\"cpf\"\r\n    name=\"cpf\"\r\n    class=\"form-control\"\r\n    placeholder=\"xxx.xxx.xxx-xx\"\r\n    kzMask=\"999.999.999-99\"\r\n    maxlength=\"14\">\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"sexo\">Sexo *</label>\r\n    <select [(ngModel)]=\"cliente.client_sex\" id=\"sexo\" name=\"sexo\" class=\"form-control\">\r\n      <option value=\"0\">Feminino</option>\r\n      <option value=\"1\">Masculino</option>\r\n    </select>\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"dataNasc\">Data Nascimento *</label>\r\n    <input\r\n    [(ngModel)]=\"cliente.client_birthday\"\r\n    type=\"text\"\r\n    id=\"dataNasc\"\r\n    name=\"dataNasc\"\r\n    class=\"form-control\"\r\n    >\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"telefone\">Telefone *</label>\r\n    <input\r\n    [(ngModel)]=\"cliente.client_tel\"\r\n    type=\"text\"\r\n    id=\"telefone\"\r\n    name=\"telefone\"\r\n    class=\"form-control\"\r\n    placeholder=\"(xx) xxxx-xxxx\"\r\n    kzMask=\"(99) 9999-9999\">\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"celular\">Celular (opcional)</label>\r\n    <input\r\n    [(ngModel)]=\"cliente.client_cel\"\r\n    type=\"text\"\r\n    id=\"telefone\"\r\n    name=\"telefone\"\r\n    class=\"form-control\"\r\n    placeholder=\"(xx) x xxxx-xxxx\"\r\n      kzMask=\"(99) 9 9999-9999\">\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"endereco\">Endereço *</label>\r\n    <select [(ngModel)]=\"cliente.client_adress_type\" class=\"form-control\" id=\"endereco\" name=\"endereco\">\r\n      <option disabled=\"true\" value=\"0\">Selecione</option>\r\n      <option value=\"1\">Apartamento</option>\r\n      <option value=\"3\">Casa</option>\r\n      <option value=\"3\">Comercial</option>\r\n      <option value=\"4\">Outros</option>\r\n    </select>\r\n  </div>\r\n  <div class=\"form-group menor\">\r\n    <label for=\"CEP\">CEP *</label>\r\n    <input\r\n    [(ngModel)]=\"cliente.client_adress_cep\"\r\n    type=\"text\"\r\n    id=\"CEP\"\r\n    name=\"CEP\"\r\n    class=\"form-control\"\r\n    placeholder=\"xxxxx-xxx\"\r\n    kzMask=\"99999-999\"\r\n    (keyup)=\"buscaCep()\">\r\n  </div>\r\n  <div *ngIf=\"cliente.client_adress_cep.length == 8\" class=\"box-endereco\">\r\n    <app-load *ngIf=\"loading\"></app-load>\r\n    <div class=\"form-group menor\">\r\n      <label for=\"logradouro\">Logradouro *</label>\r\n      <input [(ngModel)]=\"cliente.client_adress_logradouro\" type=\"text\" id=\"logradouro\" name=\"logradouro\" class=\"form-control\"\r\n        placeholder=\"Logradouro\">\r\n    </div>\r\n    <div class=\"form-group menor\">\r\n      <label for=\"numero\">Número *</label>\r\n      <input [(ngModel)]=\"cliente.client_adress_number\" type=\"number\" class=\"form-control\" id=\"numero\" name=\"numero\" placeholder=\"xxxx\">\r\n    </div>\r\n    <div class=\"form-group menor\">\r\n      <label for=\"bairro\">Bairro (opicional)</label>\r\n      <input [(ngModel)]=\"cliente.client_adress_district\" type=\"text\" class=\"form-control\" id=\"bairro\" name=\"bairro\" placeholder=\"Bairro\">\r\n    </div>\r\n    <div class=\"form-group menor\">\r\n      <label for=\"cidade\">Cidade *</label>\r\n      <input [(ngModel)]=\"cliente.client_adress_city\" type=\"text\" class=\"form-control\" id=\"Cidade\" name=\"Cidade\" placeholder=\"cidade\">\r\n    </div>\r\n    <div class=\"form-group menor\">\r\n      <label for=\"estado\">Estado *</label>\r\n      <select [(ngModel)]=\"cliente.client_adress_state\" class=\"form-control\" id=\"estado\" name=\"estado\">\r\n        <option disabled>Selecione</option>\r\n        <option value=\"AC\">Acre</option>\r\n        <option value=\"AL\">Alagoas</option>\r\n        <option value=\"AM\">Amazonas</option>\r\n        <option value=\"AP\">Amapá</option>\r\n        <option value=\"BA\">Bahia</option>\r\n        <option value=\"CE\">Ceará</option>\r\n        <option value=\"DF\">Distrito Federal</option>\r\n        <option value=\"ES\">Espirito Santo</option>\r\n        <option value=\"GO\">Goiás</option>\r\n        <option value=\"MA\">Maranhão</option>\r\n        <option value=\"MG\">Minas Gerais</option>\r\n        <option value=\"MS\">Mato Grosso do Sul</option>\r\n        <option value=\"MT\">Mato Grosso</option>\r\n        <option value=\"PA\">Pará</option>\r\n        <option value=\"PB\">Paraiba</option>\r\n        <option value=\"PE\">Pernambuco</option>\r\n        <option value=\"PI\">Piaui</option>\r\n        <option value=\"PR\">Paraná</option>\r\n        <option value=\"RJ\">Rio de Janeiro</option>\r\n        <option value=\"RN\">Rio Grande do Norte</option>\r\n        <option value=\"RS\">Rio Grande do Sul</option>\r\n        <option value=\"RO\">Rondonia</option>\r\n        <option value=\"RR\">Roraima</option>\r\n        <option value=\"SC\">Santa Catarina</option>\r\n        <option value=\"SE\">Sergipe</option>\r\n        <option value=\"SP\">São Paulo</option>\r\n        <option value=\"TO\">Tocantins</option>\r\n      </select>\r\n    </div>\r\n    <div class=\"form-group menor\">\r\n        <label for=\"complemento\">Complemento (opicional)</label>\r\n        <input [(ngModel)]=\"cliente.client_adress_complements\" type=\"text\" class=\"form-control\" id=\"complemento\" name=\"complemento\"\r\n          placeholder=\"Complemento\">\r\n      </div>\r\n  </div>\r\n\r\n  <!-- <div class=\"form-group email-promocional\">\r\n        <label for=\"promocional\">E-mails promocionais</label>\r\n        <input [(ngModel)]=\"cliente.client_direct_mail\" id=\"promocional\" name=\"promocional\" type=\"checkbox\">\r\n    </div> -->\r\n  <div class=\"container-salvar\">\r\n    <a type=\"button\" (click)=\"salvar()\" class=\"btn-salvar\">Salvar</a>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -1746,7 +1883,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".form-group label {\n  width: 24%;\n  text-align: right;\n  padding-right: 10px;\n  font-weight: 400;\n  font-size: .9rem;\n  color: #878791; }\n\n.form-group input, .form-group select {\n  width: 60%;\n  display: inline-block;\n  max-width: 550px;\n  color: #355474;\n  border-radius: 1px; }\n\n.form-group input[type=checkbox] {\n  width: auto; }\n\na > h3 {\n  vertical-align: inherit !important; }\n\n.container-salvar {\n  width: 100%;\n  text-align: center; }\n  .container-salvar a {\n    display: inline-block;\n    font-size: .8rem;\n    background: #5d5d5d;\n    line-height: 1.125rem;\n    color: #fff;\n    letter-spacing: 1.3px;\n    transition: all .3s linear;\n    border-radius: 1px;\n    padding: 6px 40px;\n    text-transform: uppercase;\n    text-decoration: none;\n    cursor: pointer;\n    margin-top: 10px; }\n    .container-salvar a:hover {\n      background: #d1d147;\n      color: #355474;\n      transition-duration: .3s; }\n\n.form-group.menor input, .form-group.menor select {\n  width: 40%; }\n\n@media screen and (min-width: 1200px) {\n  .form-group label {\n    width: 35%; }\n  .form-group input, .form-group select {\n    width: 50%; }\n  .form-group.menor input, .form-group.menor select {\n    width: 30%; } }\n\n@media screen and (max-width: 992px) and (min-width: 768px) {\n  .form-group label {\n    width: 35%; } }\n\n@media screen and (max-width: 767px) and (min-width: 550px) {\n  .form-group label {\n    width: 40% !important; }\n  .form-group input:not([type=checkbox]), .form-group select {\n    width: 50% !important; } }\n\n@media screen and (max-width: 549px) {\n  .form-group label {\n    font-size: .8rem;\n    width: 100%;\n    text-align: left;\n    display: block;\n    margin-bottom: 5px; }\n  .form-group input:not([type=checkbox]), .form-group select {\n    width: 100% !important; }\n  .container-salvar a {\n    width: 100%;\n    padding: 10px 20px; }\n  .form-group.email-promocional label {\n    font-size: .8rem;\n    display: inline-block;\n    width: auto;\n    margin-bottom: 0px;\n    margin-top: 5px; }\n  .form-group.email-promocional input {\n    float: left;\n    margin-right: 10px; } }\n", ""]);
+exports.push([module.i, ".form-group label {\n  width: 24%;\n  text-align: right;\n  padding-right: 10px;\n  font-weight: 400;\n  font-size: .9rem;\n  color: #878791; }\n\n.form-group input, .form-group select {\n  width: 60%;\n  display: inline-block;\n  max-width: 550px;\n  color: #355474;\n  border-radius: 1px; }\n\n.form-group input[type=checkbox] {\n  width: auto; }\n\na > h3 {\n  vertical-align: inherit !important; }\n\n.container-salvar {\n  width: 100%;\n  text-align: center; }\n  .container-salvar a {\n    display: inline-block;\n    font-size: .8rem;\n    background: #5d5d5d;\n    line-height: 1.125rem;\n    color: #fff;\n    letter-spacing: 1.3px;\n    transition: all .3s linear;\n    border-radius: 1px;\n    padding: 6px 40px;\n    text-transform: uppercase;\n    text-decoration: none;\n    cursor: pointer;\n    margin-top: 10px; }\n    .container-salvar a:hover {\n      background: #d1d147;\n      color: #355474;\n      transition-duration: .3s; }\n\n.form-group.menor input, .form-group.menor select {\n  width: 40%; }\n\n@media screen and (min-width: 1200px) {\n  .form-group label {\n    width: 35%; }\n  .form-group input, .form-group select {\n    width: 50%; }\n  .form-group.menor input, .form-group.menor select {\n    width: 30%; } }\n\n@media screen and (max-width: 992px) and (min-width: 768px) {\n  .form-group label {\n    width: 35%; } }\n\n@media screen and (max-width: 767px) and (min-width: 550px) {\n  .form-group label {\n    width: 40% !important; }\n  .form-group input:not([type=checkbox]), .form-group select {\n    width: 50% !important; } }\n\n@media screen and (max-width: 549px) {\n  .form-group label {\n    font-size: .8rem;\n    width: 100%;\n    text-align: left;\n    display: block;\n    margin-bottom: 5px; }\n  .form-group input:not([type=checkbox]), .form-group select {\n    width: 100% !important; }\n  .container-salvar a {\n    width: 100%;\n    padding: 10px 20px; }\n  .form-group.email-promocional label {\n    font-size: .8rem;\n    display: inline-block;\n    width: auto;\n    margin-bottom: 0px;\n    margin-top: 5px; }\n  .form-group.email-promocional input {\n    float: left;\n    margin-right: 10px; } }\n\n.box-endereco {\n  position: relative; }\n", ""]);
 
 // exports
 
@@ -1769,6 +1906,8 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angular_2_local_storage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_angular_2_local_storage__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_messages_service__ = __webpack_require__("../../../../../src/app/services/messages.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_cep_promise__ = __webpack_require__("../../../../cep-promise/dist/cep-promise.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_cep_promise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_cep_promise__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1785,26 +1924,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var MyCadastreInitialComponent = (function () {
-    /* private cliente = {
-      'client_nome': '',
-      'client_password': '',
-      'client_cpf': '',
-      'client_sex': '',
-      'client_birthday': '',
-      'client_tel': '',
-      'client_cel': '',
-      'client_email': '',
-      'client_adress_cep': '',
-      'client_adress_logradouro': '',
-      'client_adress_type': '',
-      'client_adress_complements': '',
-      'client_adress_number': '',
-      'client_adress_city': '',
-      'client_adress_district': '',
-      'client_direct_mail': '',
-      'estado': ''
-    } */
     function MyCadastreInitialComponent(produtos, modalService, localStorageService, http, msg, router) {
         this.produtos = produtos;
         this.modalService = modalService;
@@ -1817,13 +1938,13 @@ var MyCadastreInitialComponent = (function () {
             'client_name': '',
             'client_email': '',
             'client_cpf': '',
-            'client_sex': '',
+            'client_sex': '0',
             'client_password': '',
             'client_birthday': '',
             'client_tel': '',
             'client_cel': '',
             'client_direct_mail': '',
-            'client_adress_type': '',
+            'client_adress_type': '0',
             'client_adress_cep': '',
             'client_adress_logradouro': '',
             'client_adress_number': '',
@@ -1835,28 +1956,10 @@ var MyCadastreInitialComponent = (function () {
         };
     }
     MyCadastreInitialComponent.prototype.ngOnInit = function () {
+        this.cepCompleto = false;
+        this.loading = false;
     };
     MyCadastreInitialComponent.prototype.inserirCliente = function () {
-        /* let data = new URLSearchParams();
-        var headers = new Headers();
-        headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        data.append('client_name', 'TESTEeeeeeewada');
-        data.append('client_password', '123456');
-        data.append('client_cpf', '123465');
-        data.append('client_sex', '1');
-        data.append('client_birthday', '2017-10-11 00:00:00');
-        data.append('client_tel', '123456');
-        data.append('client_cel', '123456');
-        data.append('client_email', 'TSETE@TESTE22223');
-        data.append('client_adress_cep', '12345687');
-        data.append('client_adress_logradouro', 'teste');
-        data.append('client_adress_type', 'teste');
-        data.append('client_adress_complements', 'teste');
-        data.append('client_adress_number', '123456');
-        data.append('client_adress_district', 'teste');
-        data.append('client_direct_mail', '0');
-        data.append('client_adress_city', 'teste');
-        data.append('client_adress_state', 'teste'); */
         var data = new __WEBPACK_IMPORTED_MODULE_5__angular_http__["d" /* URLSearchParams */]();
         var headers = new __WEBPACK_IMPORTED_MODULE_5__angular_http__["a" /* Headers */]();
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
@@ -1879,19 +1982,11 @@ var MyCadastreInitialComponent = (function () {
         data.append('client_adress_state', '1');
         this.http.post('http://tzne.kwcraft.com.br/View/TestesViews/ViewCliente/inserecliente.php', data, { headers: headers })
             .subscribe(function (result) {
-            //this.resultInsertCli = result.json();
             console.log(result);
-            //console.log(result.json())
+            return true;
         }, function (error) {
             console.log(error.json());
         });
-        /*  this.http.post('http://tzne.kwcraft.com.br/View/TestesViews/ViewCliente/inserecliente.php', data)
-           .subscribe(result => {
-             this.resultInsertCli = result.json();
-             console.log(result.json())
-           }, error => {
-             console.log(error.json());
-           }); */
     };
     MyCadastreInitialComponent.prototype.initMsgs = function () {
         var status = this.msg.getStatus();
@@ -1906,10 +2001,30 @@ var MyCadastreInitialComponent = (function () {
     MyCadastreInitialComponent.prototype.limparStatus = function () {
         this.msgs = [];
     };
+    MyCadastreInitialComponent.prototype.buscaCep = function () {
+        var _this = this;
+        if (this.cliente.client_adress_cep.length == 8) {
+            this.loading = true;
+            __WEBPACK_IMPORTED_MODULE_7_cep_promise___default()(this.cliente.client_adress_cep)
+                .then(function (response) {
+                _this.cliente.client_adress_logradouro = response.street;
+                _this.cliente.client_adress_district = response.neighborhood;
+                _this.cliente.client_adress_city = response.city;
+                _this.cliente.client_adress_state = response.state;
+                _this.loading = false;
+            })
+                .catch(function (response) {
+                _this.loading = false;
+            });
+        }
+    };
     MyCadastreInitialComponent.prototype.salvar = function () {
-        this.inserirCliente();
-        this.alertarStatus('success', 'Adicionado!', 'Camiseta adicionada na sacola.');
-        this.router.navigate(['/login']);
+        if (!this.inserirCliente()) {
+            this.router.navigate(['/login/1']);
+        }
+        else {
+            this.alertarStatus('error', 'OPS!', 'Algo não deu certo');
+        }
     };
     return MyCadastreInitialComponent;
 }());
@@ -2077,48 +2192,61 @@ var MyRequestsComponent = (function () {
     }
     // tirar o post daqui e colocar no botão do finalizar compra
     MyRequestsComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.precoTotal = this.produtos.getProdutoCarrinho();
-        this.precoTotal.map(function (i) { return _this.valorTotal = _this.valorTotal + parseInt(i['product_purchase_price']) * i['quantidade']; });
+        /* this.precoTotal = this.produtos.getProdutoCarrinho();
+        this.precoTotal.map(i => this.valorTotal = this.valorTotal + parseInt(i['product_purchase_price']) * i['quantidade']);
         this.produtosNoCarrinho = this.produtos.getProdutoCarrinho();
         this.frete = this.produtos.getValorFrete();
+        console.log(this.valorTotal, this.frete)
         this.valortotalCompra = (this.valorTotal + parseInt(this.frete));
         console.log(this.valortotalCompra);
         this.compraEfetuada = this.produtos.getPagamento();
-        this.date = new Date();
-        this.produtosNoCarrinho.filter(function (i) {
-            _this.itensVenda = {
-                "product_product_has_id": i['product_has_id'],
-                "product_name": i['product_name'],
-                "unit_price": i['product_purchase_price'],
-                "quantity": i['quantidade'],
-                "subtotal": parseInt(i['product_purchase_price']) * i['quantidade']
-            };
-            _this.vendaAPI.push(_this.itensVenda);
-            console.log(_this.itensVenda, 'api venda');
-            console.log(_this.vendaAPI, 'api venda');
-            i++;
-        });
-        this.venda = {
-            "quantidadeAlterada": true,
-            "client_client_id": 1,
-            "total_partial": this.valortotalCompra,
-            "amount": 115,
-            "discount": 0,
-            "type_freight": "correios",
-            "value_freight": parseInt(this.frete),
-            "number_plots": this.produtosNoCarrinho.length,
-            "itens": this.vendaAPI
+        this.date = new Date(); */
+        /* this.produtosNoCarrinho.filter(i => {
+          this.itensVenda = {
+            "product_product_has_id": i['product_has_id'],
+            "product_name": i['product_name'],
+            "unit_price": i['product_purchase_price'],
+            "quantity": i['quantidade'],
+            "subtotal": parseInt(i['product_purchase_price']) * i['quantidade']
+          }
+          this.vendaAPI.push(this.itensVenda)
+          console.log(this.itensVenda, 'api venda')
+          console.log(this.vendaAPI, 'api venda')
+          i++;
+        })
+     */
+        /* this.venda = {
+          "quantidadeAlterada": true,
+          "client_client_id": 1,
+          "total_partial": this.valortotalCompra,
+          "amount": 115,
+          "discount": 0,
+          "type_freight": "correios",
+          "value_freight": parseInt(this.frete),
+          "number_plots": this.produtosNoCarrinho.length,
+          "itens": this.vendaAPI
         };
-        console.log(this.precoTotal, 'preço');
-        console.log(this.valortotalCompra, 'preço');
-        console.log(this.produtosNoCarrinho.length, 'tamanho');
-        console.log(this.produtosNoCarrinho);
-        console.log(this.compraEfetuada);
-        console.log(this.frete);
-        this.carrinho();
-        this.vendaFeita();
-        this.localStorageService.set('addCart', []);
+     */
+        /* this.venda = {
+        "client_client_id": 1,
+        "total_partial": 230, //
+        "amount": 115,
+        "discount": 0,
+        "type_freight": "correios",
+        "value_freight": 16, //
+        "number_plots": this.produtosNoCarrinho.length,
+        "itens": this.vendaAPI
+        } */
+        /*  console.log(this.precoTotal, 'preço')
+         console.log(this.valortotalCompra, 'preço')
+         console.log(this.produtosNoCarrinho.length, 'tamanho')
+         console.log(this.produtosNoCarrinho)
+         console.log(this.compraEfetuada)
+         console.log(this.frete)
+     
+         this.carrinho();
+         this.vendaFeita() */
+        //this.localStorageService.set('addCart', []);
     };
     MyRequestsComponent.prototype.carrinho = function () {
         var _this = this;
@@ -2129,6 +2257,7 @@ var MyRequestsComponent = (function () {
         var body = urlSearchParams.toString();
         this.http.post('http://tzne.kwcraft.com.br/api/venda/inserevenda', body, { headers: headers })
             .subscribe(function (result) {
+            console.log(result.json());
             _this.resultvenda = result.json();
             console.log(_this.resultvenda);
             console.log(result.json());
@@ -2141,9 +2270,8 @@ var MyRequestsComponent = (function () {
         this.produtos.getVenda(1)
             .then(function (result) {
             console.log(result);
-            console.log(result);
-            _this.resultVendaCliente = result.json();
-            console.log(result);
+            _this.resultVendaCliente = result;
+            console.log(_this.resultVendaCliente);
             /* console.log(this.resultVendaCliente) */
         })
             .catch(function (error) {
@@ -2557,6 +2685,7 @@ var ShowcaseComponent = (function () {
         //console.log(this.products, "produtos");
         this.id = this.produtos.retornarId();
         this.buscarProdutosAPI();
+        this.buscarCLiente();
         this.router.navigate(['home']);
         //this.buscarDezProdutosAPI();
     };
@@ -2587,6 +2716,15 @@ var ShowcaseComponent = (function () {
             if (_this.id != 0) {
                 _this.ListaProdutos = _this.ListaProdutos.filter(function (i) { return i['departaments_departament_id'] == _this.id; });
             }
+        })
+            .catch(function (error) {
+            console.log(error);
+        });
+    };
+    ShowcaseComponent.prototype.buscarCLiente = function () {
+        this.produtos.listarClientes()
+            .then(function (result) {
+            console.log(result);
         })
             .catch(function (error) {
             console.log(error);
@@ -2676,7 +2814,7 @@ var _a, _b, _c, _d, _e, _f;
 /***/ "../../../../../src/app/pages/order-details/order-details.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n  <div class=\"header-card\">\r\n    <h3>Detalhes da Compra</h3>\r\n  </div>\r\n  <div class=\"detalhes-compra card\">\r\n    <div class=\"detalhes-produtos pull-left\">\r\n      <div class=\"produtos\">\r\n        <p>Produtos</p>\r\n        <p>\r\n          <span (click)=\"openModal(template)\">{{precoTotal.length}} Produtos</span>\r\n        </p>\r\n\r\n        <template class=\"modal-dialog\" #template>\r\n          <div class=\"modal-header\">\r\n            <h4 class=\"modal-title pull-left\">Detalhes da sacola</h4>\r\n            <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\r\n              <span aria-hidden=\"true\">&times;</span>\r\n            </button>\r\n          </div>\r\n          <div class=\"modal-body\">\r\n            <!-- <app-cart></app-cart> -->\r\n            <div class=\"row\">\r\n              <div class=\"col-sm-12\">\r\n                <!-- tablete e desktop -->\r\n                <table class=\"table table-produtos-carrinho hidden-xs\">\r\n                  <thead class=\"table-header\">\r\n                    <tr>\r\n                      <th class=\"small text-muted\">Produto(s)</th>\r\n                      <th class=\"small text-muted\">Valor</th>\r\n                      <th class=\"small text-muted\">Quantidade</th>\r\n                      <th class=\"small text-muted\">Total</th>\r\n                      <th></th>\r\n                    </tr>\r\n                  </thead>\r\n                  <tbody>\r\n                    <tr *ngFor=\"let p of produtosNoCarrinho, let i = index\">\r\n                      <td class=\"small\">\r\n                        <div class=\"miniatura\">\r\n                          <a><img [src]=\"p.product_img_relative_url\" alt=\"\"></a>\r\n                        </div>\r\n                        <a class=\"descricao-produto\">\r\n                          <h3>{{p.product_name}}</h3>\r\n                          <p>Tamanho: M</p>\r\n                          <p>Cor: vermelho</p>\r\n                        </a>\r\n                      </td>\r\n                      <td class=\"small\">{{ p.product_purchase_price | currency:'BRL':true }}</td>\r\n                      <td class=\"small\">{{ p.quantidade }}</td>\r\n                      <td class=\"small\">{{ p.product_purchase_price * p.quantidade | currency:'BRL':true }}</td>\r\n\r\n                    </tr>\r\n                  </tbody>\r\n                </table>\r\n                <!-- tablete e desktop -->\r\n\r\n                <!-- mobile -->\r\n                <div class=\"row container-produto-mobile visible-xs\" *ngFor=\"let pm of produtosNoCarrinho, let i = index\">\r\n                  <div class=\"col-xs-5\">\r\n                    <div class=\"imagem-produto\">\r\n                      <a href=\"#!\"><img [src]=\"pm.product_img_relative_url\" alt=\"\"></a>\r\n\r\n                    </div>\r\n                  </div>\r\n                  <div class=\"col-xs-7\">\r\n                    <div class=\"descricao-produto\">\r\n                      <a href=\"#!\" class=\"descricao-produto\">\r\n                        <h3>{{pm.product_name}}</h3>\r\n                        <p>Tamanho: M</p>\r\n                        <p>Cor: vermelho</p>\r\n                      </a>\r\n                      <p>{{pm.product_purchase_price | currency:'BRL':true }}</p>\r\n                    </div>\r\n                    <div class=\"quantidade-produto\">\r\n                      <div class=\"box-input-quantidade\">\r\n                        <input type=\"text\" id=\"quantidade\" [(ngModel)]=\"pm.quantidade\">\r\n                      </div>\r\n                    </div>\r\n                    <div class=\"valor-total-produto\">\r\n                      <p>{{pm.product_purchase_price * pm.quantidade | currency:'BRL':true }}</p>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n                <!-- mobile -->\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </template>\r\n\r\n        <p>{{valorTotal | currency:'BRL':true }}</p>\r\n        <p>Frete</p>\r\n        <p>R$ {{ frete }}</p>\r\n      </div>\r\n      <div class=\"total\">\r\n        <p>Total à pagar</p>\r\n        <p>{{ valortotalCompra | currency:'BRL':true }}</p>\r\n      </div>\r\n    </div>\r\n    <div class=\"detalhes-endereco\">\r\n      <p>Endereço de entrega</p>\r\n      <p>Everton Roberto de Oliveira</p>\r\n      <p>Rua Hélio Jacy Gouveia Schiefler, 42, Casa 4</p>\r\n      <p>Jardim Souza</p>\r\n      <p>São Paulo - SP</p>\r\n      <p>CEP 04918-110</p>\r\n    </div>\r\n  </div>\r\n  <div class=\"header-card\">\r\n    <h3>Opções de entrega</h3>\r\n  </div>\r\n  <div class=\"card box-forma-entrega\">\r\n    <a type=\"button\" class=\"entrega\" (click)=\"selecionaEntrega($event)\">\r\n      <input type=\"radio\" id=\"tzne\" name=\"entrega\" checked>\r\n      <p>Entrega TZNE</p>\r\n      <p>Em até 7 dias</p>\r\n      <p>{{ frete }}</p>\r\n    </a>\r\n   <!--  <a type=\"button\" class=\"entrega\" (click)=\"selecionaEntrega($event)\">\r\n      <input type=\"radio\" id=\"loja\" name=\"entrega\">\r\n      <p>Retira na Loja</p>\r\n      <p>Em até 2 dias</p>\r\n      <p>R$ 0,00</p>\r\n    </a> -->\r\n  </div>\r\n\r\n  <div class=\"header-card\">\r\n    <h3>Forma de Pagamento</h3>\r\n  </div>\r\n  <div class=\"card\">\r\n    <form>\r\n      <div class=\"form-group\">\r\n        <label for=\"\">Número do cartão *</label>\r\n        <input type=\"number\" id=\"numCartao\" (keypress)=\"somenteNumeros(this)\" name=\"numCartao\" [(ngModel)]=\"dadosCartao.numeroCartao.value\">\r\n        <div class=\"validation-label\" [hidden]=\"!dadosCartao.numeroCartao.error\">Campo obrigatório.</div>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <label for=\"\">Impresso no cartão *</label>\r\n        <input type=\"number\" id=\"numImpCartao\" name=\"numImpCartao\" [(ngModel)]=\"dadosCartao.numeroimpressoCartao.value\">\r\n        <div class=\"validation-label\" [hidden]=\"!dadosCartao.numeroimpressoCartao.error\">Campo obrigatório.</div>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <label for=\"\">validade *</label>\r\n        <select name=\"mes\" id=\"mes\" [(ngModel)]=\"dadosCartao.validade.mes\">\r\n           <option disabled=\"true\">Mês</option>\r\n          <option value=\"01\">01</option>\r\n          <option value=\"02\">02</option>\r\n          <option value=\"03\">03</option>\r\n          <option value=\"04\">04</option>\r\n          <option value=\"05\">05</option>\r\n          <option value=\"06\">06</option>\r\n          <option value=\"07\">07</option>\r\n          <option value=\"08\">08</option>\r\n          <option value=\"09\">09</option>\r\n          <option value=\"10\">10</option>\r\n          <option value=\"11\">11</option>\r\n          <option value=\"12\">12</option>\r\n        </select>\r\n        <select name=\"ano\" id=\"ano\" [(ngModel)]=\"dadosCartao.validade.ano\">\r\n          <option disabled=\"true\">Ano</option>\r\n          <option value=\"2017\">2017</option>\r\n          <option value=\"2018\">2018</option>\r\n          <option value=\"2019\">2019</option>\r\n          <option value=\"2020\">2020</option>\r\n          <option value=\"2021\">2021</option>\r\n          <option value=\"2022\">2022</option>\r\n          <option value=\"2023\">2023</option>\r\n          <option value=\"2024\">2024</option>\r\n          <option value=\"2025\">2025</option>\r\n          <option value=\"2026\">2026</option>\r\n          <option value=\"2027\">2027</option>\r\n          <option value=\"2028\">2028</option>\r\n          <option value=\"2029\">2029</option>\r\n          <option value=\"2030\">2030</option>\r\n        </select>\r\n         <div class=\"validation-label\" [hidden]=\"!dadosCartao.validade.error\">Campo obrigatório.</div>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <label for=\"\">Código de Segurança *</label>\r\n        <input type=\"number\" id=\"codigoSeguranca\" name=\"codigoSeguranca\"  [(ngModel)]=\"dadosCartao.codigoSeguranca.value\">\r\n        <div class=\"validation-label\" [hidden]=\"!dadosCartao.codigoSeguranca.error\">Campo obrigatório.</div>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <label for=\"\">Parcelas *</label>\r\n        <select name=\"parcelas\" id=\"parcelas\" (change)=\"veriricarPreenchimento()\" [(ngModel)]=\"dadosCartao.parcelas.value\" >\r\n          <option disabled=\"true\">Selecione</option>\r\n          <option value=\"01\">01</option>\r\n          <option value=\"02\">02</option>\r\n          <option value=\"03\">03</option>\r\n          <option value=\"04\">04</option>\r\n          <option value=\"05\">05</option>\r\n          <option value=\"06\">06</option>\r\n        </select>\r\n        <div class=\"validation-label\" [hidden]=\"!dadosCartao.parcelas.error\">Campo obrigatório.</div>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <span class=\"valor-total\">Total <span>{{valortotalCompra | currency:'BRL':true }}</span></span>\r\n        <button class=\"efetuar-pagamento btn btn-primary\" (click)=\"finalizarPagamento()\" >Finalizar compra</button>\r\n      </div>\r\n    </form>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"container\">\r\n  <div class=\"header-card\">\r\n    <h3>Detalhes da Compra</h3>\r\n  </div>\r\n  <div class=\"detalhes-compra card\">\r\n    <div class=\"detalhes-produtos pull-left\">\r\n      <div class=\"produtos\">\r\n        <p>Produtos</p>\r\n        <p>\r\n          <span (click)=\"openModal(template)\">{{precoTotal.length}} Produtos</span>\r\n        </p>\r\n\r\n        <template class=\"modal-dialog\" #template>\r\n          <div class=\"modal-header\">\r\n            <h4 class=\"modal-title pull-left\">Detalhes da sacola</h4>\r\n            <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\r\n              <span aria-hidden=\"true\">&times;</span>\r\n            </button>\r\n          </div>\r\n          <div class=\"modal-body\">\r\n            <!-- <app-cart></app-cart> -->\r\n            <div class=\"row\">\r\n              <div class=\"col-sm-12\">\r\n                <!-- tablete e desktop -->\r\n                <table class=\"table table-produtos-carrinho hidden-xs\">\r\n                  <thead class=\"table-header\">\r\n                    <tr>\r\n                      <th class=\"small text-muted\">Produto(s)</th>\r\n                      <th class=\"small text-muted\">Valor</th>\r\n                      <th class=\"small text-muted\">Quantidade</th>\r\n                      <th class=\"small text-muted\">Total</th>\r\n                      <th></th>\r\n                    </tr>\r\n                  </thead>\r\n                  <tbody>\r\n                    <tr *ngFor=\"let p of produtosNoCarrinho, let i = index\">\r\n                      <td class=\"small\">\r\n                        <div class=\"miniatura\">\r\n                          <a><img [src]=\"p.product_img_relative_url\" alt=\"\"></a>\r\n                        </div>\r\n                        <a class=\"descricao-produto\">\r\n                          <h3>{{p.product_name}}</h3>\r\n                          <p>Tamanho: M</p>\r\n                          <p>Cor: vermelho</p>\r\n                        </a>\r\n                      </td>\r\n                      <td class=\"small\">{{ p.product_purchase_price | currency:'BRL':true }}</td>\r\n                      <td class=\"small\">{{ p.quantidade }}</td>\r\n                      <td class=\"small\">{{ p.product_purchase_price * p.quantidade | currency:'BRL':true }}</td>\r\n\r\n                    </tr>\r\n                  </tbody>\r\n                </table>\r\n                <!-- tablete e desktop -->\r\n\r\n                <!-- mobile -->\r\n                <div class=\"row container-produto-mobile visible-xs\" *ngFor=\"let pm of produtosNoCarrinho, let i = index\">\r\n                  <div class=\"col-xs-5\">\r\n                    <div class=\"imagem-produto\">\r\n                      <a href=\"#!\"><img [src]=\"pm.product_img_relative_url\" alt=\"\"></a>\r\n\r\n                    </div>\r\n                  </div>\r\n                  <div class=\"col-xs-7\">\r\n                    <div class=\"descricao-produto\">\r\n                      <a href=\"#!\" class=\"descricao-produto\">\r\n                        <h3>{{pm.product_name}}</h3>\r\n                        <p>Tamanho: M</p>\r\n                        <p>Cor: vermelho</p>\r\n                      </a>\r\n                      <p>{{pm.product_purchase_price | currency:'BRL':true }}</p>\r\n                    </div>\r\n                    <div class=\"quantidade-produto\">\r\n                      <div class=\"box-input-quantidade\">\r\n                        <input type=\"text\" id=\"quantidade\" [(ngModel)]=\"pm.quantidade\">\r\n                      </div>\r\n                    </div>\r\n                    <div class=\"valor-total-produto\">\r\n                      <p>{{pm.product_purchase_price * pm.quantidade | currency:'BRL':true }}</p>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n                <!-- mobile -->\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </template>\r\n\r\n        <p>{{valorTotal | currency:'BRL':true }}</p>\r\n        <p>Frete</p>\r\n        <p>R$ {{ frete }}</p>\r\n      </div>\r\n      <div class=\"total\">\r\n        <p>Total à pagar</p>\r\n        <p>{{ valortotalCompra | currency:'BRL':true }}</p>\r\n      </div>\r\n    </div>\r\n    <div class=\"detalhes-endereco\">\r\n      <p>Endereço de entrega</p>\r\n      <p>Everton Roberto de Oliveira</p>\r\n      <p>Rua Hélio Jacy Gouveia Schiefler, 42, Casa 4</p>\r\n      <p>Jardim Souza</p>\r\n      <p>São Paulo - SP</p>\r\n      <p>CEP 04918-110</p>\r\n    </div>\r\n  </div>\r\n  <div class=\"header-card\">\r\n    <h3>Opções de entrega</h3>\r\n  </div>\r\n  <div class=\"card box-forma-entrega\">\r\n    <a type=\"button\" class=\"entrega\" (click)=\"selecionaEntrega($event)\">\r\n      <input type=\"radio\" id=\"tzne\" name=\"entrega\" checked>\r\n      <p>Entrega TZNE</p>\r\n      <p>Em até 7 dias</p>\r\n      <p>{{ frete }}</p>\r\n    </a>\r\n   <!--  <a type=\"button\" class=\"entrega\" (click)=\"selecionaEntrega($event)\">\r\n      <input type=\"radio\" id=\"loja\" name=\"entrega\">\r\n      <p>Retira na Loja</p>\r\n      <p>Em até 2 dias</p>\r\n      <p>R$ 0,00</p>\r\n    </a> -->\r\n  </div>\r\n\r\n  <div class=\"header-card\">\r\n    <h3>Forma de Pagamento</h3>\r\n  </div>\r\n  <div class=\"card\">\r\n    <form>\r\n      <div class=\"form-group\">\r\n        <label for=\"\">Número do cartão *</label>\r\n        <input type=\"number\" id=\"numCartao\" name=\"numCartao\" [(ngModel)]=\"dadosCartao.numeroCartao.value\">\r\n        <div class=\"validation-label\" [hidden]=\"!dadosCartao.numeroCartao.error\">Campo obrigatório.</div>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <label for=\"\">Impresso no cartão *</label>\r\n        <input type=\"number\" id=\"numImpCartao\" name=\"numImpCartao\" [(ngModel)]=\"dadosCartao.numeroimpressoCartao.value\">\r\n        <div class=\"validation-label\" [hidden]=\"!dadosCartao.numeroimpressoCartao.error\">Campo obrigatório.</div>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <label for=\"\">validade *</label>\r\n        <select name=\"mes\" id=\"mes\" [(ngModel)]=\"dadosCartao.validade.mes\">\r\n           <option disabled=\"true\">Mês</option>\r\n          <option value=\"01\">01</option>\r\n          <option value=\"02\">02</option>\r\n          <option value=\"03\">03</option>\r\n          <option value=\"04\">04</option>\r\n          <option value=\"05\">05</option>\r\n          <option value=\"06\">06</option>\r\n          <option value=\"07\">07</option>\r\n          <option value=\"08\">08</option>\r\n          <option value=\"09\">09</option>\r\n          <option value=\"10\">10</option>\r\n          <option value=\"11\">11</option>\r\n          <option value=\"12\">12</option>\r\n        </select>\r\n        <select name=\"ano\" id=\"ano\" [(ngModel)]=\"dadosCartao.validade.ano\">\r\n          <option disabled=\"true\">Ano</option>\r\n          <option value=\"2017\">2017</option>\r\n          <option value=\"2018\">2018</option>\r\n          <option value=\"2019\">2019</option>\r\n          <option value=\"2020\">2020</option>\r\n          <option value=\"2021\">2021</option>\r\n          <option value=\"2022\">2022</option>\r\n          <option value=\"2023\">2023</option>\r\n          <option value=\"2024\">2024</option>\r\n          <option value=\"2025\">2025</option>\r\n          <option value=\"2026\">2026</option>\r\n          <option value=\"2027\">2027</option>\r\n          <option value=\"2028\">2028</option>\r\n          <option value=\"2029\">2029</option>\r\n          <option value=\"2030\">2030</option>\r\n        </select>\r\n         <div class=\"validation-label\" [hidden]=\"!dadosCartao.validade.error\">Campo obrigatório.</div>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <label for=\"\">Código de Segurança *</label>\r\n        <input type=\"number\" id=\"codigoSeguranca\" name=\"codigoSeguranca\"  [(ngModel)]=\"dadosCartao.codigoSeguranca.value\">\r\n        <div class=\"validation-label\" [hidden]=\"!dadosCartao.codigoSeguranca.error\">Campo obrigatório.</div>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <label for=\"\">Parcelas *</label>\r\n        <select name=\"parcelas\" id=\"parcelas\" (change)=\"veriricarPreenchimento()\" [(ngModel)]=\"dadosCartao.parcelas.value\" >\r\n          <option disabled=\"true\">Selecione</option>\r\n          <option value=\"01\">01</option>\r\n          <option value=\"02\">02</option>\r\n          <option value=\"03\">03</option>\r\n          <option value=\"04\">04</option>\r\n          <option value=\"05\">05</option>\r\n          <option value=\"06\">06</option>\r\n        </select>\r\n        <div class=\"validation-label\" [hidden]=\"!dadosCartao.parcelas.error\">Campo obrigatório.</div>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <span class=\"valor-total\">Total <span>{{valortotalCompra | currency:'BRL':true }}</span></span>\r\n        <button class=\"efetuar-pagamento btn btn-primary\" (click)=\"finalizarPagamento()\" >Finalizar compra</button>\r\n      </div>\r\n    </form>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -2709,6 +2847,7 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angular_2_local_storage__ = __webpack_require__("../../../../angular-2-local-storage/dist/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angular_2_local_storage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_angular_2_local_storage__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2723,22 +2862,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var OrderDetailsComponent = (function () {
-    function OrderDetailsComponent(localStorageService, produtos, modalService, router) {
+    function OrderDetailsComponent(localStorageService, produtos, modalService, router, http) {
         this.localStorageService = localStorageService;
         this.produtos = produtos;
         this.modalService = modalService;
         this.router = router;
+        this.http = http;
         this.config = {
             animated: true,
             keyboard: true,
             backdrop: true,
             ignoreBackdropClick: false
         };
+        this.itensVenda = {
+            "product_product_has_id": null,
+            "product_name": "",
+            "unit_price": null,
+            "quantity": null,
+            "subtotal": null
+        };
+        this.vendaAPI = [];
         this.formaEntrega = "";
         this.valorTotal = 0;
         this.parcelas = 0;
         this.valortotalCompra = 0;
+        this.bkpLista = [];
+        this.headers = new __WEBPACK_IMPORTED_MODULE_5__angular_http__["a" /* Headers */]({ 'Content-Type': 'application/x-www-form-urlencoded' });
         this.dadosCartao = {
             'numeroCartao': {
                 'value': '',
@@ -2784,14 +2935,6 @@ var OrderDetailsComponent = (function () {
     OrderDetailsComponent.prototype.openModal = function (template) {
         this.modalRef = this.modalService.show(template, Object.assign({}, this.config, { class: 'gray modal-lg' }));
     };
-    OrderDetailsComponent.prototype.somenteNumeros = function (num) {
-        var er = /[^0-9.]/;
-        er.lastIndex = 0;
-        var campo = num;
-        if (er.test(campo.value)) {
-            campo.value = "";
-        }
-    };
     OrderDetailsComponent.prototype.veriricarPreenchimento = function () {
         var listaError = [];
         this.dadosCartaoNames = Object.keys(this.dadosCartao);
@@ -2819,8 +2962,64 @@ var OrderDetailsComponent = (function () {
         this.validar = false;
         return true;
     };
+    // pegar esses dados e salvar no services de produtos e recuperar os dados no my-request
+    OrderDetailsComponent.prototype.insertCart = function () {
+        var _this = this;
+        this.produtosNoCarrinho.filter(function (i) {
+            _this.itensVenda = {
+                "product_product_has_id": i['product_has_id'],
+                "product_name": i['product_name'],
+                "unit_price": i['product_purchase_price'],
+                "quantity": i['quantidade'],
+                "subtotal": parseInt(i['product_purchase_price']) * i['quantidade']
+            };
+            _this.vendaAPI.push(_this.itensVenda);
+            i++;
+        });
+        this.venda = {
+            "client_client_id": 1,
+            "total_partial": this.valortotalCompra,
+            "amount": 115,
+            "discount": 0,
+            "type_freight": "correios",
+            "value_freight": this.frete,
+            "number_plots": this.produtosNoCarrinho.length,
+            "itens": this.vendaAPI
+        };
+        this.carrinho();
+        this.vendaFeita();
+        this.localStorageService.set('addCart', []);
+    };
+    OrderDetailsComponent.prototype.carrinho = function () {
+        var _this = this;
+        var headers = new __WEBPACK_IMPORTED_MODULE_5__angular_http__["a" /* Headers */]();
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        var urlSearchParams = new URLSearchParams();
+        urlSearchParams.append('json', JSON.stringify(this.venda));
+        var body = urlSearchParams.toString();
+        this.http.post('http://tzne.kwcraft.com.br/api/venda/inserevenda', body, { headers: headers })
+            .subscribe(function (result) {
+            console.log(result.json());
+            _this.resultvenda = result.json();
+        }, function (error) {
+            console.log(error.json());
+        });
+    };
+    OrderDetailsComponent.prototype.vendaFeita = function () {
+        var _this = this;
+        this.produtos.getVenda(1)
+            .then(function (result) {
+            console.log(result);
+            _this.resultVendaCliente = result;
+            console.log(_this.resultVendaCliente);
+        })
+            .catch(function (error) {
+            console.log(error);
+        });
+    };
     OrderDetailsComponent.prototype.finalizarPagamento = function () {
         if (this.veriricarPreenchimento()) {
+            this.insertCart();
             this.produtos.setPagamento(true);
             this.router.navigate(['/client/meus-pedidos/']);
         }
@@ -2833,11 +3032,10 @@ OrderDetailsComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/pages/order-details/order-details.component.html"),
         styles: [__webpack_require__("../../../../../src/app/pages/order-details/order-details.component.scss")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_4_angular_2_local_storage__["LocalStorageService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4_angular_2_local_storage__["LocalStorageService"]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__services_product_service__["a" /* ProductService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_product_service__["a" /* ProductService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2_ngx_bootstrap_modal__["a" /* BsModalService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_ngx_bootstrap_modal__["a" /* BsModalService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["Router"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["Router"]) === "function" && _d || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_4_angular_2_local_storage__["LocalStorageService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4_angular_2_local_storage__["LocalStorageService"]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__services_product_service__["a" /* ProductService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_product_service__["a" /* ProductService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2_ngx_bootstrap_modal__["a" /* BsModalService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_ngx_bootstrap_modal__["a" /* BsModalService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["Router"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["Router"]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_5__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__angular_http__["b" /* Http */]) === "function" && _e || Object])
 ], OrderDetailsComponent);
 
-var _a, _b, _c, _d;
-/*  */
+var _a, _b, _c, _d, _e;
 //# sourceMappingURL=order-details.component.js.map
 
 /***/ }),
@@ -2920,12 +3118,12 @@ PagesModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_18__order_details_order_details_component__["a" /* OrderDetailsComponent */],
         ],
         imports: [
-            __WEBPACK_IMPORTED_MODULE_2_ngx_bootstrap__["b" /* ButtonsModule */].forRoot(),
-            __WEBPACK_IMPORTED_MODULE_2_ngx_bootstrap__["f" /* TooltipModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_2_ngx_bootstrap__["c" /* ButtonsModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_2_ngx_bootstrap__["g" /* TooltipModule */].forRoot(),
             __WEBPACK_IMPORTED_MODULE_15__angular_forms__["FormsModule"],
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"],
-            __WEBPACK_IMPORTED_MODULE_2_ngx_bootstrap__["e" /* TabsModule */].forRoot(),
-            __WEBPACK_IMPORTED_MODULE_2_ngx_bootstrap__["c" /* CarouselModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_2_ngx_bootstrap__["f" /* TabsModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_2_ngx_bootstrap__["d" /* CarouselModule */].forRoot(),
             __WEBPACK_IMPORTED_MODULE_13__client_client_module__["ClientModule"],
             __WEBPACK_IMPORTED_MODULE_14__shared_shared_module__["a" /* SharedModule */],
             __WEBPACK_IMPORTED_MODULE_16_primeng_primeng__["GrowlModule"],
@@ -3364,6 +3562,12 @@ var ProductService = (function () {
             .then(function (response) { return response.json(); })
             .catch(this.handleError);
     };
+    ProductService.prototype.listarClientes = function () {
+        return this.http.get(this.apiService.getUrl() + 'api/clientes/listarclientes')
+            .toPromise()
+            .then(function (response) { return response.json(); })
+            .catch(this.handleError);
+    };
     ProductService.prototype.buscarProdutosByID = function (id) {
         return this.http.get(this.apiService.getUrl() + 'api/produtos/listarprodutos')
             .toPromise()
@@ -3592,14 +3796,326 @@ CollapseComponent = __decorate([
 
 /***/ }),
 
-/***/ "../../../../../src/app/shared/my-requests/my-requests.component.html":
-/***/ (function(module, exports) {
+/***/ "../../../../../src/app/shared/directives/index.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = "<p>\r\n  my-requests works!\r\n</p>\r\n"
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__masked_input__ = __webpack_require__("../../../../../src/app/shared/directives/masked-input/index.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__masked_input__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__masked_input__["b"]; });
+
+//# sourceMappingURL=index.js.map
 
 /***/ }),
 
-/***/ "../../../../../src/app/shared/my-requests/my-requests.component.scss":
+/***/ "../../../../../src/app/shared/directives/masked-input/index.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__kz_mask_directive__ = __webpack_require__("../../../../../src/app/shared/directives/masked-input/kz-mask.directive.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__kz_mask_directive__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__kz_mask_currency_directive__ = __webpack_require__("../../../../../src/app/shared/directives/masked-input/kz-mask-currency.directive.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__kz_mask_currency_directive__["a"]; });
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/directives/masked-input/kz-mask-currency.directive.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return KzMaskCurrencyDirective; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/**
+ * Diretiva de máscara para campos monetários.
+ *
+ * @author Márcio Casale de Souza <contato@kazale.com>
+ * @since 0.0.4
+ */
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var KzMaskCurrencyDirective = KzMaskCurrencyDirective_1 = (function () {
+    function KzMaskCurrencyDirective(el) {
+        this.el = el;
+    }
+    KzMaskCurrencyDirective.prototype.ngOnInit = function () {
+        this.separadorDecimal = this.kzMask.decimal || ',';
+        this.separadorMilhar = this.kzMask.milhar || '.';
+        this.prefixo = this.kzMask.prefixo || '';
+    };
+    KzMaskCurrencyDirective.prototype.writeValue = function (value) {
+        if (value) {
+            if (!isNaN(value)) {
+                value = value.toFixed(2);
+            }
+            this.el.nativeElement.value = this.aplicarMascara(String(value));
+        }
+    };
+    KzMaskCurrencyDirective.prototype.registerOnChange = function (fn) {
+        this.onChange = fn;
+    };
+    KzMaskCurrencyDirective.prototype.registerOnTouched = function (fn) {
+        this.onTouched = fn;
+    };
+    KzMaskCurrencyDirective.prototype.onKeyup = function ($event) {
+        var valor = this.aplicarMascara($event.target.value);
+        if (valor === '') {
+            this.onChange('');
+            $event.target.value = '';
+            return;
+        }
+        if (this.separadorDecimal === ',') {
+            this.onChange(valor.replace(/\./g, '').replace(',', '.'));
+        }
+        else {
+            this.onChange(valor.replace(/\,/g, ''));
+        }
+        $event.target.value = valor;
+    };
+    KzMaskCurrencyDirective.prototype.onBlur = function ($event) {
+        var pattern = '0' + this.separadorDecimal + '00';
+        if ($event.target.value.indexOf(pattern) === -1) {
+            return;
+        }
+        this.onChange('');
+        $event.target.value = '';
+    };
+    /**
+     * Aplica a máscara a determinado valor.
+     *
+     * @param string valorConverter
+     * @return string
+     */
+    KzMaskCurrencyDirective.prototype.aplicarMascara = function (valorConverter) {
+        var valorNum = parseInt(valorConverter.replace(/\D/g, ''), 10);
+        var valorMask = '';
+        var valor;
+        if (isNaN(valorNum)) {
+            return '';
+        }
+        valor = valorNum.toString();
+        switch (valor.length) {
+            case 1:
+                valorMask = '0' + this.separadorDecimal +
+                    '0' + valor;
+                break;
+            case 2:
+                valorMask = '0' + this.separadorDecimal + valor;
+                break;
+            case 3:
+                valorMask = valor.substr(0, 1) + this.separadorDecimal +
+                    valor.substr(1, 2);
+                break;
+            default:
+                break;
+        }
+        if (valorMask === '') {
+            var sepMilhar = 0;
+            for (var i = (valor.length - 3); i >= 0; i--) {
+                if (sepMilhar === 3) {
+                    valorMask = this.separadorMilhar + valorMask;
+                    sepMilhar = 0;
+                }
+                valorMask = valor.charAt(i) + valorMask;
+                sepMilhar++;
+            }
+            valorMask = valorMask + this.separadorDecimal +
+                valor.substr(valor.length - 2, 2);
+        }
+        if (this.prefixo !== '') {
+            valorMask = this.prefixo + ' ' + valorMask;
+        }
+        return valorMask;
+    };
+    return KzMaskCurrencyDirective;
+}());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('kzMaskCurrency'),
+    __metadata("design:type", Object)
+], KzMaskCurrencyDirective.prototype, "kzMask", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostListener"])('keyup', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], KzMaskCurrencyDirective.prototype, "onKeyup", null);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostListener"])('blur', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], KzMaskCurrencyDirective.prototype, "onBlur", null);
+KzMaskCurrencyDirective = KzMaskCurrencyDirective_1 = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
+        selector: '[kzMaskCurrency]',
+        providers: [{
+                provide: __WEBPACK_IMPORTED_MODULE_1__angular_forms__["NG_VALUE_ACCESSOR"],
+                useExisting: KzMaskCurrencyDirective_1,
+                multi: true
+            }]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _a || Object])
+], KzMaskCurrencyDirective);
+
+var KzMaskCurrencyDirective_1, _a;
+//# sourceMappingURL=kz-mask-currency.directive.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/directives/masked-input/kz-mask.directive.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return KzMaskDirective; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/**
+ * Diretiva de máscara genérica em campo de texto.
+ *
+ * @author Márcio Casale de Souza <contato@kazale.com>
+ * @since 0.0.4
+ */
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var KzMaskDirective = KzMaskDirective_1 = (function () {
+    function KzMaskDirective(el) {
+        this.el = el;
+    }
+    KzMaskDirective.prototype.writeValue = function (value) {
+        if (value) {
+            this.el.nativeElement.value = this.aplicarMascara(value);
+        }
+    };
+    KzMaskDirective.prototype.registerOnChange = function (fn) {
+        this.onChange = fn;
+    };
+    KzMaskDirective.prototype.registerOnTouched = function (fn) {
+        this.onTouched = fn;
+    };
+    KzMaskDirective.prototype.onKeyup = function ($event) {
+        var valor = $event.target.value.replace(/\D/g, '');
+        // retorna caso pressionado backspace
+        if ($event.keyCode === 8) {
+            this.onChange(valor);
+            return;
+        }
+        var pad = this.kzMask.replace(/\D/g, '').replace(/9/g, '_');
+        if (valor.length <= pad.length) {
+            this.onChange(valor);
+        }
+        $event.target.value = this.aplicarMascara(valor);
+    };
+    KzMaskDirective.prototype.onBlur = function ($event) {
+        if ($event.target.value.length === this.kzMask.length) {
+            return;
+        }
+        this.onChange('');
+        $event.target.value = '';
+    };
+    /**
+     * Aplica a máscara a determinado valor.
+     *
+     * @param string valor
+     * @return string
+     */
+    KzMaskDirective.prototype.aplicarMascara = function (valor) {
+        valor = valor.replace(/\D/g, '');
+        var pad = this.kzMask.replace(/\D/g, '').replace(/9/g, '_');
+        var valorMask = valor + pad.substring(0, pad.length - valor.length);
+        var valorMaskPos = 0;
+        valor = '';
+        for (var i = 0; i < this.kzMask.length; i++) {
+            if (isNaN(parseInt(this.kzMask.charAt(i)))) {
+                valor += this.kzMask.charAt(i);
+            }
+            else {
+                valor += valorMask[valorMaskPos++];
+            }
+        }
+        if (valor.indexOf('_') > -1) {
+            valor = valor.substr(0, valor.indexOf('_'));
+        }
+        return valor;
+    };
+    return KzMaskDirective;
+}());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('kzMask'),
+    __metadata("design:type", String)
+], KzMaskDirective.prototype, "kzMask", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostListener"])('keyup', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], KzMaskDirective.prototype, "onKeyup", null);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostListener"])('blur', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], KzMaskDirective.prototype, "onBlur", null);
+KzMaskDirective = KzMaskDirective_1 = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
+        selector: '[kzMask]',
+        providers: [{
+                provide: __WEBPACK_IMPORTED_MODULE_1__angular_forms__["NG_VALUE_ACCESSOR"],
+                useExisting: KzMaskDirective_1,
+                multi: true
+            }]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _a || Object])
+], KzMaskDirective);
+
+var KzMaskDirective_1, _a;
+//# sourceMappingURL=kz-mask.directive.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/index.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__directives__ = __webpack_require__("../../../../../src/app/shared/directives/index.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__directives__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__directives__["b"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shared_module__ = __webpack_require__("../../../../../src/app/shared/shared.module.ts");
+/* unused harmony namespace reexport */
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/load/load.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"loading-overlay\">   \r\n    <div class=\"\">             \r\n      <img src=\"/assets/images/oval.svg\" />\r\n      <h3>Carregando...</h3>\r\n    </div>\r\n  </div>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/load/load.component.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
@@ -3607,7 +4123,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".loading-overlay {\n  background: rgba(255, 254, 254, 0.8);\n  position: absolute;\n  text-align: center;\n  z-index: 100000;\n  width: 100%;\n  top: 0;\n  right: 0;\n  left: 0;\n  bottom: 0;\n  margin: auto; }\n  .loading-overlay > div {\n    margin: auto;\n    width: 100%; }\n    .loading-overlay > div img {\n      position: relative;\n      -webkit-transform: translateY(50%);\n              transform: translateY(50%);\n      width: auto; }\n    .loading-overlay > div h3 {\n      font-size: 15px;\n      margin-top: 50px; }\n", ""]);
 
 // exports
 
@@ -3617,11 +4133,11 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "../../../../../src/app/shared/my-requests/my-requests.component.ts":
+/***/ "../../../../../src/app/shared/load/load.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyRequestsComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoadComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -3633,23 +4149,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-var MyRequestsComponent = (function () {
-    function MyRequestsComponent() {
+var LoadComponent = (function () {
+    function LoadComponent() {
     }
-    MyRequestsComponent.prototype.ngOnInit = function () {
+    LoadComponent.prototype.ngOnInit = function () {
     };
-    return MyRequestsComponent;
+    return LoadComponent;
 }());
-MyRequestsComponent = __decorate([
+LoadComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'app-my-requests',
-        template: __webpack_require__("../../../../../src/app/shared/my-requests/my-requests.component.html"),
-        styles: [__webpack_require__("../../../../../src/app/shared/my-requests/my-requests.component.scss")]
+        selector: 'app-load',
+        template: __webpack_require__("../../../../../src/app/shared/load/load.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/shared/load/load.component.scss")]
     }),
     __metadata("design:paramtypes", [])
-], MyRequestsComponent);
+], LoadComponent);
 
-//# sourceMappingURL=my-requests.component.js.map
+//# sourceMappingURL=load.component.js.map
 
 /***/ }),
 
@@ -3660,16 +4176,20 @@ MyRequestsComponent = __decorate([
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SharedModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__my_requests_my_requests_component__ = __webpack_require__("../../../../../src/app/shared/my-requests/my-requests.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_404_404_component__ = __webpack_require__("../../../../../src/app/shared/404/404.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__collapse_collapse_component__ = __webpack_require__("../../../../../src/app/shared/collapse/collapse.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_404_404_component__ = __webpack_require__("../../../../../src/app/shared/404/404.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__collapse_collapse_component__ = __webpack_require__("../../../../../src/app/shared/collapse/collapse.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5____ = __webpack_require__("../../../../../src/app/shared/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__load_load_component__ = __webpack_require__("../../../../../src/app/shared/load/load.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -3684,17 +4204,24 @@ var SharedModule = (function () {
 SharedModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_2__my_requests_my_requests_component__["a" /* MyRequestsComponent */],
-            __WEBPACK_IMPORTED_MODULE_3__shared_404_404_component__["a" /* P404Component */],
-            __WEBPACK_IMPORTED_MODULE_5__collapse_collapse_component__["a" /* CollapseComponent */],
+            __WEBPACK_IMPORTED_MODULE_2__shared_404_404_component__["a" /* P404Component */],
+            __WEBPACK_IMPORTED_MODULE_4__collapse_collapse_component__["a" /* CollapseComponent */],
+            __WEBPACK_IMPORTED_MODULE_7__load_load_component__["a" /* LoadComponent */],
+            __WEBPACK_IMPORTED_MODULE_5____["b" /* KzMaskDirective */],
+            __WEBPACK_IMPORTED_MODULE_5____["a" /* KzMaskCurrencyDirective */],
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"],
-            __WEBPACK_IMPORTED_MODULE_4__angular_router__["RouterModule"],
+            __WEBPACK_IMPORTED_MODULE_3__angular_router__["RouterModule"],
+            __WEBPACK_IMPORTED_MODULE_6__angular_forms__["FormsModule"]
         ],
         exports: [
-            __WEBPACK_IMPORTED_MODULE_2__my_requests_my_requests_component__["a" /* MyRequestsComponent */],
-            __WEBPACK_IMPORTED_MODULE_3__shared_404_404_component__["a" /* P404Component */]
+            __WEBPACK_IMPORTED_MODULE_2__shared_404_404_component__["a" /* P404Component */],
+            __WEBPACK_IMPORTED_MODULE_5____["b" /* KzMaskDirective */],
+            __WEBPACK_IMPORTED_MODULE_5____["a" /* KzMaskCurrencyDirective */],
+            __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"],
+            __WEBPACK_IMPORTED_MODULE_6__angular_forms__["FormsModule"],
+            __WEBPACK_IMPORTED_MODULE_7__load_load_component__["a" /* LoadComponent */]
         ]
     })
 ], SharedModule);
@@ -3746,6 +4273,13 @@ Object(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__["a" /* pl
 
 module.exports = __webpack_require__("../../../../../src/main.ts");
 
+
+/***/ }),
+
+/***/ 1:
+/***/ (function(module, exports) {
+
+/* (ignored) */
 
 /***/ })
 

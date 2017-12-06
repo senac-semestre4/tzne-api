@@ -24,7 +24,7 @@ echo'<nav class="navbar navbar-inverse">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Produtos<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="http://tzne.kwcraft.com.br/admin/insereproduto">Cadastrar</a></li>
-                                <li><a href="#">Listar - Editar</a></li>
+                                <li><a href="http://tzne.kwcraft.com.br/admin/api/produtos/listarprodutos">Listar</a></li>
                             </ul>
                         </li>
                   <li class="dropdown">

@@ -112,6 +112,26 @@ $group = $app->group('/api', function () use ($app) {
         })->setName('inserevendateste');
 
         $app->post('/inserevenda', function () use ($app) {
+            //session_destroy();
+            
+            
+            $objson = $_POST['json'];
+            $b = json_decode($objson);
+            
+            
+            session_id($b->{'PHPSESSID'});
+                
+                if (!isset($_SESSION)) {
+                session_start();
+                } else {
+                    //echo"ja tem sessao";
+                }
+            
+            
+                $clienteId = intval($_SESSION['cliente_id']);
+                
+                
+                
             //Configurando o horário para a inserção no banco
             //$app->response->headers->set('Content-Type', 'text/html');
             date_default_timezone_set("America/Sao_Paulo");
@@ -129,18 +149,20 @@ $group = $app->group('/api', function () use ($app) {
             //instancia o objeto de venda 1
 
             $saleItem = new SalesItens();
-            $objson = $_POST['json'];
+            
 
             //Objeto venda com dois produtos
 //            $objson ='{"client_client_id":1,"total_partial":230,"amount":115,"discount":0,"type_freight":"correios","value_freight":16,"number_plots":2, "itens":
 //                      [{"product_product_has_id":153,"product_name": "Camiseta Homem Aranha","unit_price":57.50,"quantity":6,"subtotal":115},{"product_product_has_id":178,"product_name": "Camiseta Homem Aranha","unit_price":57.50,"quantity":2,"subtotal":115}]}';
             // $a= json_encode(json_decode($objson, JSON_PRETTY_PRINT));
             //Decodifica string json para objeto php
-            $b = json_decode($objson);
+            
+            
+
             //$b= $objson;
             //Seta os valores da venda recebidos pelo objeto JSON
             $sale->setAmount($b->{'amount'});
-            $sale->setClientClientId($b->{'client_client_id'});
+            $sale->setClientClientId($clienteId);
             $sale->setDiscount($b->{'discount'});
             $sale->setNumberPlots($b->{'number_plots'});
             $sale->setTotalPartial($b->{'total_partial'});
@@ -199,7 +221,9 @@ $group = $app->group('/api', function () use ($app) {
             //Instancia a DAOVenda
             $dao = new DaoSale();
             //Executa a ação no banco para inserir a venda
-            $dao->insertSale($sale);
+            
+
+$dao->insertSale($sale);
 
 
             //echo $objson;
@@ -1705,8 +1729,28 @@ $app->post('/atualizaprotocolos', function () {
                 $app->stop();
             }
         }
+        
+        
+            function clienteLogado($post) {
+                
+                    if (!isset($_SESSION)) {
+                        session_start();
+                    } else {
+                        //echo"ja tem sessao";
+                    }
+                    if (!isset($_SESSION["cliente"])) {
+                        //Resgato uma instância existente de Slim
+                        $app = \Slim\Slim::getInstance();
+                        $app->flash('error', 'Login required');
+                //        $app->response->headers->set('Content-Type', 'aplication/json');
+                        $json = array('autenticado' => false);
+                        echo json_encode($json);
+                        //$app->redirect('/admin');
+                        $app->stop();
+                    }
+            }
 
-        /*
+/*
           Antes de permitir o acesso a paginaqualquer, verifico se o usuário está
           previamente logado com a função usuarioLogado();
          */

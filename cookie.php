@@ -3,7 +3,7 @@ session_start();
 echo "<pre>";
 echo var_dump($_COOKIE['PHPSESSID']);
 echo "</pre>";
-
+echo serialize($_COOKIE['PHPSESSID']);
 $nome = "sacola";
 //$valor[] = $_SESSION['PHPSESSID'];
 $valor[] = $_SESSION['sacola'];

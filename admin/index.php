@@ -1017,12 +1017,310 @@ $group = $app->group('/api', function () use ($app) {
             $dao->listProdDepartaments($departamentid);
         })->setName('listarprodutos/departamento/:departamentid');
 
-        //Listar produtos
-        $app->get('/listarprodutos', function () {
+        
+//########################################
+//Listar produtos
+        $app->get('/listarprodutos', 'usuarioLogado', function () {
             $dao = new DaoProducts();
-            $dao->listAlLProducts(0, 0);
-        })->setName('listarprodutos');
+            //$dao->listAlLProducts(0, 0);
+            
+            
+                if (!isset($_SESSION)) {
+                    session_start();
+                } else {
+                //echo"ja tem sessao";
+                }
 
+          
+      
+        $p = new Product();
+            $dao = new DaoProducts();
+            //$p = $dao->listAlLProducts();
+            //$p->setOptions($p->serializeOptions());
+           //echo json_encode($p->serializeProduct());
+
+           
+//echo var_dump($obj);
+
+         //$obj = $p->serializeProduct();
+    $json = array();
+
+   $conn = new MysqlConn();
+    $conn->Conecta();
+
+
+   $busca = "SELECT *  FROM products_has_products_size_color_qtd
+                INNER JOIN products
+                on products_has_products_size_color_qtd.products_product_id = products.product_id";
+
+    $result = mysqli_query($conn->getLink(), $busca);
+    
+    /* While
+     * Enquanto haver linhas da tabela para ser
+     * lida, essas serão armazenadas na row
+     */
+    while ($row = mysqli_fetch_assoc($result)) {
+
+        //armazena linha em cada posição do array json
+        $json[] = $row;
+    }
+    
+    $obj = $json;
+
+    $vetProdutos = $json;
+    $totalPagina = 5; //Variável que armazena a quantidade de produtos por página.
+//Verifica se exite alguma query string com o valor da página, se não houver, define o valor 1.
+    $pagina = (filter_input(INPUT_GET, "pagina", FILTER_SANITIZE_NUMBER_INT) ? filter_input(INPUT_GET, "pagina", FILTER_SANITIZE_NUMBER_INT) : 1);
+
+    /*
+      ceil() - Arredonda um valor para cima, por exemplo, 5.5 arredonda para 6, pois assim vai exibir cinco na primeira página e um na próxima.$_COOKIE
+      count() - Conta a quantidade de valores do vetor
+      15 / 5 = 3 Paginas
+      16 / 5 = 3,2 | arredondamos para cima e temos 4 páginas.
+     */
+    $quantidadePaginas = ceil(count($vetProdutos) / $totalPagina);
+
+    $fim = ($pagina * $totalPagina); //Multiplicamos a página atual pela quantidade de itens por página: P=4 I= 5 | 4 * 5 = 20;
+    $inicio = ($fim - $totalPagina); //Subtraimos o total de páginas pela quantidade final a ser exibido: FIM = 20 Tot. Pag. = 5 | 20 - 5 = 15
+    ?>
+
+
+
+
+
+    <html lang="en"><head>
+            <meta charset="utf-8">
+            <meta name="robots" content="noindex, nofollow">
+
+            <title>TZNE</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+            <style type="text/css">
+
+                td {
+                    text-align: center; 
+                    color: #eeeeee;
+
+                }
+
+                th {
+                    text-align: center;  
+                    color: #eeeeee;
+
+                }
+
+
+                select {
+                    color: #999999;
+                }
+                /*Contact sectiom*/
+                .content-header{
+                    font-family: 'Oleo Script', cursive;
+                    color:#fcc500;
+                    font-size: 45px;
+                }
+
+                .section-content{
+                    text-align: center; 
+
+                }
+                #contact{
+
+                    font-family: 'Teko', sans-serif;
+                    padding-top: 60px;
+                    width: 100%;
+                    width: 100vw;
+                    height: 100%;
+                    /*                background: #3a6186;  fallback for old browsers 
+                                    background: -webkit-linear-gradient(to left, #3a6186 , #89253e);  Chrome 10-25, Safari 5.1-6 
+                                    background: linear-gradient(to left, #3a6186 , #89253e);  W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ 
+                    */ color : #fff;    
+                }
+                .contact-section{
+                    padding-top: 40px;
+                }
+                .contact-section .col-md-6{
+                    width: 50%;
+                }
+
+                .form-line{
+                    /*                border-right: 1px solid #B29999;*/
+                }
+
+                .form-group{
+                    margin-top: 10px;
+                }
+                label{
+                    font-size: 1.3em;
+                    line-height: 1em;
+                    font-weight: normal;
+                }
+                .form-control{
+                    font-size: 1.3em;
+                    color: #080808;
+                }
+                textarea.form-control {
+                    height: 108px;
+                    /* margin-top: px;*/
+                }
+
+                .submit{
+                    font-size: 1.1em;
+                    float: right;
+                    width: 150px;
+                    background-color: transparent;
+                    color: #fff;
+
+                }
+
+                body{
+                    background: #3a6186; /* fallback for old browsers */
+                    background: -webkit-linear-gradient(to left, #3a6186 , #89253e); /* Chrome 10-25, Safari 5.1-6 */
+                    background: linear-gradient(to left, #3a6186 , #89253e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+                }
+
+            </style>
+            <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+            <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+            <script type="text/javascript">
+                window.alert = function () {
+                };
+                var defaultCSS = document.getElementById('bootstrap-css');
+                function changeCSS(css) {
+                    if (css)
+                        $('head > link').filter(':first').replaceWith('<link rel="stylesheet" href="' + css + '" type="text/css" />');
+                    else
+                        $('head > link').filter(':first').replaceWith(defaultCSS);
+                }
+                $(document).ready(function () {
+                    var iframe_height = parseInt($('html').height());
+                    window.parent.postMessage(iframe_height, 'https://bootsnipp.com');
+                });
+            </script>
+        </head>
+        <body style="">
+            <link href="https://fonts.googleapis.com/css?family=Oleo+Script:400,700" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css?family=Teko:400,700" rel="stylesheet">
+            <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+
+
+
+            <?php
+            include './templates/menu.php';
+
+            echo "
+                        <div class=\"container\">
+  <table class=\"table\">
+
+   <thead>
+    <tr>
+      <th>Id Produto</th>
+      <th>Nome</th>
+      <th>Estoque</th>
+      <th>Status</th>
+      <th>Imagem</th>
+      <th>Ação</th>
+          </tr>
+  </thead>";
+            ?>   
+            <div id="dvConteudo">
+                <br>
+                <?php
+//                echo "<pre>";
+//                echo var_dump($obj);
+//                echo "</pre>";
+                for ($j = $inicio; $inicio < $fim; $inicio++) {
+
+                    if (!empty($vetProdutos[$inicio])) {
+                        
+                        $status;
+                        if($obj[$inicio]['product_status']==0){
+                            $status ="Desativado";
+                        }else{
+                            $status = "Ativo";
+                        }
+                        
+                        
+                    // //Verificamos se as demais posições possuem algum valor
+                        //echo "<span style='color: red;'-->- {$vetProdutos[$inicio]['client_name']}<br>";
+                        //$total = $obj[$inicio]->quantity* $obj[$inicio]->subtotal;
+                        echo "<form action=\"/admin/api/venda/listaitensvenda\" method =\"POST\">
+            <input type=\"hidden\" name=\"sale_id\" value=\"{$obj[$inicio]->sale_id}\">
+  <tbody>
+    <tr>
+      <td>
+        {$obj[$inicio]['products_product_id']}
+      </td>
+      <td> 
+        {$obj[$inicio]['product_name']}
+      </td>
+      <td>
+        {$obj[$inicio]['product_quantity']}
+      </td>
+      <td>
+        {$status}
+      </td>
+      <td>
+      <a href=\"{$obj[$inicio]['product_img_relative_url']}\" ><img src=\"{$obj[$inicio]['product_img_relative_url']}\"  height=\"42\" width=\"42\"></a>
+        
+      </td>
+      <td>
+      <a href=\"{$obj[$inicio]['product_img_relative_url']}\" class=\"btn btn-info\">Editar</a>
+        
+      </td>
+
+    </tr>
+
+
+</form>
+                        ";
+                    }
+                }
+
+                ?>
+
+                <br>
+                <?php
+                echo"
+
+  </tbody>
+
+<tr>
+     <td>
+        <a href=\"http://tzne.kwcraft.com.br/admin/api/venda/listarpedidos?pagina=1\" class=\"btn btn-info\" type=\"submit\">Voltar</button>
+      </td>
+    </tr>
+</table>
+
+</body>
+</html>
+<nav aria-label=\"Page\">
+<ul class=\"pagination\">
+";
+                //Montamos a quantidade de botões
+
+                for ($i = 0; $i < $quantidadePaginas; $i++) {
+                    ?>
+                    <li class="page-item"> <a class="page-link" href="?pagina=<?= ($i + 1); ?>&sale_id=<?=$_POST['sale_id']?>" style="color: #111; text-decoration: none; background-color: #CCC; padding: 5px; border:1px solid #eee; font-weight: bold;"><?= ($i + 1); ?></a></li> 
+                    <?php
+                }
+                ?>
+            </ul>
+        </nav>
+    </div>
+    <?php
+
+
+            
+            
+            
+        })->setName('listarprodutos');
+        
+        
+//###############################################
         //Listar produtos pelo id
         $app->get('/listarprodutos/:id', function ($id) {
             $p = new Product();
@@ -1314,6 +1612,12 @@ $group = $app->group('/api', function () use ($app) {
 
         })->setName('listarprodutoshasid/:hasid');
 
+        
+        
+        
+        
+        
+        
         //Listar produtos com limit e offset
         $app->get('/listarprodutos/:limit/:offset', function ($limit, $offset) {
             $dao = new DaoProducts();
@@ -2456,6 +2760,25 @@ $app->post('/listarprotocoloid', 'usuarioLogado', function () {
             }
         }
 
+                function clienteLogado() {
+
+            if (!isset($_SESSION)) {
+                session_start();
+            } else {
+                //echo"ja tem sessao";
+            }
+            if (!isset($_SESSION["cliente"])) {
+                //Resgato uma instância existente de Slim
+                $app = \Slim\Slim::getInstance();
+                $app->flash('error', 'Login required');
+//        $app->response->headers->set('Content-Type', 'aplication/json');
+                $json = array('logado' => false);
+                echo json_encode($json);
+                //$app->redirect('/admin');
+                $app->stop();
+            }
+        }
+
         /*
           Antes de permitir o acesso a paginaqualquer, verifico se o usuário está
           previamente logado com a função usuarioLogado();
@@ -2618,6 +2941,36 @@ $app->post('/listarprotocoloid', 'usuarioLogado', function () {
             }
             $app->render('/insereproduto.php');
         });
+
+                $app->get('/echosession',  function () use ($app) {
+//         ini_set('display_errors', 1);       
+            
+    session_id("ahodm1ikfaa8g77s2ttrbi6g21");
+                    if (!isset($_SESSION)) {
+                session_start();
+            } else {
+                //echo"ja tem sessao";
+            }
+            echo "<pre>";
+           echo var_dump($_SESSION);
+            echo "</pre>";
+            
+           // session_id("8vqq7sjutad580sk45m2140vi4");
+
+echo $_SESSION['cliente'];
+
+
+        });
+        
+        $app->get('/jwt', function () use ($app) {
+require_once ROOT_DIR . '/Services/JWT.php';
+        $token = array();
+        $token['id'] = 1235;
+        echo JWT::encode($token, 'secret_server_key');
+        
+})->setName('jwt');
+        
+        
 //$data = json_decode($app->request->getBody());
         $app->run();
         ?>

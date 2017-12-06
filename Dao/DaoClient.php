@@ -296,6 +296,7 @@ class DaoClient {
        					 }
 
                     $_SESSION['cliente'] = $arraySqlresult['client_name'];
+                    $_SESSION['cliente_id'] = $arraySqlresult['client_id'];
                               return true;
 
                 } else {

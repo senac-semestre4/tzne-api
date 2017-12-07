@@ -284,6 +284,7 @@ class DaoProducts {
                     $p->setModel($row['product_model']);
                     $p->setCode($row['product_code']);
                     $p->setSpecification($row['product_specification']);
+                    $p->setDescription($row['product_description']);
                     $p->setPurchase_price($row['product_purchase_price']);
                     $p->setProfit_margin($row['product_profit_margin']);
                     $p->setPromotional_price($row['product_promotional_price']);
@@ -641,6 +642,14 @@ class DaoProducts {
      */
 public function updateProduct(Product $product, ProductOpitons $options) {
 
+/*    echo "<pre>";
+    echo var_dump($product);
+    echo "<pre>";
+
+    echo "<pre>";
+    echo var_dump($options);
+    echo "<pre>";*/
+
         $conn = new MysqlConn();
 
         $conn->Conecta(); //cria conexão
@@ -653,32 +662,31 @@ public function updateProduct(Product $product, ProductOpitons $options) {
                     INNER join products_has_products_size_color_qtd as phas
                     ON prod.product_id = phas.products_product_id
                     SET 
-                    `product_name`= ?,
-                    `product_model`= ?,
-                    `product_code`= ?,
-                    `product_specification`= ?,
-                    `product_purchase_price`= ?,
-                    `product_profit_margin`= ?,
-                    `product_promotional_price`= ?,
-                    `product_length`= ?,
-                    `product_width`= ?,
-                    `product_heigth`= ?,
-                    `product_img_relative_url`= ?,
-                    `product_status`= ?,
-                    `brands_brand_id`= ?,
-                    `departaments_departament_id`= ?,
-                    phas.product_quantity = ?,
-                    phas.products_size_product_id_size = ?,
-                    phas.products_color_product_id_color = ?
-                    product_description =?,
-                    product_price_sale =?
-                    WHERE prod.product_id = ?;";             
+                    product_name = \"". $product->getName()."\",
+                    product_model = \"". $product->getModel()."\",
+                    product_code = ".$product->getCode().",
+                    product_specification =  \"".$product->getSpecification()."\",
+                    product_purchase_price = ".$product->getPurchase_price().",
+                    product_profit_margin = ".$product->getProfit_margin().",
+                    product_promotional_price = ".$product->getPromotional_price().",
+                    product_length = ".$product->getLength().",
+                    product_width = ".$product->getWidth().",
+                    product_heigth = ".$product->getHeigth().",
+                    product_status = ".$product->getStatus().",
+                    brands_brand_id = ".$product->getBrands_brand_id().",
+                    departaments_departament_id = ".$product->getDepartaments_departament_id().",
+                    phas.product_quantity = ".$options->getProductQuantity().",
+                    phas.products_size_product_id_size = ".$options->getSize().",
+                    phas.products_color_product_id_color = ".$options->getColor().",
+                    product_description =\"".$product->getDescription()."\",
+                    product_price_sale = ".$product->getSalePrice()."
+                    WHERE prod.product_id = ".$product->getId().";";             
             
-            
-            
+            echo $query;
+            mysqli_query($conn->getLink(), $query);
             // preparando o stmt
             $stmt = mysqli_prepare($conn->getLink(), $query);
-            var_dump(mysqli_error($conn->getLink()));  
+           echo var_dump(mysqli_error($conn->getLink()));  
             /*
              * bind_param =  Deve passar para o mysql o tipo do dado que está sendo enviado
              * conforme tabela abaixo:
@@ -689,7 +697,7 @@ public function updateProduct(Product $product, ProductOpitons $options) {
               b	corresponde a uma variável que contém dados para um blob e enviará em pacotes
              * 
              */
-            $stmt->bind_param("ssisddddddsiiiiiiisd",
+            $stmt->bind_param("ssisddddddiiiiiisdi",
                     $product->getName(), 
                     $product->getModel(), 
                     $product->getCode(), 
@@ -700,7 +708,6 @@ public function updateProduct(Product $product, ProductOpitons $options) {
                     $product->getLength(), 
                     $product->getWidth(), 
                     $product->getHeigth(), 
-                    $product->getImg_relative_url(), 
                     $product->getStatus(), 
                     $product->getBrands_brand_id(),
                     $product->getDepartaments_departament_id(),
@@ -711,8 +718,9 @@ public function updateProduct(Product $product, ProductOpitons $options) {
                     $product->getDescription(),
                     $product->getSalePrice());
 
-            $stmt->execute();
-            var_dump(mysqli_error($conn->getLink()));  
+           // $stmt->execute();
+
+         // echo  var_dump(mysqli_error($conn->getLink()));  
 
             //echo$stmt->affected_rows;
             $stmt->close();

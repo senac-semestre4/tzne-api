@@ -125,7 +125,10 @@ class DaoSale {
 
                     //$json = "{'vendainserida':'true'}";
                     $json = $sale->serializeSale();
+
                     echo json_encode($json);
+                    //listSalesById($lastId);
+
                 }
             } else {
                 echo var_dump(mysqli_error($conn->getLink()));
@@ -147,28 +150,67 @@ class DaoSale {
         $conn = new MysqlConn();
         $conn->Conecta();
 
-        $query = "SELECT sale_id,"
-                . " client_client_id, "
-                . "amount, "
-                . "number_plots, "
-                . "sale_has_order_status.order_status_order_status_id,
-                  order_status.name FROM `sales` 
+        $query = "SELECT sale_id,
+                 client_client_id, 
+                 client_name,
+                amount, 
+                number_plots, 
+                sale_has_order_status.order_status_order_status_id,
+                  order_status.name, date FROM `sales` 
                   inner JOIN sale_has_order_status 
                   on sale_id = sale_has_order_status.sales_sale_id 
                   INNER join order_status 
-                  ON sale_has_order_status.order_status_order_status_id = order_status.order_status_id";
+                  ON sale_has_order_status.order_status_order_status_id = order_status.order_status_id
+                  INNER JOIN client
+                  ON client.client_id = client_client_id";
 
         try {
             if ($result = mysqli_query($conn->getLink(), $query)) {
 
                 $json = array();
+                $cont =0;
                 while ($row = mysqli_fetch_assoc($result)) {
 
                     //armazena linha em cada posição do array json
 
-                    $json[] = $row;
-                }
+                    $json[$cont]['venda'] = $row;
+                   // echo $json[$cont]['venda']['sale_id']."<br>";
+                            $q = "SELECT * FROM `item_for_sale` WHERE `sale_id_sale` = ".$json[$cont]['venda']['sale_id'];
+                              //  echo var_dump($json);
+                                    $result1 = mysqli_query($conn->getLink(), $q);
+                                    $c=0;
+                                    while ($nrow = mysqli_fetch_assoc($result1)) {
 
+                                        $itens = json_decode(file_get_contents("http://tzne.kwcraft.com.br/api/produtos/listarprodutoshasid/".$nrow['product_product_has_id']));
+
+                               /*        echo "<pre>";
+                                       echo var_dump($itens);
+                                       echo "<pre>";*/
+                                        //armazena linha em cada posição do array json
+                                                $itensCliente = json_decode(file_get_contents("http://tzne.kwcraft.com.br/api/venda/listaitensvendas/".$json[$cont]['venda']['sale_id']));
+                                        $json[$cont]['venda'][$c]['itens']['id'] = $itens->id;
+                                        $json[$cont]['venda'][$c]['itens']['name'] = $itens->name;
+                                        $json[$cont]['venda'][$c]['itens']['purchase_price'] = $itens->purchase_price;
+                                        $json[$cont]['venda'][$c]['itens']['quantity'] = $itensCliente[$c]->quantity;
+                                        //$json[$cont]['venda'][$c]['itens']['nome'] = $itens->nome;
+                                    /*        echo "<pre>";
+                                       echo var_dump($itensCliente);
+                                       echo "<pre>";*/
+
+                                        $c++;
+
+
+
+
+                                     }      
+
+
+                
+                            $cont++;
+                }
+/*                echo "<pre>";
+                echo var_dump($json);
+                echo "<pre>";*/
                 return json_encode($json);
             }
         } catch (Exception $ex) {
@@ -217,6 +259,54 @@ class DaoSale {
 
       }
       } */
+
+
+
+
+
+
+
+ function listSalesById($idvenda) {
+
+        $conn = new MysqlConn();
+        $conn->Conecta();
+
+            $query =  "SELECT sale_id, client_name, client_client_id,order_status_order_status_id, order_status.name,
+                date,  amount, discount,
+                total_partial, number_plots, subtotal FROM `sales`
+                    INNER JOIN sale_has_order_status
+                    ON sale_has_order_status.sales_sale_id =sales.sale_id
+                    INNER JOIN item_for_sale
+                    ON item_for_sale.sale_id_sale = sales.sale_id
+                     INNER JOIN client
+                    ON sales.client_client_id = client.client_id
+                    INNER JOIN  order_status
+                    ON order_status.order_status_id = sale_has_order_status.order_status_order_status_id
+                    WHERE sale_id = ".$idvenda."
+                    GROUP by sales.sale_id;";
+
+                    if ($result = mysqli_query($conn->getLink(), $query)) {
+                        $json = array();
+                        while ($row = mysqli_fetch_assoc($result)) {
+
+                //armazena linha em cada posição do array json
+
+                            $json[] = $row;
+                        }
+
+                        echo json_encode($json);
+                        return json_encode($json);
+                    } else {
+                        echo var_dump(mysqli_error($conn->getLink()));
+
+                        return false;
+                    }
+
+
+
+
+}
+
 
     function listSales() {
 

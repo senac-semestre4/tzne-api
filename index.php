@@ -230,6 +230,18 @@ $dao->insertSale($sale);
         })->setName('inserevenda');
 
 
+ $app->get('/listarpedidos', function () {
+            $dao = new DaoSale();
+
+            $json = $dao->listSalesStatus();
+
+            $obj = json_decode($json);
+
+            echo $json;
+
+
+/*
+
         //lista todos os pedidos
         $app->get('/listarpedidos', function () {
             $dao = new DaoSale();
@@ -238,6 +250,8 @@ $dao->insertSale($sale);
 
             $obj = json_decode($json);
 
+            echo $json;
+/*
             for ($i = 0; $i < sizeof($obj); $i++) {
 
                 echo"
@@ -267,7 +281,7 @@ $dao->insertSale($sale);
                         </form>
                    <table>   
                    ";
-            }
+            }*/
             //echo "</table>";
             // echo "</tr>";
             //echo $json;

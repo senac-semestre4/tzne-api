@@ -19,82 +19,11 @@ $_SESSION['seed'] = $seed; //guardo ele na sessão
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
 
-<title>Contact Form - One page  - Bootsnipp.com</title>
+<title>TZNE</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<style type="text/css">
-
-    select {
-        color: #999999;
-    }
-    /*Contact sectiom*/
-    .content-header{
-        font-family: 'Oleo Script', cursive;
-        color:#fcc500;
-        font-size: 45px;
-    }
-
-    .section-content{
-        text-align: center; 
-
-    }
-    #contact{
-
-        font-family: 'Teko', sans-serif;
-        padding-top: 60px;
-        width: 100%;
-        width: 100vw;
-        height: 100%;
-                /*                background: #3a6186;  fallback for old browsers 
-                                background: -webkit-linear-gradient(to left, #3a6186 , #89253e);  Chrome 10-25, Safari 5.1-6 
-                                background: linear-gradient(to left, #3a6186 , #89253e);  W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ 
-                                */ color : #fff;    
-                            }
-                            .contact-section{
-                                padding-top: 40px;
-                            }
-                            .contact-section .col-md-6{
-                                width: 50%;
-                            }
-
-                            .form-line{
-                                /*                border-right: 1px solid #B29999;*/
-                            }
-
-                            .form-group{
-                                margin-top: 10px;
-                            }
-                            label{
-                                font-size: 1.3em;
-                                line-height: 1em;
-                                font-weight: normal;
-                            }
-                            .form-control{
-                                font-size: 1.3em;
-                                color: #080808;
-                            }
-                            textarea.form-control {
-                                height: 108px;
-                                /* margin-top: px;*/
-                            }
-
-                            .submit{
-                                font-size: 1.1em;
-                                float: right;
-                                width: 150px;
-                                background-color: transparent;
-                                color: #fff;
-
-                            }
-
-                            body{
-                                background: #3a6186; /* fallback for old browsers */
-                                background: -webkit-linear-gradient(to left, #3a6186 , #89253e); /* Chrome 10-25, Safari 5.1-6 */
-                                background: linear-gradient(to left, #3a6186 , #89253e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-                            }
-
-                        </style>
+                        <style type="text/css"></style>
+                        <link rel="stylesheet" type="text/css" href="http://tzne.kwcraft.com.br/admin/style.css">
                         <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
                         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
                         <script type="text/javascript">
@@ -218,24 +147,66 @@ $_SESSION['seed'] = $seed; //guardo ele na sessão
             <input type="text" class="form-control" id="chamado" name="product_stock_quantity" placeholder=" Quantidade em estoque " required="required">
         </div>
         <div class="form-group">
-            <label for="brands_brand_id">Marca</label>
-            <input type="text" class="form-control" id="chamado" name="brands_brand_id" placeholder=" Marca" required="required">
+            <!-- <label for="brands_brand_id">Marca</label> -->
+            <input type="hidden" class="form-control" id="chamado" name="brands_brand_id" placeholder=" Marca" value="1">
         </div>
-        <div class="form-group">
+<div class="form-group">
             <label for="departaments_departament_id">Departamento</label>
-            <input type="text" class="form-control" id="chamado" name="departaments_departament_id" placeholder=" Departamento" required="required">
+                 <label for="width">Tamanho</label>
+            <select class="form-control" name="departaments_departament_id" required="required">
+
+  <?php
+                $departamentos = json_decode(file_get_contents("http://tzne.kwcraft.com.br/admin/api/listardepartamentos"));
+/*                echo "<pre>";
+                echo var_dump($departamentos);
+                echo "<pre>";*/
+
+                for($i=0; $i<sizeof($departamentos); $i++) {
+                   
+                   print('<option value="'.$departamentos[$i]->departament_id.'">'.$departamentos[$i]->departament_name.'</option>'."\n");
+                    }
+                
+                
+            ?>
+            </select>
+
+
+
         </div>
 
         <div class="form-group">
-            <label for="idcolor">Cor</label>
-            <input type="text" class="form-control" id="chamado" name="idcolor" placeholder=" Largura" required="required">
+            <!-- <label for="idcolor">Cor</label> -->
+            <input type="hidden" class="form-control" id="chamado" name="idcolor" placeholder=" Largura" value="3">
         </div>
 
 
+ <div class="form-group">
 
-        <div class="form-group">
-            <label for="idsize">Tamanho</label>
-            <input type="text" class="form-control" id="chamado" name="idsize" placeholder=" Largura" required="required">
+                 <label for="width">Tamanho</label>
+            <select class="form-control" name="idsize" required="required">
+       
+                   <?php
+                $tamanhos = json_decode(file_get_contents("http://tzne.kwcraft.com.br/api/listadetamanhos"));
+
+                for($i=0; $i<sizeof($tamanhos); $i++) {
+                    $selected = '';
+                    if($tamanhos[$i]->product_id_size == $produto->options[0]->size){
+                print('<option value="'.$tamanhos[$i]->product_id_size.'"'.$selected.' selected>'.$tamanhos[$i]->product_size.'</option>'."\n");
+                    }else
+                    {
+                    print('<option value="'.$tamanhos[$i]->product_id_size.'"'.$selected.'>'.$tamanhos[$i]->product_size.'</option>'."\n");
+                    }
+                }
+                
+            ?>
+
+
+
+<!--                  <option value="<?php echo $produto->status?>" selected><?php echo $status?></option>
+ -->       
+            </select>
+
+
         </div>
 
 <!--         <div class="form-group">

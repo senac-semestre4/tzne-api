@@ -369,11 +369,15 @@ $dao->insertSale($sale);
                     echo "Sem resultado";
                 } else {
                     $p = new Product();
+                    $c=0;
                     while ($row = mysqli_fetch_assoc($result)) {
 
                         //armazena linha em cada posição do array json
-
-                        $json[] = $row;
+                          $itens = json_decode(file_get_contents("http://tzne.kwcraft.com.br/api/produtos/listarprodutoshasid/".$row['product_product_has_id']));
+                        $json[$c] = $row;
+                        $json[$c]['name'] = $itens->name;
+                        $json[$c]['img'] = $itens->img_relative_url;
+                        $c++;
                     }
                 }
             }

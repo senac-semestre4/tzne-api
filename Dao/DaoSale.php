@@ -192,6 +192,7 @@ class DaoSale {
                                         $json[$cont]['venda'][$c]['itens']['name'] = $itens->name;
                                         $json[$cont]['venda'][$c]['itens']['purchase_price'] = $itens->purchase_price;
                                         $json[$cont]['venda'][$c]['itens']['quantity'] = $itensCliente[$c]->quantity;
+                                        $json[$cont]['venda'][$c]['itens']['img'] = $itens->img_relative_url;
                                         //$json[$cont]['venda'][$c]['itens']['nome'] = $itens->nome;
                                     /*        echo "<pre>";
                                        echo var_dump($itensCliente);

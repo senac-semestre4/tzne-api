@@ -664,7 +664,6 @@ public function updateProduct(Product $product, ProductOpitons $options) {
                     SET 
                     product_name = \"". $product->getName()."\",
                     product_model = \"". $product->getModel()."\",
-                    product_code = ".$product->getCode().",
                     product_specification =  \"".$product->getSpecification()."\",
                     product_purchase_price = ".$product->getPurchase_price().",
                     product_profit_margin = ".$product->getProfit_margin().",

@@ -1425,8 +1425,8 @@ $group = $app->group('/api', function () use ($app) {
 
     <div class="col-md-6 form-line">
       <div class="form-group">
-            <label for="name">Id do produto</label>
-            <input disabled type="text" class="form-control" id="txtnome" name="product_id" placeholder=" Nome do produto" value="<?php echo $produto->id?>">
+           <!--  <label for="name">Id do produto</label> -->
+            <input  type="hidden" class="form-control" id="txtnome" name="product_id" placeholder=" Nome do produto" value="<?php echo $produto->id?>">
         </div>
         <div class="form-group">
             <label for="name">Nome do produto</label>
